@@ -1,7 +1,7 @@
 # arch-tag: Primary makefile
 # Copyright (c) 2004 John Goerzen
 #
-PACKAGES := -package shell -package missinglib -I . -I bootloaders
+PACKAGES := -package shell -package missinglib -I . -I bootloaders -I utils
 all:	.depend dfsbuild lib lib/linuxrc lib/startup lib/dfs.html/index.html \
 	lib/dfs.pdf lib/dfs.ps lib/dfs.txt lib/dfshelp lib/dfshints \
 	lib/home.html lib/dfsbuildinfo
@@ -16,13 +16,15 @@ clean:
 	-rm -f `find . -name "*~"` `find . -name "*.o"`
 
 
-dfsbuild: dfsutils.cmx unixutil.cmx shellutil.cmx archsupport.cmx mirror.cmx \
-	configfiles.cmx bootloaders/grub.cmx bootloaders/bootloader.cmx \
+dfsbuild: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
+	archsupport.cmx mirror.cmx \
+	configfiles.cmx bootloaders/grub.cmx bootloaders/aboot.cmx \
+	bootloaders/bootloader.cmx \
 	dfsbuild.cmx
 	ocamlfind ocamlopt $(PACKAGES) -linkpkg \
 		-o $@ $^
 
-test: dfsutils.cmx unixutil.cmx shellutil.cmx  test.cmx
+test: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx  test.cmx
 	ocamlfind ocamlopt -compact $(PACKAGES) -linkpkg \
 		-o $@ $^
 
@@ -39,13 +41,15 @@ lib/home.html: libsrc/home.html
 lib/dfsbuildinfo: libsrc/dfsbuildinfo
 	cp $^ $@
 
-lib/linuxrc: dfsutils.cmx unixutil.cmx shellutil.cmx libsrc/linuxrc.cmx
+lib/linuxrc: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
+	libsrc/linuxrc.cmx
 	ocamlfind ocamlopt -compact -cclib -static -cclib --unresolved-symbols=ignore-all \
 	$(PACKAGES) -linkpkg \
 		-o $@ $^
 	strip -s $@
 
-lib/startup: dfsutils.cmx unixutil.cmx shellutil.cmx libsrc/startup.cmx
+lib/startup: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
+	libsrc/startup.cmx
 	ocamlfind ocamlopt -compact -cclib -static -cclib --unresolved-symbols=ignore-all \
 	$(PACKAGES) -linkpkg -o $@ $^
 	strip -s $@
@@ -76,6 +80,6 @@ lib/dfs.txt: doc/dfs.sgml lib
 	cp doc/dfs.txt lib
 
 .depend:
-	ocamldep -I . -I bootloaders `find . -name "*.ml"` > .depend
+	ocamldep -I . -I bootloaders -I utils `find . -name "*.ml"` > .depend
 
 -include .depend

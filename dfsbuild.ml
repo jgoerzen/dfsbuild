@@ -184,7 +184,8 @@ let mkiso cp wdir imageroot isoargs =
   let isofile = wdir ^ "/image.iso" in
   let compressopts = if cp#getbool (getarch()) "compress" then ["-z"] else [] in
   run "mkisofs" (compressopts @ isoargs @ 
-    ["-pad"; "-R"; "-o"; isofile; imageroot]);;
+    ["-pad"; "-R"; "-o"; isofile; imageroot]);
+  isofile;;
 
 let _ = 
   let cp, wdir = parsecmdline () in
@@ -216,8 +217,9 @@ let _ =
   Configfiles.writebuildinfo cp imageroot;
   preprd cp libdir imageroot;
   installkernels cp imageroot; 
-  let isoargs = Bootloader.install cp wdir imageroot in
+  let isoargs, postisofunc = Bootloader.install cp wdir imageroot in
   preprtrd cp imageroot;
-  mkiso cp wdir imageroot isoargs;
+  let isoname = mkiso cp wdir imageroot isoargs in
+  postisofunc cp wdir imageroot isoname;
 ;;
 

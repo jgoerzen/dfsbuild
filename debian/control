@@ -6,8 +6,8 @@ Build-Depends: debhelper (>= 4.0.0), gtk-doc-tools, sgml2x, docbook-utils, jade,
 Standards-Version: 3.6.0
 
 Package: dfsbuild
-Architecture: i386
-Depends: ${shlibs:Depends}, ${misc:Depends}, cdebootstrap, mkisofs, apt-move, grub
+Architecture: i386 alpha
+Depends: ${shlibs:Depends}, ${misc:Depends}, cdebootstrap, mkisofs, apt-move, grub [i386], aboot [alpha]
 Description: Build Debian From Scratch CD/DVD images
  Debian From Scratch (DFS) is a live bootable CD that is designed to
  provide a fully-featured kernel and a fully-featured rescue environment.

@@ -58,8 +58,9 @@ configfile /boot/grub/menu.lst
 let grub_eltorito cp target =
   grub_generic cp target "initrd /opt/dfsruntime/initrd.dfs";
   installrd_cramfs target;
-  ["-b"; "boot/grub/stage2_eltorito"; "-no-emul-boot";
-   "-boot-load-size"; "1"; "-boot-info-table"];;
+  (["-b"; "boot/grub/stage2_eltorito"; "-no-emul-boot";
+   "-boot-load-size"; "1"; "-boot-info-table"],
+   fun cp wdir target isoname -> ());;
 
 let grub_hd cp workdir target =
   grub_generic cp target "initrd /boot/initrd.dfs";
@@ -72,4 +73,5 @@ let grub_hd cp workdir target =
   run "sh" ["-c"; "cd " ^ workdir ^ "; tar -zcpf boot.tar.gz boot"];
   run "mkbimage" ["-f"; workboottar; "-t"; "hd"; "-s"; "ext2"; "-d"; workdir];
   Unix.rename "hd.image" (target ^ "/boot/hd.image");
-  ["-b"; "boot/hd.image"; "-hard-disk-boot"; "-c"; "boot/boot.catalog"];;
+  (["-b"; "boot/hd.image"; "-hard-disk-boot"; "-c"; "boot/boot.catalog"],
+   fun cp wdir target isoname -> ());;

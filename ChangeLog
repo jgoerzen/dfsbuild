@@ -2,6 +2,25 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-27 21:13:17 GMT	John Goerzen <jgoerzen@complete.org>	patch-39
+
+    Summary:
+      Initial support for Alpha
+    Revision:
+      dfsbuild--head--0.5--patch-39
+
+
+    new files:
+     bootloaders/aboot.ml
+
+    removed files:
+     cashutil.ml dfsutils.ml shellutil.ml unixutil.ml
+
+    modified files:
+     ChangeLog Makefile bootloaders/bootloader.ml
+     bootloaders/grub.ml debian/control dfs.cfg dfsbuild.ml
+
+
 2004-05-27 20:27:56 GMT	John Goerzen <jgoerzen@complete.org>	patch-38
 
     Summary:
