@@ -1,3 +1,10 @@
+dfsbuild (0.6.9) unstable; urgency=low
+
+  * Updated for OCaml 3.08; now build-deps on ocaml-nox instead of
+    ocaml.
+
+ -- John Goerzen <jgoerzen@complete.org>  Mon,  2 Aug 2004 08:48:25 -0500
+
 dfsbuild (0.6.8) unstable; urgency=low
 
   * Bumped to libmissinglib-ocaml-dev 0.4.1.  Removed duplicate code.
