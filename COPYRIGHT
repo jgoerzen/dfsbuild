@@ -22,20 +22,5 @@ distribution.  Debian GNU/Linux users may find this in
 If the GPL is unacceptable for your uses, please e-mail me; alternative
 terms can be negotiated for your project.
 
--------------------------------------------------------------------
-Build system uses OCamlMakefile.  This is available in contrib/OCamlMakefile
-and is licensed under the GNU Lesser General Public License.  For license
-details, see contrib/OCamlMakefile/LICENSE in the souce distribution.
-Debian GNU/Linux users may find this license in
-/usr/share/common-licenses/LGPL-2.1.
-
-OCamlMakefile bears the following copyright statement:
-
-#                              OCamlMakefile
-#                  Copyright (C) 1999-2003  Markus Mottl
-#
-#                             For updates see:
-#                http://www.oefai.at/~markus/ocaml_sources
-
 
 arch-tag: copyright statement
