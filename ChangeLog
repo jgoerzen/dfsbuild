@@ -2,6 +2,25 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-27 21:31:55 GMT	John Goerzen <jgoerzen@complete.org>	patch-41
+
+    Summary:
+      Added utils dir
+    Revision:
+      dfsbuild--head--0.5--patch-41
+
+
+    new files:
+     utils/.arch-ids/=id utils/cashutil.ml utils/dfsutils.ml
+     utils/shellutil.ml utils/unixutil.ml
+
+    modified files:
+     ChangeLog
+
+    new directories:
+     utils utils/.arch-ids
+
+
 2004-05-27 21:31:28 GMT	John Goerzen <jgoerzen@complete.org>	patch-40
 
     Summary:
