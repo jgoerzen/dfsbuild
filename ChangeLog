@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-28 14:42:59 GMT	John Goerzen <jgoerzen@complete.org>	patch-48
+
+    Summary:
+      Added a slight bit of more verbosity to compress
+    Revision:
+      dfsbuild--head--0.5--patch-48
+
+
+    modified files:
+     ChangeLog dfsbuild.ml
+
+
 2004-05-28 14:28:05 GMT	John Goerzen <jgoerzen@complete.org>	patch-47
 
     Summary:
