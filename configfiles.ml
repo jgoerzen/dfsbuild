@@ -1,6 +1,7 @@
 (* arch-tag: write config files
 *)
 open Dfsutils;;
+open Cashutil;;
 
 let datestr = (Cash.string_of_date (Cash.date ()));;
 
@@ -49,6 +50,7 @@ let writecfgfiles cp basedir =
   if cp#has_section "symlinks" then begin
     List.iter (fun from -> Unix.symlink (cp#get "symlinks" from) from)
       (cp#options "symlinks");
+  end;
   if cp#has_option "cd" "deletefiles" then begin
     List.iter (fun x -> rm ~force:true (basedir ^ x))
       (split_ws (cp#get "cd" "deletefiles"))
