@@ -80,7 +80,7 @@ let installpkgs cp target =
 
 let compress (cp:rawConfigParser) wdir target =
   if (cp#getbool (getarch()) "compress") then begin
-    p "Compressing image...";
+    p "Compressing image, this may take some time...";
     let noncom = wdir ^ "/noncom" in
     Unix.mkdir noncom 0o755;
     let noncomfiles = 
@@ -91,7 +91,7 @@ let compress (cp:rawConfigParser) wdir target =
        m noncomfiles 0 in
     List.iter (fun (orig, tmp) -> print_endline ("Preserving " ^ orig);
       Unix.rename (target ^ orig) (noncom ^ "/" ^ tmp)) noncommap;
-    run "mkzftree" ["-v"; target; wdir ^ "/zftree"];
+    run "mkzftree" [target; wdir ^ "/zftree"];
     rm ~recursive:true target;
     Unix.rename (wdir ^ "/zftree") target;
     List.iter (fun (orig, tmp) ->

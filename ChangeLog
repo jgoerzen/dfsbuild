@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-07 20:34:07 GMT	John Goerzen <jgoerzen@complete.org>	patch-87
+
+    Summary:
+      Removed -v from mkzftree
+    Revision:
+      dfsbuild--head--0.5--patch-87
+
+
+    modified files:
+     ChangeLog dfsbuild.ml
+
+
 2004-06-07 20:20:21 GMT	John Goerzen <jgoerzen@complete.org>	patch-86
 
     Summary:
