@@ -136,6 +136,8 @@
         or more different kernel images.  Select one appropriate for
         your system.  If a given image says "amd64", this should only
         be used on amd64 systems such as Opteron or Athlon64 system.
+	Note: if you intend to install a 64-bit amd64 system, you must
+	boot from the 64-bit amd64 kernel.
       </para>
     </sect1>
     <sect1 id="dfsboot-selcd">
