@@ -16,7 +16,7 @@ clean:
 	-rm -f `find . -name "*~"` `find . -name "*.o"`
 
 
-dfsbuild: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
+dfsbuild: utils/dfsutils.cmx utils/shellutil.cmx \
 	archsupport.cmx mirror.cmx \
 	configfiles.cmx bootloaders/bootloaderutil.cmx \
 	bootloaders/grub.cmx bootloaders/aboot.cmx \
@@ -27,7 +27,7 @@ dfsbuild: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
 		-o $@ $^
 
 
-dfsbuild.bc: utils/dfsutils.cmo utils/unixutil.cmo utils/shellutil.cmo \
+dfsbuild.bc: utils/dfsutils.cmo utils/shellutil.cmo \
 	archsupport.cmo mirror.cmo \
 	configfiles.cmo bootloaders/bootloaderutil.cmx \
 	bootloaders/grub.cmo bootloaders/aboot.cmo \
@@ -37,7 +37,7 @@ dfsbuild.bc: utils/dfsutils.cmo utils/unixutil.cmo utils/shellutil.cmo \
 	ocamlfind ocamlc -g $(PACKAGES) -linkpkg \
 		-o $@ $^
 
-test: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx  test.cmx
+test: utils/dfsutils.cmx utils/shellutil.cmx  test.cmx
 	ocamlfind ocamlopt -compact $(PACKAGES) -linkpkg \
 		-o $@ $^
 
@@ -54,14 +54,14 @@ lib/home.html: libsrc/home.html
 lib/dfsbuildinfo: libsrc/dfsbuildinfo
 	cp $^ $@
 
-lib/linuxrc: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
+lib/linuxrc: utils/dfsutils.cmx utils/shellutil.cmx \
 	libsrc/linuxrc.cmx
 	ocamlfind ocamlopt -compact -cclib -static -cclib --unresolved-symbols=ignore-all \
 	$(PACKAGES) -linkpkg \
 		-o $@ $^
 	strip -s $@
 
-lib/startup: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
+lib/startup: utils/dfsutils.cmx utils/shellutil.cmx \
 	libsrc/startup.cmx
 	ocamlfind ocamlopt -compact -cclib -static -cclib --unresolved-symbols=ignore-all \
 	$(PACKAGES) -linkpkg -o $@ $^

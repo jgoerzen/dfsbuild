@@ -2,6 +2,7 @@
 *)
 open Dfsutils;;
 open Shellutil;;
+open Unixutil;;
 open Strutil;;
 open Archsupport;;
 

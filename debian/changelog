@@ -1,3 +1,9 @@
+dfsbuild (0.6.8) unstable; urgency=low
+
+  * Bumped to libmissinglib-ocaml-dev 0.4.1.  Removed duplicate code.
+
+ -- John Goerzen <jgoerzen@complete.org>  Thu, 17 Jun 2004 20:22:01 -0500
+
 dfsbuild (0.6.7) unstable; urgency=low
 
   * Added UCF support from Robert Jordens.

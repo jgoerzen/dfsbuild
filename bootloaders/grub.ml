@@ -4,6 +4,7 @@
 
 open Unix;;
 open Shellutil;;
+open Unixutil;;
 open Dfsutils;;
 open Archsupport;;
 

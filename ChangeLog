@@ -2,6 +2,22 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-18 01:24:41 GMT	John Goerzen <jgoerzen@complete.org>	patch-95
+
+    Summary:
+      Upgraded to missinglib 0.4.1
+    Revision:
+      dfsbuild--head--0.5--patch-95
+
+
+    removed files:
+     utils/unixutil.ml
+
+    modified files:
+     ChangeLog Makefile bootloaders/grub.ml configfiles.ml
+     debian/changelog debian/control utils/shellutil.ml
+
+
 2004-06-15 14:42:22 GMT	John Goerzen <jgoerzen@complete.org>	patch-94
 
     Summary:
