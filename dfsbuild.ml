@@ -136,17 +136,20 @@ let preprd cp libdir target =
 let installdebs cp imageroot =
   p "Installing .debs...";
   let rootopt = sprintf "--root=%s" imageroot in
-  try
-    run "dpkg" (rootopt :: "-i" :: (split_ws (get cp "installdebs")));
-  with Not_found -> ();
+  begin
+          try
+            run "dpkg" (rootopt :: "-i" :: (split_ws (get cp "installdebs")));
+          with Not_found -> ();
+  end;
   let deblist = try (split_ws (get cp "unpackdebs")) with Not_found -> [] in
   let chroottmpdir = "/insttmp" in
   let realtmpdir = imageroot ^ chroottmpdir in
   Unix.mkdir (imageroot ^ "/insttmp") 0o755;
-  List.iter (fun x -> run "cp" ["-v"; x; chroottmpdir ^ "/"]) deblist;
+  List.iter (fun x -> run "cp" ["-v"; x; realtmpdir ^ "/"]) deblist;
   let debnames = List.map (fun x -> chroottmpdir ^ "/" ^ Filename.basename x)
      deblist in
-  run "chroot" (imageroot :: "--force-depends" :: "--force-conflicts" :: 
+  run "chroot" (imageroot :: "dpkg" ::
+         "--force-depends" :: "--force-conflicts" :: 
          "--force-overwrite" :: "--force-architecture" :: "--unpack" 
          :: debnames);
  rm ~recursive:true realtmpdir;
@@ -213,11 +216,12 @@ let _ =
   *)
 
   p ("Using library directory: " ^ libdir);
-  rm ~recursive:true ~force:true wdir;
-  mkdir wdir 0o755; 
   (* Unix.chdir wdir;
   let wdir = getcwd () in *)
   let imageroot = wdir ^ "/image" in
+
+  rm ~recursive:true ~force:true wdir;
+  mkdir wdir 0o755; 
   mkdir imageroot 0o755;
   mkdir (imageroot ^ "/opt") 0o755;
   mkdir (imageroot ^ "/opt/dfsruntime") 0o755;
@@ -225,6 +229,7 @@ let _ =
   cdebootstrap cp imageroot wdir;
   installpkgs cp imageroot;
   installlib (get cp "docdir") libdir imageroot;
+
   installdebs cp imageroot;
   Configfiles.writecfgfiles cp imageroot;
   Configfiles.fixrc imageroot;
