@@ -91,6 +91,7 @@
             </listitem>
             <listitem><para>User-Mode-Linux (UML)</para>
             </listitem>
+          </itemizedlist>
 	</listitem>
 	<listitem><para>Base systems for multiple versions of Debian
 	    installable directly from CD, including: woody (i386),
