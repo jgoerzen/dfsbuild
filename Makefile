@@ -5,7 +5,7 @@ PACKAGES := -package shell -package missinglib
 all:	buildcd
 
 buildcd: buildcd.cmx
-	ocamlfind ocamlopt $(PACKAGES) -linkpkg -o $@ str.cmxa $^
+	ocamlfind ocamlopt $(PACKAGES) -linkpkg -o $@ $^
 
 %.cmx: %.ml
 	ocamlfind ocamlopt $(PACKAGES) -c -o $@ $<
