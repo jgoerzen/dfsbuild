@@ -10,7 +10,7 @@ open Archsupport;;
 
 let grub_generic cp target entryline =
   mkdir (target ^ "/boot/grub") 0o755;
-  run "cp" ("-rv" :: glob ["/usr/lib/grub/*/*"] @ [target ^ "/boot/grub/"]);
+  run "cp" ("-rv" :: glob ["/lib/grub/*/*"] @ [target ^ "/boot/grub/"]);
   let sd = open_out (target ^ "/boot/grub/menu.lst") in
   if cp#has_option (getarch()) "grubconfig" then begin
     output_string sd (get cp "grubconfig");

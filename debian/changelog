@@ -1,7 +1,17 @@
-dfsbuild (0.6.12) unstable; urgency=low
+dfsbuild (0.6.13) unstable; urgency=low
+
+  * [grub] Change /usr/lib/grub to /lib/grub in keeping with new grub
+    package paths
+
+ -- John Goerzen <jgoerzen@complete.org>  Thu, 12 Aug 2004 09:24:12 -0500
+
+dfsbuild (0.6.12) unstable; urgency=medium
 
   * Add dar to default config.  Closes: #257818.
   * Experimental support for running on native amd64.  Closes: #254931.
+  * Include dfsbuild itself in generated image.
+  * medium urgency upload to help move into testing. (0.6.11 still in
+    incoming)
 
  -- John Goerzen <jgoerzen@complete.org>  Tue, 10 Aug 2004 09:05:25 -0500
 
