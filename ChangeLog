@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-10-28 16:10:35 GMT	John Goerzen <jgoerzen@complete.org>	patch-113
+
+    Summary:
+      Added hugs, ghc6 to default image
+    Revision:
+      dfsbuild--head--0.5--patch-113
+
+
+    modified files:
+     ChangeLog dfs.cfg
+
+
 2004-10-28 16:09:54 GMT	John Goerzen <jgoerzen@complete.org>	patch-112
 
     Summary:
