@@ -14,10 +14,6 @@ open ConfigParser;;
 
 let p = print_endline;;
 
-let run prog args =
-  p ("Running: " ^ prog ^ " " ^ (String.concat " " args));
-  Shellutil.run prog args;;
-
 let genmarker () = 
   Random.self_init ();
   Printf.sprintf "DFS CD IMAGE, ID: %f,%d,%d\n" (Unix.time()) (Random.bits())
@@ -82,7 +78,7 @@ let installpkgs cp target =
     "/var/cache/apt/*.bin"; "/var/cache/debconf/*"; "/etc/X11" ]; *)
   ;;
 
-let compress (cp:rawConfigParser) wdir target =
+let compress (cp:configParser) wdir target =
   if (cp#getbool (getarch()) "compress") then begin
     p "Compressing image...";
     let noncom = wdir ^ "/noncom" in
@@ -201,7 +197,7 @@ let installlib docdir libdir imageroot =
     ["dfshelp"; "dfshints"; "dfsbuildinfo"];
 ;;
 
-let mkiso (cp:rawConfigParser) wdir imageroot isoargs =
+let mkiso (cp:configParser) wdir imageroot isoargs =
   p "Preparing ISO image";
   let isofile = wdir ^ "/image.iso" in
   let compressopts = if cp#getbool (getarch()) "compress" then ["-z"] else [] in

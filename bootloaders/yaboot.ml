@@ -17,12 +17,8 @@ let yaboot cp target =
   let newkerns = glob [target ^ "/boot/vmlinu*"] in
   output_string hfsmap 
 "# ext.  xlate  creator  type    comment
-.deb    Raw    'Debn'   'bina'  \"Debian package\"
-.bin    Raw    'ddsk'   'DDim'  \"Floppy or ramdisk image\"
-.img    Raw    'ddsk'   'DDim'  \"Floppy or ramdisk image\"
 .b      Raw    'UNIX'   'tbxi'  \"bootstrap\"
 yaboot  Raw    'UNIX'   'boot'  \"bootstrap\"
-vmlinux Raw    'UNIX'   'boot'  \"bootstrap\"
 .conf   Raw    'UNIX'   'conf'  \"bootstrap\"
 *       Ascii  '????'   '????'  \"Text file\"
 ";
@@ -109,10 +105,26 @@ device=cd:
 	read-only
 
 " (Filename.basename kern) (getrdsize_kb target) (getrdparam target);
+    os ("# wonky fb\nimage=/boot/" ^ (Filename.basename kern));
+    Printf.fprintf sd 
+"	label=%s-safe
+	initrd=/opt/dfsruntime/initrd.dfs
+	initrd-size=%d
+	append=\"video=ofonly initrd=/opt/dfsruntime/initrd.dfs root=/dev/ram0 %s\"
+	read-only
+
+" (Filename.basename kern) (getrdsize_kb target) (getrdparam target);
+    (* run "mkvmlinuz" ["-v"; "-a"; "chrp";
+      "-o"; target ^ "/boot/" ^ (Filename.basename kern) ^ "-chrp";
+      "-k"; kern;
+      "-d"; target ^ "/usr/lib/kernel-image-" ^ version;
+      "-i"; "/opt/dfsruntime/initrd.dfs"]; 
+    *)
     ) newkerns;
   Pervasives.close_out sd;
-  (["--netatalk"; "-hfs"; "-probe"; "-part"; "-no-desktop";
-   "-map"; target ^ "/boot/hfs.map";
+  (["--netatalk"; "-hfs"; "-probe"; "-map"; 
+   target ^ "/boot/hfs.map"; 
+   "-part"; "-no-desktop";
    "-hfs-bless"; target ^ "/boot"; 
    "-hfs-volid"; "DFS/PPC"], 
    fun cp wdir target isoname -> ());;

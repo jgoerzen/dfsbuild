@@ -7,6 +7,7 @@ open Unixutil;;
 open Unix;;
 
 let run prog args =
+  print_endline ("Running: " ^ prog ^ " " ^ (String.concat " " args));
   call [cmd prog args];;
 
 let runnoout prog args =

@@ -2,6 +2,79 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-07 19:43:08 GMT	John Goerzen <jgoerzen@complete.org>	patch-84
+
+    Summary:
+      Merged with jordens; updated debugging info in shellutil/run
+    Revision:
+      dfsbuild--head--0.5--patch-84
+
+    Patches applied:
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-24
+       [powerpc] fix problem with multiple kernels not named "vmlinux"
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-25
+       revert patch-24
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-26
+       [powerpc] clean up hfs.map. Most mappings are unneded.
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-27
+       [powerpc] add --chrp-boot to mkisofs options
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-28
+       merge john
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-29
+       [powerpc] add video=ofonly as alternative bootoption
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-30
+       star merge john
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-31
+       replace all instances of rawConfigParser with configParser
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-32
+       [powerpc] remove chrp-boot option again
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-33
+       [powerpc] change argument order to match debian-cd style
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-34
+       [powerpc] debian/rules: add mkvmlinuz to deppowerpc
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-35
+       [powerpc] add mkvmlinuz to powerpc's packages list for the image
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-36
+       [powerpc] add an idea of how to support chrp systems
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-37
+       star merge john
+    
+
+    modified files:
+     ChangeLog bootloaders/yaboot.ml debian/rules dfs.cfg
+     dfsbuild.ml doc/dfs.sgml utils/shellutil.ml
+
+    new patches:
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-24
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-25
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-26
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-27
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-28
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-29
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-30
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-31
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-32
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-33
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-34
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-35
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-36
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-37
+
+
 2004-06-07 19:21:14 GMT	John Goerzen <jgoerzen@complete.org>	patch-83
 
     Summary:

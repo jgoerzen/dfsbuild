@@ -221,7 +221,10 @@
         <listitem><para>
             You should now see an yaboot prompt.  You can press "TAB"
             to see a list of available kernels. Enter the kernel's name
-            to boot it.
+            to boot it. The *-safe options use "video=ofonly" which
+            is needed if your machine has a framebuffer that is not well
+            supported and booting would give flickering lines on the screen. 
+            "ofonly" relies on the OpenFirmware console.
           </para>
         </listitem>
         <listitem><para>
@@ -264,8 +267,8 @@
       <para>
         Some hardware will automatically be configured.  You can
         attempt to autodetect more hardware by running
-        <command>invoke-rc.d discover start</command>.  If you want to
-        use USB devices, try <command>invoke-rc.d hotplug
+        <command>/etc/init.d/discover start</command>.  If you want to
+        use USB devices, try <command>/etc/init.d/hotplug
           start</command>.  Otherwise, you will likely need to
         manually load kernel modules.  You can find them under
         <filename>/lib/modules/<replaceable>kernelversion</replaceable></filename>.  
@@ -274,7 +277,7 @@
       </para>
       <para>
         <indexterm><primary>PCMCIA</></>
-        If you have PCMCIA devices, run <command>invoke-rc.d pcmcia
+        If you have PCMCIA devices, run <command>/etc/init.d/pcmcia
           start</command>.
       </para>
     </sect1>

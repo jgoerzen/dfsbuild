@@ -103,7 +103,7 @@ binary-arch: build install
 	dh_gencontrol -- \
 		"-Vdepi386=grub" \
 		"-Vdepalpha=aboot" \
-		"-Vdeppowerpc=yaboot"
+		"-Vdeppowerpc=yaboot, mkvmlinuz"
 	dh_md5sums
 	dh_builddeb
 
