@@ -1,8 +1,15 @@
-dfsbuild (0.6.11) unstable; urgency=low
+dfsbuild (0.6.12) unstable; urgency=low
+
+  * Add dar to default config.  Closes: #257818.
+
+ -- John Goerzen <jgoerzen@complete.org>  Tue, 10 Aug 2004 09:05:25 -0500
+
+dfsbuild (0.6.11) unstable; urgency=medium
 
   * [jordens] [powerpc] since mkisofs doesn't seem to bless directories on 
     hfs hybrid filesystem successfully, leave the image --hfs-unlocked and
     bless with hfsutils afterwards
+  * medium urgency upload to help get the 0.6.10 important fix into testing.
 
  -- John Goerzen <jgoerzen@complete.org>  Sat,  7 Aug 2004 21:17:57 +0200
 
