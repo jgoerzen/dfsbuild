@@ -2,6 +2,21 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-26 18:24:11 GMT	John Goerzen <jgoerzen@complete.org>	patch-29
+
+    Summary:
+      Added support for delete files
+    Revision:
+      dfsbuild--head--0.5--patch-29
+
+    Added support for deletefiles so that we can delete init scripts that
+    shouldn't run.
+    
+
+    modified files:
+     ChangeLog configfiles.ml dfs.cfg libsrc/dfshints
+
+
 2004-05-26 18:10:53 GMT	John Goerzen <jgoerzen@complete.org>	patch-28
 
     Summary:
