@@ -1,7 +1,7 @@
 # arch-tag: Primary makefile
 # Copyright (c) 2004 John Goerzen
 #
-PACKAGES := -package shell -package missinglib -I .
+PACKAGES := -package shell -package missinglib -I . -I bootloaders
 all:	.depend dfsbuild lib lib/linuxrc lib/startup lib/dfs.html/index.html \
 	lib/dfs.pdf lib/dfs.ps lib/dfs.txt lib/dfshelp lib/dfshints \
 	lib/home.html lib/dfsbuildinfo
@@ -11,13 +11,15 @@ lib:
 
 clean:
 	-cd doc && scons -c && scons -c html pdf text ps
-	-rm -rf dfsbuild lib doc/.sconsign .depend
+	-rm -rf dfsbuild lib doc/.sconsign .depend test
 	-rm -f `find . -name "*.cm*"` doc/manpage* doc/*.1
 	-rm -f `find . -name "*~"` `find . -name "*.o"`
 
 
-dfsbuild: dfsutils.cmo unixutil.cmo shellutil.cmo archsupport.cmo mirror.cmo configfiles.cmo bootloader.cmo dfsbuild.cmo
-	ocamlfind ocamlc -g $(PACKAGES) -linkpkg \
+dfsbuild: dfsutils.cmx unixutil.cmx shellutil.cmx archsupport.cmx mirror.cmx \
+	configfiles.cmx bootloaders/grub.cmx bootloaders/bootloader.cmx \
+	dfsbuild.cmx
+	ocamlfind ocamlopt $(PACKAGES) -linkpkg \
 		-o $@ $^
 
 test: dfsutils.cmx unixutil.cmx shellutil.cmx  test.cmx
@@ -74,6 +76,6 @@ lib/dfs.txt: doc/dfs.sgml lib
 	cp doc/dfs.txt lib
 
 .depend:
-	ocamldep `find . -name "*.ml"` > .depend
+	ocamldep -I . -I bootloaders `find . -name "*.ml"` > .depend
 
 -include .depend

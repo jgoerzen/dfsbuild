@@ -68,8 +68,11 @@ let installpkgs cp target =
   run "cp" ["/etc/resolv.conf"; target ^ "/etc" ];
 
   run "chroot" [target; "apt-get"; "update"];
-  let pkgstr = Strutil.strip (get cp "packages") in
-  let pkgs = split_ws pkgstr in
+  let allpkgstr = Strutil.strip (get cp "allpackages") in
+  let archpkgstr = if cp#has_option (getarch()) "archpackages" then begin
+    get cp "archpackages"
+  end else "" in
+  let pkgs = (split_ws allpkgstr) @ (split_ws archpkgstr) in
   run "chroot" (target :: "apt-get" :: "-y" :: "install" :: pkgs) ;
   rm (target ^ "/etc/resolv.conf");
   run "chroot" [target; "apt-get"; "clean" ];

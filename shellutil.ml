@@ -53,3 +53,8 @@ let rm ?(recursive=false) ?(force=false) filename =
   else
     recunl (Unix.lstat filename) filename;;
 
+let installrd_cramfs target =
+  run "mkcramfs" [target ^ "/opt/initrd"; target ^
+    "/opt/dfsruntime/initrd.dfs"];
+  rm ~recursive:true (target ^ "/opt/initrd");;
+

@@ -2,6 +2,29 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-27 20:27:56 GMT	John Goerzen <jgoerzen@complete.org>	patch-38
+
+    Summary:
+      Rearranged tree and fixed references to old config file names
+    Revision:
+      dfsbuild--head--0.5--patch-38
+
+
+    new files:
+     bootloaders/.arch-ids/=id bootloaders/grub.ml test.ml
+
+    modified files:
+     ChangeLog Makefile bootloaders/bootloader.ml dfsbuild.ml
+     shellutil.ml
+
+    renamed files:
+     bootloader.ml
+       ==> bootloaders/bootloader.ml
+
+    new directories:
+     bootloaders bootloaders/.arch-ids
+
+
 2004-05-27 20:15:16 GMT	John Goerzen <jgoerzen@complete.org>	patch-37
 
     Summary:

@@ -1,4 +1,4 @@
-(* arch-tag: Bootload setup
+(* arch-tag: Grub support
 * Copyright (c) 2004 John Goerzen
 *)
 
@@ -6,15 +6,6 @@ open Unix;;
 open Shellutil;;
 open Dfsutils;;
 open Archsupport;;
-
-let run prog args =
-  p ("Running: " ^ prog ^ " " ^ (String.concat " " args));
-  Shellutil.run prog args;;
-
-let installrd_cramfs cp target =
-  run "mkcramfs" [target ^ "/opt/initrd"; target ^
-    "/opt/dfsruntime/initrd.dfs"];
-  rm ~recursive:true (target ^ "/opt/initrd");;
 
 let grub_generic cp target entryline =
   mkdir (target ^ "/boot/grub") 0o755;
@@ -66,13 +57,13 @@ configfile /boot/grub/menu.lst
   
 let grub_eltorito cp target =
   grub_generic cp target "initrd /opt/dfsruntime/initrd.dfs";
-  installrd_cramfs cp target;
+  installrd_cramfs target;
   ["-b"; "boot/grub/stage2_eltorito"; "-no-emul-boot";
    "-boot-load-size"; "1"; "-boot-info-table"];;
 
 let grub_hd cp workdir target =
   grub_generic cp target "initrd /boot/initrd.dfs";
-  installrd_cramfs cp target;
+  installrd_cramfs target;
   let workbootdir = workdir ^ "/boot" in
   let workboottar = workdir ^ "/boot.tar.gz" in
   run "cp" ["-r"; target ^ "/boot"; workbootdir];
@@ -82,10 +73,3 @@ let grub_hd cp workdir target =
   run "mkbimage" ["-f"; workboottar; "-t"; "hd"; "-s"; "ext2"; "-d"; workdir];
   Unix.rename "hd.image" (target ^ "/boot/hd.image");
   ["-b"; "boot/hd.image"; "-hard-disk-boot"; "-c"; "boot/boot.catalog"];;
-
-let install cp workdir target =
-  match get cp "bootloader" with
-  "grub-no-emul" -> grub_eltorito cp target
-  | "grub-hd" -> grub_hd cp workdir target
-  | _ -> ( p("Invalid bootloader specified"); exit 2; [])
-;;
