@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-11-19 22:26:01 GMT	John Goerzen <jgoerzen@complete.org>	patch-120
+
+    Summary:
+      Fixed gawk problem by depending on an apt-move with the workaround
+    Revision:
+      dfsbuild--head--0.5--patch-120
+
+
+    modified files:
+     ChangeLog debian/changelog debian/control doc/dfsbuild.sgml
+
+
 2004-11-17 18:34:04 GMT	John Goerzen <jgoerzen@complete.org>	patch-119
 
     Summary:

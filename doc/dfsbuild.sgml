@@ -70,26 +70,6 @@
         a newer distribution for your CD.  testing is known to work.
       </para>
       
-      <para>
-        Certain versions of gawk cause a bad interaction with the
-        apt-move command used by &dfsbuild;.  This is not a bug in
-        &dfsbuild; itself.  You can work around it by installing nawk
-        and then either removing gawk, or running
-        <command>update-alternatives --config awk</command> and
-        setting the default to mawk.
-      </para>
-      <para>
-        For more information, you should reference Debian bugs
-        <ulink
-        url="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=277069&archive=yes">277069</ulink>,
-        <ulink
-        url="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=265117">265117</ulink>,
-        <ulink
-        url="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=274377">274377</ulink>,
-        and <ulink
-        url="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=263964">263964</ulink>.
-      </para>
-        
     </refsect1>
 
 
