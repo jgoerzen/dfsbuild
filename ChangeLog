@@ -2,6 +2,21 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-04 19:39:24 GMT	John Goerzen <jgoerzen@complete.org>	patch-78
+
+    Summary:
+      added todo list
+    Revision:
+      dfsbuild--head--0.5--patch-78
+
+
+    new files:
+     TODO
+
+    modified files:
+     ChangeLog
+
+
 2004-06-04 18:17:18 GMT	John Goerzen <jgoerzen@complete.org>	patch-77
 
     Summary:
