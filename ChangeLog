@@ -2,6 +2,21 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-03 13:40:08 GMT	John Goerzen <jgoerzen@complete.org>	patch-76
+
+    Summary:
+      Revert /etc/init.d/ -> invoke-rc.d changes
+    Revision:
+      dfsbuild--head--0.5--patch-76
+
+    invoke-rc.d is designed to obey current runlevel and general policy.  That is
+    not what we want on the DFS CD, where the current runlevel is defined to not
+    run these things.
+
+    modified files:
+     ChangeLog doc/dfs.sgml libsrc/dfshints
+
+
 2004-06-03 13:38:21 GMT	John Goerzen <jgoerzen@complete.org>	patch-75
 
     Summary:
