@@ -14,7 +14,7 @@ buildcd: dfsutils.cmx cashutil.cmx buildcd.cmx
 	ocamlfind ocamlopt $(PACKAGES) -package pcre -linkpkg \
 		camlp4/camlp4.cmxa cash.cmxa -o $@ $^
 
-test: cashutil.cmx test.cmx
+test: cashutil.cmx mirror.cmx test.cmx
 	ocamlfind ocamlopt $(PACKAGES) -package pcre -linkpkg \
 		camlp4/camlp4.cmxa cash.cmxa -o $@ $^
 

@@ -6,6 +6,7 @@ open Unix;;
 open Printf;;
 open Str;;
 open Cash;;
+open Cashutil;;
 open Dfsutils;;
 
 let p = print_endline;;
@@ -63,7 +64,7 @@ let installpkgs cp target =
   let pkgstr = Strutil.strip (cp#get "cd" "packages") in
   let pkgs = split_ws pkgstr in
   run "chroot" (target :: "apt-get" :: "-y" :: "install" :: pkgs) ;
-  run "rm" [target ^ "/etc/resolv.conf"];
+  rm (target ^ "/etc/resolv.conf");
   run "chroot" [target; "apt-get"; "clean" ];
   (*
   run "chroot" [target; "/bin/bash"; "-c"; ". /etc/updatedb.conf; updatedb"];
@@ -102,7 +103,7 @@ let installrd cp libdir target =
   writestring (target ^ "/opt/initrd/devices") (getdevices cp);
   run "mkcramfs" [target ^ "/opt/initrd"; target ^
     "/opt/dfsruntime/initrd.dfs"];
-  run "rm" ["-r"; target ^ "/opt/initrd"];;
+  rm ~recursive:true (target ^ "/opt/initrd");;
 
 let installkernels cp target =
   p "Installing kernels...";
@@ -159,7 +160,7 @@ let _ =
   let libdir = resolve_file_name ~dir:(Unix.getcwd ()) (cp#get "cd" "libdir") in
 
   p ("Using library directory: " ^ libdir);
-  run "rm" ["-rf"; wdir]; 
+  rm ~recursive:true ~force:true wdir;
   mkdir wdir 0o755; 
   Unix.chdir wdir;
   let wdir = getcwd () in

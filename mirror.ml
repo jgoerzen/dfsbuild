@@ -22,7 +22,7 @@ let mirror_data suite target mirrordir mirror workdir =
   fprintf cfd "LISTSTATE=%s/var/lib/apt/lists\n" target;
   fprintf cfd "DIST=%s\n" suite;
   output_string cfd "CONTENTS=yes\nAPTSITES=/all/\nPKGCOMP=gzip\n";
-  close_out cfd;
+  Pervasives.close_out cfd;
   run "apt-move" ["-c"; cfgfilename; "update"];
   rm cfgfilename;
   rm ~recursive:true target;
