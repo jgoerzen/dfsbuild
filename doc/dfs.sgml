@@ -272,6 +272,16 @@ iface eth0 inet static
 	  <listitem><para><command>mkdir /boot/grub</command></para>
 	    <para><command>cp /usr/lib/grub/i386-pc/*
 		/boot/grub</command></para>
+	    <note><para>
+	      amd64 did not have a grub package as of the last check.
+	      However, you can simulate it; just 
+		<command>mkdir /mnt/boot/grub</command>
+	      and copy the files from
+		<filename>/usr/lib/grub/i386-pc</filename> on the
+	      live CD image to <filename>/boot/grub</filename>
+		on your new system.</para>
+	    </note>
+
 	  </listitem>
 	</orderedlist>
       </listitem>
@@ -291,6 +301,9 @@ grub> setup (hd0)
 grub> quit
 # update-grub
 	    </screen>
+	<para>amd64 users: if this doesn't work, try rebooting the DFS
+	  cd.  Press "c" when you see the blue Grub menu to get a
+	  command line.  Then run the above.</para>
       </listitem>
       <listitem><para>Rebooting into new system</para>
       </listitem>
