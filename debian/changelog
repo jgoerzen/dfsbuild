@@ -4,6 +4,7 @@ dfsbuild (0.6.13) unstable; urgency=low
     package paths
   * Changed ircii to epic4 in default configuration since ircii has
     an interactive postinst
+  * Sort the grub options
 
  -- John Goerzen <jgoerzen@complete.org>  Thu, 12 Aug 2004 09:24:12 -0500
 

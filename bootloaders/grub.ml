@@ -17,7 +17,7 @@ let grub_generic cp target entryline =
     output_string sd "\n";
   end;
   output_string sd "color cyan/blue blue/light-gray\n";
-  let newkerns = glob [target ^ "/boot/vmlinu*"] in
+  let newkerns = List.rev (List.sort compare (glob [target ^ "/boot/vmlinu*"])) in
   let os s = output_string sd (s ^ "\n") in
   let fake s = os ("title " ^ s ^ "\ncolor cyan/blue blue/light-gray") in
   List.iter (fun x ->
