@@ -22,7 +22,7 @@ let getlines filename =
     while true do
       retval := (input_line fd) :: !retval
     done
-  with Eof -> ();
+  with End_of_file -> ();
   close_in fd;
   !retval;;
 
