@@ -194,8 +194,8 @@ let _ =
   p ("Using library directory: " ^ libdir);
   rm ~recursive:true ~force:true wdir;
   mkdir wdir 0o755; 
-  (* Unix.chdir wdir; *)
-  let wdir = getcwd () in
+  (* Unix.chdir wdir;
+  let wdir = getcwd () in *)
   let imageroot = wdir ^ "/image" in
   mkdir imageroot 0o755;
   mkdir (imageroot ^ "/opt") 0o755;

@@ -2,6 +2,19 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-27 20:15:16 GMT	John Goerzen <jgoerzen@complete.org>	patch-37
+
+    Summary:
+      Fixed glob support
+    Revision:
+      dfsbuild--head--0.5--patch-37
+
+
+    modified files:
+     ChangeLog Makefile dfsbuild.ml shellutil.ml
+     {arch}/=tagging-method
+
+
 2004-05-27 20:03:16 GMT	John Goerzen <jgoerzen@complete.org>	patch-36
 
     Summary:

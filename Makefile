@@ -20,9 +20,9 @@ dfsbuild: dfsutils.cmo unixutil.cmo shellutil.cmo archsupport.cmo mirror.cmo con
 	ocamlfind ocamlc -g $(PACKAGES) -linkpkg \
 		-o $@ $^
 
-test: cashutil.cmx mirror.cmx test.cmx
-	ocamlfind ocamlopt -compact $(PACKAGES) -package pcre -linkpkg \
-		camlp4/camlp4.cmxa cash.cmxa -o $@ $^
+test: dfsutils.cmx unixutil.cmx shellutil.cmx  test.cmx
+	ocamlfind ocamlopt -compact $(PACKAGES) -linkpkg \
+		-o $@ $^
 
 
 lib/dfshelp: libsrc/dfshelp
