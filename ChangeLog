@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-01 17:49:21 GMT	John Goerzen <jgoerzen@complete.org>	patch-56
+
+    Summary:
+      Fixed move bug
+    Revision:
+      dfsbuild--head--0.5--patch-56
+
+
+    modified files:
+     ChangeLog configfiles.ml dfs.cfg
+
+
 2004-06-01 13:55:42 GMT	John Goerzen <jgoerzen@complete.org>	patch-55
 
     Summary:
