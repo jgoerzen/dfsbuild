@@ -9,6 +9,9 @@ let split_ws instr =
 let p = print_endline;;                                                         
 let pn s = print_string s; flush stdout;;                                       
 
+let print_pid () =
+  p ("Current PID is: " ^ (string_of_int (Unix.getpid () )));;
+
 let getfirstline filename =
   let fd = open_in filename in
   let line = input_line fd in

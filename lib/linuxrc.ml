@@ -52,6 +52,7 @@ let getcddev () =
 let _ =
   p "Welcome to Debian From Scratch.";
   p "Initial RAM disk booting.";
+  print_pid ();;
   let cddev = getcddev () in
 
   Unix.chdir mountloc;

@@ -31,6 +31,7 @@ let initcfgfiles () =
 let _ =
   p "";
   p " *** Debian From Scratch CD initializing ***";
+  print_pid () ;;
   (*
   p "Umounting bootup initrd.";
   run "umount" ["-n"; initrdloc];
