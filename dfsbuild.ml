@@ -5,10 +5,9 @@
 open Unix;;
 open Printf;;
 open Str;;
-open Cashutil;;
-open Cash;;
 open Unixutil;;
 open Dfsutils;;
+open Shellutil;;
 open Archsupport;;
 
 let p = print_endline;;
@@ -43,7 +42,7 @@ let parsecmdline () =
               ("Configuration file":Arg.doc));
               (("-w":Arg.key), Arg.Set_string wdir,
               ("Work directory (WILL BE CLOBBERED IF EXISTS)":Arg.doc))] in
-  let usage = "Usage: buildcd -c cf -w dir" in
+  let usage = "Usage: dfsbuild -c cf -w dir" in
   Arg.parse args (fun x -> ()) usage;
   if (!cffile = "") || (!wdir = "") then begin
    Arg.usage args usage;
@@ -154,9 +153,9 @@ let preprtrd cp imageroot =
     let src = imageroot ^ f in
     let dest = rdpath ^ f in
     let destdir = Filename.dirname dest in
-    if not (is_file_existing_fn destdir) then ( run "mkdir" ["-p"; destdir]);
-    if is_file_existing_fn src then (rename_file src dest);
-    create_symlink ("/opt/dfsruntime/runtimemnt" ^ f) src;
+    if not (exists destdir) then ( run "mkdir" ["-p"; destdir]);
+    if exists src then (rename src dest);
+    symlink ("/opt/dfsruntime/runtimemnt" ^ f) src;
   in
   List.iter file2rd (glob (split_ws (get cp "ramdisk_files")));
 ;;
@@ -187,12 +186,15 @@ let mkiso cp wdir imageroot isoargs =
 let _ = 
   let cp, wdir = parsecmdline () in
   p ("Using working directory: " ^ wdir);
+  let libdir = (get cp "libdir") in 
+  (*
   let libdir = resolve_file_name ~dir:(Unix.getcwd ()) (get cp "libdir") in
+  *)
 
   p ("Using library directory: " ^ libdir);
   rm ~recursive:true ~force:true wdir;
   mkdir wdir 0o755; 
-  Unix.chdir wdir;
+  (* Unix.chdir wdir; *)
   let wdir = getcwd () in
   let imageroot = wdir ^ "/image" in
   mkdir imageroot 0o755;

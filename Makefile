@@ -16,9 +16,9 @@ clean:
 	-rm -f `find . -name "*~"` `find . -name "*.o"`
 
 
-dfsbuild: dfsutils.cmo unixutil.cmo cashutil.cmo shellutil.cmo archsupport.cmo mirror.cmo configfiles.cmo bootloader.cmo dfsbuild.cmo
-	ocamlfind ocamlc $(PACKAGES) -package pcre -linkpkg \
-		camlp4/camlp4.cma cash.cma -o $@ $^
+dfsbuild: dfsutils.cmo unixutil.cmo shellutil.cmo archsupport.cmo mirror.cmo configfiles.cmo bootloader.cmo dfsbuild.cmo
+	ocamlfind ocamlc -g $(PACKAGES) -linkpkg \
+		-o $@ $^
 
 test: cashutil.cmx mirror.cmx test.cmx
 	ocamlfind ocamlopt -compact $(PACKAGES) -package pcre -linkpkg \
@@ -52,7 +52,7 @@ lib/startup: dfsutils.cmx unixutil.cmx shellutil.cmx libsrc/startup.cmx
 	ocamlfind ocamlopt -compact $(PACKAGES) -warn-error A -c -o $@ $<
 
 %.cmo: %.ml
-	ocamlfind ocamlc $(PACKAGES) -warn-error A -c -o $@ $<
+	ocamlfind ocamlc -g $(PACKAGES) -warn-error A -c -o $@ $<
 
 lib/dfs.html/index.html: doc/dfs.sgml lib
 	-rm -r lib/dfs.html

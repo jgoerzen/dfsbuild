@@ -3,14 +3,13 @@
 *)
 
 open Unix;;
-open Cash;;
-open Cashutil;;
+open Shellutil;;
 open Dfsutils;;
 open Archsupport;;
 
 let run prog args =
   p ("Running: " ^ prog ^ " " ^ (String.concat " " args));
-  Cashutil.run prog args;;
+  Shellutil.run prog args;;
 
 let installrd_cramfs cp target =
   run "mkcramfs" [target ^ "/opt/initrd"; target ^

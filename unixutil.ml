@@ -3,6 +3,7 @@
 *)
 
 open Unix;;
+open Str;;
 
 let exists fn = try ignore (lstat fn); true with error -> false;;
 

@@ -2,6 +2,19 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-27 19:59:16 GMT	John Goerzen <jgoerzen@complete.org>	patch-35
+
+    Summary:
+      Initial conversion to shell
+    Revision:
+      dfsbuild--head--0.5--patch-35
+
+
+    modified files:
+     ChangeLog Makefile bootloader.ml configfiles.ml dfsbuild.ml
+     mirror.ml shellutil.ml unixutil.ml
+
+
 2004-05-27 19:16:38 GMT	John Goerzen <jgoerzen@complete.org>	patch-34
 
     Summary:

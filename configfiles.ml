@@ -1,10 +1,11 @@
 (* arch-tag: write config files
 *)
 open Dfsutils;;
-open Cashutil;;
+open Shellutil;;
+open Strutil;;
 open Archsupport;;
 
-let datestr = (Cash.string_of_date (Cash.date ()));;
+let datestr = strip (run_getstring "date" []);;
 
 let getbuildinfo cp = 
   "Name: " ^ (get cp "name") ^ 
@@ -55,16 +56,16 @@ let writecfgfiles cp basedir =
   end;
   if cp#has_option (getarch()) "deletefiles" then begin
     List.iter (fun x -> rm ~force:true (basedir ^ x))
-      (Cash.glob (split_ws (get cp "deletefiles")))
+      (glob (split_ws (get cp "deletefiles")))
   end;
 
 ;;
 
 let fixrc target =
-  Cashutil.rm ~recursive:true (target ^ "/etc/rc2.d");
-  Cashutil.run "cp" ["-r"; (target ^ "/etc/rc1.d"); (target ^ "/etc/rc2.d")];
-  Cashutil.run "cp" ("-r" :: Cash.glob [target ^ "/etc/rc3.d/*logd*"] @
+  rm ~recursive:true (target ^ "/etc/rc2.d");
+  run "cp" ["-r"; (target ^ "/etc/rc1.d"); (target ^ "/etc/rc2.d")];
+  run "cp" ("-r" :: glob [target ^ "/etc/rc3.d/*logd*"] @
     [target ^ "/etc/rc2.d/"]);
-  List.iter (fun x -> Cashutil.rm x) (Cash.glob [target ^ "/etc/rc2.d/S*single"]);
+  List.iter (fun x -> rm x) (glob [target ^ "/etc/rc2.d/S*single"]);
 ;;
 

@@ -5,9 +5,9 @@
 open Unix;;
 open Printf;;
 open Str;;
-open Cash;;
 open Dfsutils;;
-open Cashutil;;
+open Shellutil;;
+open Unixutil;;
 open Printf;;
 
 let find_codename target suite =
@@ -27,8 +27,8 @@ let find_codename target suite =
   with End_of_file -> !retval;;
 
 let mirror_data cp repos target mirrordir  workdir =
-  if is_file_existing_fn target then (rm ~recursive:true target);
-  if not (is_file_existing_fn mirrordir) then 
+  if exists target then (rm ~recursive:true target);
+  if not (exists mirrordir) then 
     (mkdir mirrordir 0o755);
   let procrepo repo =
     let sect = "repo " ^ repo in
@@ -67,9 +67,9 @@ let mirror_data cp repos target mirrordir  workdir =
       run "cp" ["-v"; filename; sprintf "%s/dists/%s/Release" mirrordir suite];
       *)
       
-      if not (is_file_existing_fn (sprintf "%s/dists/%s" mirrordir codename))
+      if not (exists (sprintf "%s/dists/%s" mirrordir codename))
       then 
-        create_symlink suite (sprintf "%s/dists/%s" mirrordir codename);
+        symlink suite (sprintf "%s/dists/%s" mirrordir codename);
     end;
     run "rm" ("-v" :: glob [sprintf "%s/var/lib/apt/lists/*" target]);
     (*

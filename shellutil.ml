@@ -20,6 +20,9 @@ let run_getstring prog args =
   call ~stdout:(to_buffer b) [cmd prog args];
   Buffer.contents b;;
 
+let glob patlist =
+  Dfsutils.split_ws (run_getstring "echo" patlist);;
+
 let rec recurse_cmd_do f startname =
   let info = Unix.lstat startname in
   match info.st_kind with
