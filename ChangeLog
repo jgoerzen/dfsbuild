@@ -2,6 +2,42 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-03 13:38:21 GMT	John Goerzen <jgoerzen@complete.org>	patch-75
+
+    Summary:
+      Merged from Robert
+    Revision:
+      dfsbuild--head--0.5--patch-75
+
+    Patches applied:
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-19
+       merge john
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-20
+       [alpha] correct dfs.sgml to say "linux should now start" (before: "not")
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-21
+       [powerpc] add documentation of booting method to dfs.sgml
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-22
+       use invoke-rc.d instead of direct invocation in dfs.sgml and dfshints
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-23
+       [powerpc] added hint to cmd-opt-shift-del combination and quoted another
+    
+
+    modified files:
+     ChangeLog doc/dfs.sgml libsrc/dfshints
+
+    new patches:
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-19
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-20
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-21
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-22
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-23
+
+
 2004-06-02 14:09:56 GMT	John Goerzen <jgoerzen@complete.org>	patch-74
 
     Summary:

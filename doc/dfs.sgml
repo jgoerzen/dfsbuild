@@ -191,12 +191,46 @@
           </para>
         </listitem>
         <listitem><para>
-            Linux should not start.
+            Linux should now start.
           </para>
         </listitem>
       </orderedlist>
     </sect1>
-            
+    <sect1 id="booting.powerpc">
+      <title>Booting on PowerPC</title>
+      <para>
+        The DFS images for PowerPC support booting from OpenFirmware
+	(OF) into yaboot.
+      </para>
+      <para>
+        Booting the DFS CD generally involves these steps:
+      </para>
+      <orderedlist>
+        <listitem><para>Boot into yaboot. On newer PowerPC (NewWorld)
+            you can press "c" (or "Command-Option-Shift-Delete") 
+	    during boot until you reach the yaboot
+            bootprompt. If this does not work, you have to boot into
+            OpenFirmware first. This can be done by pressing
+            "Option-Command-o-f" (all four at the same time) during boot.
+            The Option key might also be labeled "Alt" and the
+            Command key with the Apple sign on your keyboard. Once
+            you have reached the OpenFirmware prompt, type <command>boot
+            cd:,\boot\yaboot</command> to boot into yaboot.
+          </para>
+        </listitem>
+        <listitem><para>
+            You should now see an yaboot prompt.  You can press "TAB"
+            to see a list of available kernels. Enter the kernel's name
+            to boot it.
+          </para>
+        </listitem>
+        <listitem><para>
+            Linux should now start.
+          </para>
+        </listitem>
+      </orderedlist>
+    </sect1>
+           
     <sect1 id="dfsboot-kernel">
       <title>Booting a Kernel</title>
       <para>
@@ -230,8 +264,8 @@
       <para>
         Some hardware will automatically be configured.  You can
         attempt to autodetect more hardware by running
-        <command>/etc/init.d/discover start</command>.  If you want to
-        use USB devices, try <command>/etc/init.d/hotplug
+        <command>invoke-rc.d discover start</command>.  If you want to
+        use USB devices, try <command>invoke-rc.d hotplug
           start</command>.  Otherwise, you will likely need to
         manually load kernel modules.  You can find them under
         <filename>/lib/modules/<replaceable>kernelversion</replaceable></filename>.  
@@ -240,7 +274,7 @@
       </para>
       <para>
         <indexterm><primary>PCMCIA</></>
-        If you have PCMCIA devices, run <command>/etc/init.d/pcmcia
+        If you have PCMCIA devices, run <command>invoke-rc.d pcmcia
           start</command>.
       </para>
     </sect1>
@@ -345,6 +379,8 @@ iface eth0 inet static
 		grub ppp</command></para>
             <para>alpha: <command>apt-get install module-init-tools
                 aboot ppp</command></para>
+            <para>powerpc: <command>apt-get install module-init-tools
+                yaboot ppp</command></para>
 	  </listitem>
 	  <listitem><para><command>apt-get install</command>
 	      appropriate filesystem tools for your chosen filesystem</para>
@@ -361,6 +397,7 @@ iface eth0 inet static
 		on your new system.</para>
 	    </note>
             <para>alpha: see aboot docs</para>
+            <para>powerpc: see yaboot docs</para>
 
 	  </listitem>
 	</orderedlist>
