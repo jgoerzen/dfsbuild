@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-10-28 16:16:09 GMT	John Goerzen <jgoerzen@complete.org>	patch-114
+
+    Summary:
+      Backed out the conflict; too much trouble.
+    Revision:
+      dfsbuild--head--0.5--patch-114
+
+
+    modified files:
+     ChangeLog debian/changelog debian/control
+
+
 2004-10-28 16:10:35 GMT	John Goerzen <jgoerzen@complete.org>	patch-113
 
     Summary:
