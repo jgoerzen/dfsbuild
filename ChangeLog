@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-01 20:53:05 GMT	John Goerzen <jgoerzen@complete.org>	patch-59
+
+    Summary:
+      Set alpha unpackdebs
+    Revision:
+      dfsbuild--head--0.5--patch-59
+
+
+    modified files:
+     ChangeLog dfs.cfg
+
+
 2004-06-01 20:50:56 GMT	John Goerzen <jgoerzen@complete.org>	patch-58
 
     Summary:
