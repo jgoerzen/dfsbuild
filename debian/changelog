@@ -1,3 +1,10 @@
+dfsbuild (0.6.2) unstable; urgency=low
+
+  * New release.  Now includes working df, less stuff running on bootup,
+    new packages (mdadm, screen, etc), more.
+
+ -- John Goerzen <jgoerzen@complete.org>  Wed, 26 May 2004 13:26:20 -0500
+
 dfsbuild (0.6.1) unstable; urgency=low
 
   * Initial Release.  Closes: #250876.
