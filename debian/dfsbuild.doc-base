@@ -1,0 +1,19 @@
+Document: dfs
+Title: Debian From Scratch Manual
+Author: John Goerzen
+Abstract: Describes using the Debian From Scratch CDs and building them
+ with dfsbuild.
+Section: utils
+
+Format: postscript
+Files: /usr/share/doc/dfsbuild/dfsbuild.ps.gz
+
+Format: pdf
+Files: /usr/share/doc/dfsbuild/dfsbuild.pdf
+
+Format: text
+Files: /usr/share/doc/dfsbuild/dfsbuild.txt.gz
+
+Format: HTML
+Index: /usr/share/doc/dfsbuild/html/index.html
+Files: /usr/share/doc/dfsbuild/html/*.html

@@ -1,6 +1,6 @@
-dfsbuild (0.6.0-1) unstable; urgency=low
+dfsbuild (0.6.0) unstable; urgency=low
 
-  * Initial Release.
+  * Initial Release.  Closes: #250876.
 
- -- John Goerzen <jgoerzen@excelhustler.com>  Tue, 25 May 2004 10:59:15 -0500
+ -- John Goerzen <jgoerzen@complete.org>  Tue, 25 May 2004 10:59:15 -0500
 

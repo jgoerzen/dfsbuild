@@ -5,3 +5,4 @@
 #
 # for example:
 # /etc/dfsbuild/dfsbuild.conf
+/etc/dfsbuild/dfs.cfg

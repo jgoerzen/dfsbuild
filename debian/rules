@@ -6,7 +6,9 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-
+RDIR=$(CURDIR)/debian/dfsbuild
+DOCDIR=$(CURDIR)/usr/share/doc/dfsbuild
+LIBDIR=$(CURDIR)/usr/lib/dfsbuild
 
 
 CFLAGS = -Wall -g
@@ -35,6 +37,7 @@ build-stamp: configure-stamp
 
 	# Add here commands to compile the package.
 	$(MAKE)
+	cd doc && scons manpages
 	#/usr/bin/docbook-to-man debian/dfsbuild.sgml > dfsbuild.1
 
 	touch build-stamp
@@ -56,7 +59,10 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/dfsbuild.
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/dfsbuild
+	#$(MAKE) install DESTDIR=$(CURDIR)/debian/dfsbuild
+	cp -r lib $(LIBDIR)
+	ln -s /usr/lib/dfsbuild/dfs.html $(DOCDIR)/html
+	cp dfsbuild $(RDIR)/usr/bin
 
 
 # Build architecture-independent files here.
@@ -67,8 +73,8 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs 
-	dh_installdocs
+	dh_installchangelogs CHANGELOG
+	dh_installdocs doc/*.ps doc/*.pdf doc/*.txt
 	dh_installexamples
 #	dh_install
 #	dh_installmenu
