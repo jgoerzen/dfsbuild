@@ -26,12 +26,13 @@ let find_codename target suite =
     !retval;
   with End_of_file -> !retval;;
 
-let mirror_data cp suites target mirrordir  workdir =
+let mirror_data cp repos target mirrordir  workdir =
   if is_file_existing_fn target then (rm ~recursive:true target);
   if not (is_file_existing_fn mirrordir) then 
     (mkdir mirrordir 0o755);
-  let procsuite suite =
-    let sect = "repo " ^ suite in
+  let procrepo repo =
+    let sect = "repo " ^ repo in
+    let suite = cp#get sect "suite" in
     let mirror = cp#get sect "mirror" in
     let archargs = if cp#has_option sect "arch" then
       ["-a"; cp#get sect "arch"]
@@ -43,6 +44,9 @@ let mirror_data cp suites target mirrordir  workdir =
     fprintf cfd "FILECACHE=%s/var/cache/apt/archives\n" target;
     fprintf cfd "LISTSTATE=%s/var/lib/apt/lists\n" target;
     fprintf cfd "DIST=%s\n" suite;
+    if cp#has_option sect "arch" then begin
+      fprintf cfd "ARCH=%s\n" (cp#get sect "arch");
+    end;
     output_string cfd
     "COPYONLY=yes\nCONTENTS=yes\nAPTSITES=/all/\nPKGCOMP=\"none gzip\"\n";
     Pervasives.close_out cfd;
@@ -73,7 +77,7 @@ let mirror_data cp suites target mirrordir  workdir =
 
   in
   p "mirror_data";
-  List.iter procsuite suites;
+  List.iter procrepo repos;
   (*
   rm ~recursive:true target;
   *)

@@ -178,7 +178,11 @@ let installlib libdir imageroot =
   p "Installing runtime library files.";
   List.iter (fun x -> 
     run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
-    ["startup"; "dfs.html"; "dfs.txt"; "dfs.pdf"; "dfs.ps"];;
+    ["startup"; "dfs.html"; "dfs.txt"; "dfs.pdf"; "dfs.ps"];
+  List.iter (fun x ->
+    run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/usr/local/bin/"])
+    ["dfshelp"];
+;;
 
 let mkiso cp wdir imageroot =
   p "Preparing ISO image";

@@ -49,9 +49,9 @@ buildcd.cmx: cashutil.cmx configfiles.cmx
 	ocamlfind ocamlc $(PACKAGES) -warn-error A -c -o $@ $<
 
 lib/dfs.html/index.html: doc/dfs.sgml lib
-	-rm -r lib/html
+	-rm -r lib/dfs.html
 	cd doc && scons html
-	cp -r doc/html lib
+	cp -r doc/html lib/dfs.html
 
 lib/dfs.pdf: doc/dfs.sgml lib
 	cd doc && scons pdf
