@@ -1,0 +1,19 @@
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+<!ENTITY dfsbuild "<application>dfsbuild</application>">
+<!ENTITY man.dfsbuild SYSTEM "dfsbuild.sgml">
+    ]>
+
+    <reference>
+    <title>dfsbuild Manual</title>
+    &man.dfsbuild;
+    </reference>
+
+
+    <!--
+    Local Variables:
+    mode: sgml
+    sgml-set-face: T
+    End:
+
+    # arch-tag: sgml wrapper for tbp-importdsc(1) manpage
+    -->

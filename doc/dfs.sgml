@@ -1,5 +1,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
   <!ENTITY index SYSTEM "index/index.sgml">
+  <!ENTITY dfsbuild "<application>dfsbuild</application>">
+  <!ENTITY man.dfsbuild SYSTEM "dfsbuild.sgml">
 ]>
 
 <book id="dfs">
@@ -315,6 +317,11 @@ grub> quit
       </listitem>
     </orderedlist>
   </chapter>
+
+  <appendix id="dfsbuild.reference">
+    <title>Command Reference</title>
+    &man.dfsbuild;
+  </appendix>
 
 </book>
 

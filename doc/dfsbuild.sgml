@@ -1,0 +1,126 @@
+  <refentry id="dfs.man.dfsbuild">
+    <indexterm><primary>dfsbuild</><secondary>Reference For</></>
+    <refentryinfo>
+      <address><email>jgoerzen@complete.org</email></address>
+      <author><firstname>John</firstname><surname>Goerzen</surname></author>
+    </refentryinfo>
+
+    <refmeta>
+      <refentrytitle>dfsbuild</refentrytitle>
+      <manvolnum>1</manvolnum>
+      <refmiscinfo>John Goerzen</refmiscinfo>
+    </refmeta>
+
+    <refnamediv>
+      <refname>dfsbuild</refname>
+      <refpurpose>Generate custom Debian From Scratch CD
+        images</refpurpose>
+    </refnamediv>
+
+    <refsynopsisdiv>
+      <cmdsynopsis>
+        <command>dfsbuild</command>
+        <arg choice="plain">-c <replaceable>config_file</replaceable></arg>
+        <arg choice="plain">-w <replaceable>working_dir</replaceable></arg>
+      </cmdsynopsis>
+    </refsynopsisdiv>
+
+    <refsect1 id="dfsbuild.description">
+      <title>Description</title>
+      <para>
+        &dfsbuild; is a program to generate Debian From Scratch (DFS)
+        CD images.  It is highly configurable and can generate images
+        far different from the standard DFS image.
+      </para>
+      <para>
+        The output from &dfsbuild; is an ISO image that is bootable on
+        i386 and amd64 systems.  It uses Grub for the bootloader, and
+        in the default configuration, generates DFS ISOs that are
+        bootable and can be used to repair a Linux system or install a
+        new one.
+      </para>
+      <para>
+        &dfsbuild; requires about twice the eventual size of the ISO
+        image to run.  That is, if you are building a 600MB ISO image,
+        you will need approximately 1.2GB free on the disk that holds
+        <replaceable>working_dir</replaceable>.
+      </para>
+      <para>
+        Configuration is accomplished through the config file given
+        with -c.  An example is available in
+        <filename>/etc/dfsbuild/dfs.cfg</filename>.  That example is
+        commented and shows all the available options.
+      </para>
+      <para>
+        The working directory is specified with -w.  <emphasis>NOTE:
+          IF THIS SPECIFIES AN EXISTING DIRECTORY, IT IS AUTOMATICALLY DELETED
+          WITHOUT FURTHER WARNING.
+        </emphasis>
+      </para>
+      <para>
+        Both options are mandatory.
+      </para>
+    </refsect1>
+
+
+    <refsect1 id="dfsbuild.copyright">
+      <title>Copyright</title>
+      <para>
+        dfsbuild, all associated scripts and programs, this manual,
+        and all build scripts are Copyright &copy; 2004 John Goerzen.
+      </para>
+      <para>
+        This program is free software; you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation; either version 2 of the License, or
+        (at your option) any later version.
+      </para>
+
+      <para>
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+      </para>
+      
+      <para>
+        You should have received a copy of the GNU General Public License
+        along with this program; if not, write to the Free Software
+        Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+      </para>
+    </refsect1>
+
+    <refsect1 id="dfs.author">
+      <title>Author</title>
+      <para>
+        &dfsbuild;, its modules, documentation, executables, and all
+        included files, except where noted, was written by
+        John Goerzen <email>jgoerzen@complete.org</email> and
+        copyright is held as stated in the COPYRIGHT section.
+      </para>
+    </refsect1>
+
+    <refsect1 id="dfs.seealso">
+      <title>See Also</title>
+      <para>Other related references include:
+        DFS Manual at <filename>/usr/share/doc/dfsbuild</filename>,
+        <application>mkisofs</application>(1),
+        <application>cdebootstrap</application>(1).
+      </para>
+    </refsect1>
+
+  </refentry>
+    
+
+  
+
+
+<!--
+Local Variables:
+mode: sgml
+sgml-parent-document:("dfs.sgml" "book" "appendix" "reference")
+sgml-set-face: T
+End:
+
+# arch-tag: manpage for dfsbuild(1)
+-->

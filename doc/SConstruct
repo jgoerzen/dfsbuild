@@ -23,3 +23,9 @@ env.Append(MASTERBASE = 'dfs', TOPNODE = 'dfs', DOINDEX = 1,
 
 execfile('sgml-common/SConstruct')
 
+manpages = []
+for manpage in ['dfsbuild']:
+    manpages.append(env.MAN('%s.1' % manpage, 'man.%s.sgml' % manpage))
+env.Alias('manpages', manpages)
+
+
