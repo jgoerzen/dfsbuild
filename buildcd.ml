@@ -83,6 +83,7 @@ let installrd cp target =
   chr ["cp"; "-v"; "/bin/busybox"; "/opt/initrd/bin"];
   chr ["cp"; "-v"; "/usr/sbin/chroot"; "/opt/initrd/usr/sbin/"];
   chr ["cp"; "-v"; "/sbin/pivot_root"; "/opt/initrd/sbin/"];
+  chr ["cp"; "-r"; "/dev"; "/opt/initrd/"];
   run "mount" ["-t"; "proc"; "none"; target ^ "/opt/initrd/proc"];
   run "chroot" [target ^ "/opt/initrd"; "/bin/busybox"; "--install"];
   run "umount" [target ^ "/opt/initrd/proc"];
