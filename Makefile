@@ -14,8 +14,15 @@ buildcd: dfsutils.cmx cashutil.cmx buildcd.cmx
 	ocamlfind ocamlopt $(PACKAGES) -package pcre -linkpkg \
 		camlp4/camlp4.cmxa cash.cmxa -o $@ $^
 
+test: cashutil.cmx test.cmx
+	ocamlfind ocamlopt $(PACKAGES) -package pcre -linkpkg \
+		camlp4/camlp4.cmxa cash.cmxa -o $@ $^
+
 lib/linuxrc.cmx: dfsutils.cmx shellutil.cmx
 lib/startup.cmx: dfsutils.cmx shellutil.cmx
+
+mirror.cmx: dfsutils.cmx shellutil.cmx
+mirror.cmo: dfsutils.cmo shellutil.cmo
 
 lib/linuxrc: dfsutils.cmx shellutil.cmx lib/linuxrc.cmx
 	ocamlfind ocamlopt -cclib -static $(PACKAGES) -linkpkg \
@@ -30,4 +37,7 @@ buildcd.cmx: cashutil.cmx
 
 %.cmx: %.ml
 	ocamlfind ocamlopt $(PACKAGES) -c -o $@ $<
+
+%.cmo: %.ml
+	ocamlfind ocamlc $(PACKAGES) -c -o $@ $<
 

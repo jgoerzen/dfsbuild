@@ -31,17 +31,18 @@ let initcfgfiles () =
 let _ =
   p "";
   p " *** Debian From Scratch CD initializing ***";
-  print_pid () ;;
-  (*
+  print_pid () ;
+  Unix.chdir "/";
   p "Umounting bootup initrd.";
-  run "umount" ["-n"; initrdloc];
-  *)
+  try
+    run "umount" ["-n"; initrdloc];
+  with Shell.Subprocess_error x -> ();
   initruntimerd ();
   initcfgfiles ();
   p "";
   p " *** Now booting system ***";
 
-  Unix.execvp "/sbin/init" [| "/sbin/init"; "1" |];
+  exec_passing_args "/sbin/init";
 ;;
 
 

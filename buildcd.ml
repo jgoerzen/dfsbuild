@@ -58,6 +58,7 @@ let installpkgs cp target =
   run "chroot" [target; "/bin/bash"; "-c";
     "echo \"debconf\tdebconf/priority\tselect\tcritical\" | debconf-set-selections"];
   run "cp" ["/etc/resolv.conf"; target ^ "/etc" ];
+
   run "chroot" [target; "apt-get"; "update"];
   let pkgstr = Strutil.strip (cp#get "cd" "packages") in
   let pkgs = split_ws pkgstr in
@@ -94,7 +95,7 @@ let installrd cp libdir target =
   if (is_file_existing_fn (target ^ "/opt/initrd/linuxrc")) then begin
     unlink (target ^ "/opt/initrd/linuxrc")
   end;
-  run "cp" [libdir ^ "/linuxrc"; target ^ "/opt/initrd/"];
+  run "cp" [libdir ^ "/linuxrc"; target ^ "/opt/initrd/sbin/init"];
   let marker = genmarker () in
   writestring (target ^ "/opt/dfsruntime/marker") marker;
   writestring (target ^ "/opt/initrd/marker") marker;
@@ -113,13 +114,14 @@ let installkernels cp target =
   run "cp" ("-rv" :: glob ["/usr/lib/grub/*/*"] @ [target ^ "/boot/grub/"]);
   let sd = open_out (target ^ "/boot/grub/menu.lst") in
   output_string sd "color cyan/blue white/blue\n";
+  let newkerns = glob ["/boot/vmlinu*"] in
   List.iter (fun x ->
     let os s = output_string sd (s ^ "\n") in
     os ("title  Boot " ^ x);
-    os ("kernel /boot/" ^ (Filename.basename x) ^ " single");
+    os ("kernel /boot/" ^ (Filename.basename x) ^ " root=/dev/ram0 single");
     os ("initrd /opt/dfsruntime/initrd.dfs");
     os ("boot\n");
-  ) kernlist;
+  ) newkerns;
   Pervasives.close_out sd;
 ;;
 

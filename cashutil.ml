@@ -14,3 +14,45 @@ let swait failmsg proc =
 let run prog args =
   swait (prog ^ " " ^ (String.concat " " args)) 
     (fork_child (fun () -> exec_path prog args));;
+
+let abspath name = resolve_file_name ~dir:(Unix.getcwd ()) name;;
+
+let rec recurse_cmd_do f startname =
+  let info = file_info_fn ~chase:false startname in
+  match info.st_kind with
+    S_DIR -> ignore (fold_directory (recurse_cmd_dir f) startname startname);
+             f info startname;
+  | _ -> f info startname;
+and recurse_cmd_dir f startname curname =
+  let thisname = startname ^ "/" ^ curname in
+  recurse_cmd_do f thisname;
+  startname;;
+
+let rec recurse_cmd f startname = recurse_cmd_do f (abspath startname);;
+
+exception RMError of string;;
+let rm ?(recursive=false) ?(force=false) filename =
+  print_endline "this is rm";
+  let recunl info name = 
+    print_endline "foo";
+    print_endline (match info.st_kind with
+      S_REG -> "reg"
+    | S_DIR -> "dir"
+    | S_CHR -> "chr"
+    | S_BLK -> "blk"
+    | S_LNK -> "lnk"
+    | S_FIFO -> "fifo"
+    | S_SOCK -> "sock");
+    try
+      if info.st_kind = S_DIR then 
+        Unix.rmdir name
+      else
+        Unix.unlink name
+    with (Unix.Unix_error _) as exc ->
+      if not force; then raise exc;
+  in
+  if recursive then
+    recurse_cmd recunl filename
+  else
+    recunl (file_info_fn ~chase:false filename) filename;;
+
