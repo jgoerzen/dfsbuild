@@ -2,13 +2,15 @@
 # Copyright (c) 2004 John Goerzen
 #
 PACKAGES := -package shell -package missinglib
-all:	buildcd lib lib/linuxrc lib/startup
+all:	buildcd lib lib/linuxrc lib/startup lib/dfs.html/index.html \
+	lib/dfs.pdf lib/dfs.ps lib/dfs.txt
 
 lib:
 	if [ ! -d lib ] ; then mkdir lib; fi
 
 clean:
-	-rm -rf buildcd lib
+	-cd doc && scons -c && scons -c html pdf text ps
+	-rm -rf buildcd lib doc/.sconsign
 	-rm -f `find . -name "*.cm*"`
 	-rm -f `find . -name "*~"`
 
@@ -45,4 +47,22 @@ buildcd.cmx: cashutil.cmx configfiles.cmx
 
 %.cmo: %.ml
 	ocamlfind ocamlc $(PACKAGES) -warn-error A -c -o $@ $<
+
+lib/dfs.html/index.html: doc/dfs.sgml lib
+	-rm -r lib/html
+	cd doc && scons html
+	cp -r doc/html lib
+
+lib/dfs.pdf: doc/dfs.sgml lib
+	cd doc && scons pdf
+	cp doc/dfs.pdf lib
+
+lib/dfs.ps: doc/dfs.sgml lib
+	cd doc && scons ps
+	cp doc/dfs.ps lib
+
+lib/dfs.txt: doc/dfs.sgml lib
+	cd doc && scons text
+	cp doc/dfs.txt lib
+
 

@@ -1,0 +1,3 @@
+#!/bin/sh
+# arch-tag: Help program for DFS
+exec elinks file:///opt/dfsruntime/dfs.html/index.html

@@ -10,7 +10,13 @@
     </author>
     <address><email>jgoerzen@complete.org</email></address>
     <legalnotice>
+    <para>
+        PLEASE NOTE: THIS DOCUMENTATION IS NOT YET ANYWHERE NEAR FINISHED.
+    </para>
+    <para>
       FIXME: add copyright here
+      </para>
+
     </legalnotice>
   </bookinfo>
 
@@ -28,6 +34,7 @@
     </para>
     <sect1 id="features">
       <title>DFS Features</title>
+      <indexterm><primary>Features</primary></>
       <para>
 	You can expect the following from your DFS CD:
       </para>
@@ -92,24 +99,7 @@
 	</listitem>
       </itemizedlist>
     </sect1>
-
-
-
-      
-      John G
-  &ch.intro;
-  &ch.getstart;
-  &ch.import;
-  &ch.regular;
-
-  <appendix id="tbp.man.reference">
-    <title>Command Reference</title>
-    &man.tbp.importdsc;
-    &man.tbp.importorig;
-    &man.tbp.markdeb;
-    &man.tbp.initarchive;
-    &man.tla.buildpackage;
-  </appendix>
+  </chapter>
 
   &index;
 </book>

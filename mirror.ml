@@ -43,7 +43,8 @@ let mirror_data cp suites target mirrordir  workdir =
     fprintf cfd "FILECACHE=%s/var/cache/apt/archives\n" target;
     fprintf cfd "LISTSTATE=%s/var/lib/apt/lists\n" target;
     fprintf cfd "DIST=%s\n" suite;
-    output_string cfd "COPYONLY=yes\nCONTENTS=yes\nAPTSITES=/all/\nPKGCOMP=gzip\n";
+    output_string cfd
+    "COPYONLY=yes\nCONTENTS=yes\nAPTSITES=/all/\nPKGCOMP=\"none gzip\"\n";
     Pervasives.close_out cfd;
     run "apt-move" ["-c"; cfgfilename; "update"];
     match find_codename target suite with
@@ -55,19 +56,30 @@ let mirror_data cp suites target mirrordir  workdir =
       output_string cfd (codename ^ "\n");
       Pervasives.close_out cfd;
       run "apt-move" ["-c"; cfgfilename; "update"];
+      (*
+
+      let filename = sprintf                                                             "%s/var/lib/apt/lists/debootstrap.invalid_dists_%s_Release" target
+          suite in   
+      run "cp" ["-v"; filename; sprintf "%s/dists/%s/Release" mirrordir suite];
+      *)
+      
       if not (is_file_existing_fn (sprintf "%s/dists/%s" mirrordir codename))
       then 
         create_symlink suite (sprintf "%s/dists/%s" mirrordir codename);
     end;
+    (*
     rm cfgfilename;
+    *)
 
   in
   p "mirror_data";
   List.iter procsuite suites;
+  (*
   rm ~recursive:true target;
+  *)
 ;;
 
 let mirror_workdir cp suites workdir =
-  mirror_data cp suites (workdir ^ "/target") (workdir ^ "/mirror") mirror workdir;;
+  mirror_data cp suites (workdir ^ "/target") (workdir ^ "/mirror") workdir;;
 
 

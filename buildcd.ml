@@ -177,8 +177,8 @@ let preprd cp imageroot =
 let installlib libdir imageroot =
   p "Installing runtime library files.";
   List.iter (fun x -> 
-    run "cp" [libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
-    ["startup"];;
+    run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
+    ["startup"; "dfs.html"; "dfs.txt"; "dfs.pdf"; "dfs.ps"];;
 
 let mkiso cp wdir imageroot =
   p "Preparing ISO image";
@@ -210,7 +210,7 @@ let _ =
   compress cp wdir imageroot;
   *)
   installdebs cp imageroot;
-  Configfiles.writecfgfiles imageroot;
+  Configfiles.writecfgfiles cp imageroot;
   Configfiles.fixrc imageroot;
   installrd cp libdir imageroot;
   installkernels cp imageroot; 
