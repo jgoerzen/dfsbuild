@@ -2,6 +2,48 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-02 13:15:10 GMT	John Goerzen <jgoerzen@complete.org>	patch-68
+
+    Summary:
+      Synced with Robert's tree again
+    Revision:
+      dfsbuild--head--0.5--patch-68
+
+    Patches applied:
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-13
+       merge jgoerzens upstream
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-14
+       let unpackdebs fail gracefully
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-15
+       there is no /lib/ld-linux* on powerpc
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-16
+       yaboot.conf looks better with newlines between images
+    
+
+    modified files:
+     ChangeLog bootloaders/yaboot.ml dfsbuild.ml
+
+    modified directories:
+     {arch}/dfsbuild {arch}/dfsbuild/dfsbuild--head
+     {arch}/dfsbuild/dfsbuild--head/dfsbuild--head--0.5
+     {arch}/dfsbuild/dfsbuild--head/dfsbuild--head--0.5/jgoerzen@complete.org--projects
+     {arch}/dfsbuild/dfsbuild--head/dfsbuild--head--0.5/jgoerzen@complete.org--projects/patch-log
+     {arch}/dfsbuild/dfsbuild--jordens
+     {arch}/dfsbuild/dfsbuild--jordens/dfsbuild--jordens--0.5
+     {arch}/dfsbuild/dfsbuild--jordens/dfsbuild--jordens--0.5/jordens@debian.org--debian--2004
+     {arch}/dfsbuild/dfsbuild--jordens/dfsbuild--jordens--0.5/jordens@debian.org--debian--2004/patch-log
+
+    new patches:
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-13
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-14
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-15
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-16
+
+
 2004-06-02 02:37:36 GMT	John Goerzen <jgoerzen@complete.org>	patch-67
 
     Summary:

@@ -106,6 +106,7 @@ device=cd:
 	initrd-size=8192
 	append=\"initrd=/opt/dfsruntime/initrd.dfs root=/dev/ram0\"
 	read-only
+
 " (Filename.basename kern);
     ) newkerns;
   Pervasives.close_out sd;

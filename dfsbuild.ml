@@ -113,7 +113,7 @@ let preprd cp libdir target =
   (*
   chr ["sh"; "-c"; "cp -v /lib/libc.so* /lib/libm.so* /lib/libdl.so* /lib/ld-linux.so* /opt/initrd/lib"];
   *)
-  chr ["sh"; "-c"; "cp -v /lib/libc.so* /lib/ld-linux.so* /opt/initrd/lib"];
+  chr ["sh"; "-c"; "cp -v /lib/libc.so* /lib/ld* /opt/initrd/lib"];
   chr ["cp"; "-v"; "/bin/busybox"; "/opt/initrd/bin"];
   chr ["cp"; "-v"; "/usr/sbin/chroot"; "/opt/initrd/usr/sbin/"];
   chr ["cp"; "-v"; "/sbin/pivot_root"; "/opt/initrd/sbin/"];
@@ -141,18 +141,22 @@ let installdebs cp imageroot =
             run "dpkg" (rootopt :: "-i" :: (split_ws (get cp "installdebs")));
           with Not_found -> ();
   end;
-  let deblist = try (split_ws (get cp "unpackdebs")) with Not_found -> [] in
-  let chroottmpdir = "/insttmp" in
-  let realtmpdir = imageroot ^ chroottmpdir in
-  Unix.mkdir (imageroot ^ "/insttmp") 0o755;
-  List.iter (fun x -> run "cp" ["-v"; x; realtmpdir ^ "/"]) deblist;
-  let debnames = List.map (fun x -> chroottmpdir ^ "/" ^ Filename.basename x)
-     deblist in
-  run "chroot" (imageroot :: "dpkg" ::
-         "--force-depends" :: "--force-conflicts" :: 
-         "--force-overwrite" :: "--force-architecture" :: "--unpack" 
-         :: debnames);
- rm ~recursive:true realtmpdir;
+  begin
+          try
+	    let deblist = split_ws (get cp "unpackdebs") in
+            let chroottmpdir = "/insttmp" in
+            let realtmpdir = imageroot ^ chroottmpdir in
+            Unix.mkdir (imageroot ^ "/insttmp") 0o755;
+            List.iter (fun x -> run "cp" ["-v"; x; realtmpdir ^ "/"]) deblist;
+            let debnames = List.map (fun x -> 
+              chroottmpdir ^ "/" ^ Filename.basename x) deblist in
+            run "chroot" (imageroot :: "dpkg" ::
+                "--force-depends" :: "--force-conflicts" :: 
+                "--force-overwrite" :: "--force-architecture" :: "--unpack" 
+                :: debnames);
+            rm ~recursive:true realtmpdir;
+         with Not_found -> ();
+ end;
 ;;
 
 let installkernels cp target =
