@@ -213,12 +213,12 @@ let installlib docdir libdir imageroot =
   p "Installing runtime library files.";
   List.iter (fun x -> 
     run "cp" ["-rL"; libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
-    ["startup"; "dfs.html"];
+    ["startup"; "home.html"; "dfs.html"];
   Unix.chmod (imageroot ^ "/opt/dfsruntime/startup") 0o755;
   Unix.mkdir (imageroot ^ "/opt/dfsruntime/doc") 0o755;
   List.iter (fun x ->
-    run "cp" ["-rL"; docdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/doc/"])
-    ["html"; "dfs.txt.gz"];
+    run "cp" ["-r"; docdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/doc/"])
+    ["dfs.txt"];
   List.iter (fun x ->
     run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/usr/local/bin/"];
     Unix.chmod (imageroot ^ "/usr/local/bin/" ^ x) 0o755)
