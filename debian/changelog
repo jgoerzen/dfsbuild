@@ -1,8 +1,12 @@
-dfsbuild (0.6.3.rj1) unstable; urgency=low
+dfsbuild (0.6.4) unstable; urgency=low
 
-  * add powerpc (with yaboot) to supported architectures
+  * Various fixes for Alpha.  Ramdisk size specification for i386
+    and Alpha.  nodma for Alpha.
+  * Merged in experimental PowerPC/Yaboot support from
+    Robert Jordens <jordens@debian.org>
+  * Added Alpha/SRM info to manual
 
- -- Robert Jordens <jordens@debian.org>  Thu, 27 May 2004 19:38:12 +0200
+ -- John Goerzen <jgoerzen@complete.org>  Tue,  1 Jun 2004 21:16:15 -0500
 
 dfsbuild (0.6.3) unstable; urgency=low
 

@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-02 02:34:42 GMT	John Goerzen <jgoerzen@complete.org>	patch-66
+
+    Summary:
+      Minor touch-ups post-merge
+    Revision:
+      dfsbuild--head--0.5--patch-66
+
+
+    modified files:
+     ChangeLog debian/changelog debian/control dfs.cfg
+
+
 2004-06-02 02:15:03 GMT	John Goerzen <jgoerzen@complete.org>	patch-65
 
     Summary:

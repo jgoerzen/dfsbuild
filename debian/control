@@ -31,5 +31,5 @@ Description: Build Debian From Scratch CD/DVD images
  .
  On Alpha, dfsbuild supports the aboot bootloader.
  .
- On Powerpc, dfsbuild supports the yaboot bootloader.
+ On PowerPC, dfsbuild supports the yaboot bootloader.
 
