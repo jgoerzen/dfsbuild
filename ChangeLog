@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-10-25 21:14:58 GMT	John Goerzen <jgoerzen@complete.org>	patch-109
+
+    Summary:
+      Fixed changelog for grub path and readying 0.6.14
+    Revision:
+      dfsbuild--head--0.5--patch-109
+
+
+    modified files:
+     ChangeLog debian/changelog
+
+
 2004-08-18 21:45:33 GMT	John Goerzen <jgoerzen@complete.org>	patch-108
 
     Summary:

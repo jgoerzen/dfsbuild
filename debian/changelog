@@ -1,6 +1,7 @@
 dfsbuild (0.6.14) unstable; urgency=low
 
   * Added patch from Ken Yamaguchi to wait for USB devices to settle.
+  * Really get the grub path changed.  Closes: #277483.
 
  -- John Goerzen <jgoerzen@complete.org>  Wed, 18 Aug 2004 16:45:00 -0500
 
