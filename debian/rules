@@ -7,8 +7,8 @@
 #export DH_VERBOSE=1
 
 RDIR=$(CURDIR)/debian/dfsbuild
-DOCDIR=$(CURDIR)/usr/share/doc/dfsbuild
-LIBDIR=$(CURDIR)/usr/lib/dfsbuild
+DOCDIR=$(RDIR)/usr/share/doc/dfsbuild
+LIBDIR=$(RDIR)/usr/lib/dfsbuild
 
 
 CFLAGS = -Wall -g
@@ -62,7 +62,8 @@ install: build
 	#$(MAKE) install DESTDIR=$(CURDIR)/debian/dfsbuild
 	cp -r lib $(LIBDIR)
 	ln -s /usr/lib/dfsbuild/dfs.html $(DOCDIR)/html
-	cp dfsbuild $(RDIR)/usr/bin
+	cp dfsbuild $(RDIR)/usr/bin/
+	cp dfs.cfg $(RDIR)/etc/dfsbuild/
 
 
 # Build architecture-independent files here.
@@ -73,7 +74,7 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs CHANGELOG
+	dh_installchangelogs ChangeLog
 	dh_installdocs doc/*.ps doc/*.pdf doc/*.txt
 	dh_installexamples
 #	dh_install
