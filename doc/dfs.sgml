@@ -65,7 +65,8 @@
 	    </listitem>
 	    <listitem><para>C, Perl, Python, and OCaml development
 		environments.  Enough to configure and compile a new
-		kernel and build basic .debs.</para>
+		kernel and build basic .debs.  Kernel 2.6.6 sources
+              included on CD.</para>
 	    </listitem>
 	    <listitem><para>Full networking support, including PPP and
 		various Ethernet cards and DHCP</para>
@@ -80,15 +81,30 @@
 	    </listitem>
 	    <listitem><para>CD and DVD burning tools</para>
 	    </listitem>
-	    <listitem><para>Basic printing tools</para>
+	    <listitem><para>Basic printing tools (cat for local
+                printers, rlpr for remote ones, and netcat for
+                Jetdirect, plus unix2dos for text files and
+                Ghostscript for emergency conversions)
+              </para>
 	    </listitem>
-	  </itemizedlist>
+            <listitem><para>Mail reader (mutt)</para>
+            </listitem>
+            <listitem><para>User-Mode-Linux (UML)</para>
+            </listitem>
 	</listitem>
 	<listitem><para>Base systems for multiple versions of Debian
 	    installable directly from CD, including: woody (i386),
 	    sarge (i386), sid (i386), and sid (amd64).
 	  </para>
 	</listitem>
+        <listitem><para>amd64 support: Enough to install or fix an
+            AMD64 system.  Includes 64-bit kernel with 32-bit
+            emulation (to run the 32-bit userland on the CD).   Also
+            includes 64-bit package for bootstrapping a new AMD64
+            support.  In short, you can boot a 64-bit kernel and be
+            treated as a first-class citizen in almost all respects.
+          </para>
+        </listitem>
 	<listitem><para>i386 or x86_64 (amd64) kernels bootable
 	    directly from initial boot menu.</para>
 	</listitem>
