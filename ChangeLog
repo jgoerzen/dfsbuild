@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-26 18:10:53 GMT	John Goerzen <jgoerzen@complete.org>	patch-28
+
+    Summary:
+      Now uses -pad for mkisofs; marked cfg for 0.6.2
+    Revision:
+      dfsbuild--head--0.5--patch-28
+
+
+    modified files:
+     ChangeLog dfs.cfg dfsbuild.ml
+
+
 2004-05-26 13:29:37 GMT	John Goerzen <jgoerzen@complete.org>	patch-27
 
     Summary:

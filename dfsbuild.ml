@@ -180,7 +180,7 @@ let mkiso cp wdir imageroot isoargs =
   let isofile = wdir ^ "/image.iso" in
   let compressopts = if cp#getbool "cd" "compress" then ["-z"] else [] in
   run "mkisofs" (compressopts @ isoargs @ 
-    ["-R"; "-o"; isofile; imageroot]);;
+    ["-pad"; "-R"; "-o"; isofile; imageroot]);;
 
 let _ = 
   let cp, wdir = parsecmdline () in
