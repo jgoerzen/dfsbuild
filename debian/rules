@@ -9,6 +9,7 @@
 RDIR=$(CURDIR)/debian/dfsbuild
 DOCDIR=$(RDIR)/usr/share/doc/dfsbuild
 LIBDIR=$(RDIR)/usr/lib/dfsbuild
+SHAREDIR=$(RDIR)/usr/share/dfsbuild
 
 
 CFLAGS = -Wall -g
@@ -63,7 +64,7 @@ install: build
 	cp -r lib $(LIBDIR)
 	ln -s /usr/lib/dfsbuild/dfs.html $(DOCDIR)/html
 	cp dfsbuild $(RDIR)/usr/bin/
-	cp dfs.cfg $(RDIR)/etc/dfsbuild/
+	cp dfs.cfg $(SHAREDIR)
 	cp COPYRIGHT $(DOCDIR)/copyright
 	chmod a-x $(LIBDIR)/{linuxrc,startup}
 	strip -s $(LIBDIR)/{linuxrc,startup}

@@ -2,6 +2,54 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-15 14:40:36 GMT	John Goerzen <jgoerzen@complete.org>	patch-93
+
+    Summary:
+      Merged UCF support from Robert
+    Revision:
+      dfsbuild--head--0.5--patch-93
+
+    Patches applied:
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-42
+       revert patch-41
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-43
+       add note to TODO item about idempotency
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-44
+       use ucf for dfs.cfg handling
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-45
+       correct postinst to load debconf before ucf
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-46
+       using debconf with ucf needs ucf >= 0.28
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-47
+       star-merge john
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-48
+       star-merge john
+    
+
+    new files:
+     debian/postinst debian/postrm
+
+    modified files:
+     ChangeLog TODO bootloaders/yaboot.ml debian/control
+     debian/dirs debian/rules
+
+    new patches:
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-42
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-43
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-44
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-45
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-46
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-47
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-48
+
+
 2004-06-15 13:30:11 GMT	John Goerzen <jgoerzen@complete.org>	patch-92
 
     Summary:

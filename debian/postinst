@@ -1,0 +1,20 @@
+#!/bin/sh
+# arch-tag: postinst template
+# Copyright (c) 2004: John Goerzen, Robert Jordens
+
+set -e
+
+case "$1" in
+  configure)
+    if which ucf >/dev/null 2>&1; then
+      # confmodule, which would normally be loaded by ucf, 
+      # somehow resets a lot of options, including
+      # three-way. Bug in ucf. Loading debconf before ucf cures this.
+      . /usr/share/debconf/confmodule
+      ucf --debconf-ok --three-way \
+        /usr/share/dfsbuild/dfs.cfg /etc/dfsbuild/dfs.cfg
+    fi
+  ;;
+esac
+
+#DEBHELPER#

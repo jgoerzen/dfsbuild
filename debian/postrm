@@ -1,0 +1,19 @@
+#!/bin/sh
+# arch-tag: postrm template
+# Copyright (c) 2004: John Goerzen, Robert Jordens
+
+set -e
+
+case "$1" in
+  purge)
+    for ext in .dpkg-tmp .dpkg-new .dpkg-old .dpkg-dist; do
+      rm -f /etc/dfsbuild/dfs.cfg$ext
+    done
+    rm -f /etc/dfsbuild/dfs.cfg
+    if which ucf >/dev/null 2>&1; then
+      ucf --purge /etc/dfsbuild/dfs.cfg
+    fi
+  ;;
+esac
+
+#DEBHELPER#

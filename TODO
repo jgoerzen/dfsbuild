@@ -12,6 +12,8 @@
  * [config] user-specified mkisofs args
 
  * [config] option to drop user into shell if various actions fail
-   (package install, kernel install, etc.)
+   (package install, kernel install, etc.), or simply make it idempotent
+   (with stamps, log of actions or whatever), which is a bit harder to
+   get right but more powerfull.
 
 arch-tag: to do list
