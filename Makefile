@@ -10,7 +10,7 @@ clean:
 	-rm -f `find . -name "*~"`
 
 
-buildcd: dfsutils.cmx cashutil.cmx mirror.cmx buildcd.cmx
+buildcd: dfsutils.cmx cashutil.cmx mirror.cmx configfiles.cmx buildcd.cmx
 	ocamlfind ocamlopt $(PACKAGES) -package pcre -linkpkg \
 		camlp4/camlp4.cmxa cash.cmxa -o $@ $^
 
@@ -35,7 +35,7 @@ lib/startup: dfsutils.cmx shellutil.cmx lib/startup.cmx
 	$(PACKAGES) -linkpkg -o $@ $^
 	strip -s $@
 
-buildcd.cmx: cashutil.cmx
+buildcd.cmx: cashutil.cmx configfiles.cmx
 
 %.cmx: %.ml
 	ocamlfind ocamlopt $(PACKAGES) -c -o $@ $<

@@ -31,7 +31,6 @@ let mirror_data suites target mirrordir mirror workdir =
   if not (is_file_existing_fn mirrordir) then 
     (mkdir mirrordir 0o755);
   let procsuite suite =
-    p "procsuite";
     run "cdebootstrap" ["-d"; suite; target; mirror];
     let cfgfilename = workdir ^ "/apt-move.conf" in
     let cfd = open_out cfgfilename in
@@ -55,14 +54,12 @@ let mirror_data suites target mirrordir mirror workdir =
       then 
         create_symlink suite (sprintf "%s/dists/%s" mirrordir codename);
     end;
+    rm cfgfilename;
 
   in
   p "mirror_data";
   List.iter procsuite suites;
-  (*
-  rm cfgfilename;
   rm ~recursive:true target;
-  *)
 ;;
 
 let mirror_workdir suites mirror workdir =

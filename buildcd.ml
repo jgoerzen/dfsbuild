@@ -27,7 +27,8 @@ let getdevices cp =
 let dlmirrors cp wdir =
   let suites = split_ws (cp#get "cd" "dlsuites") in
   let mirror = (cp#get "cd" "mirror") in
-  Mirror.mirror_workdir suites mirror wdir;;
+  Mirror.mirror_workdir suites mirror wdir;
+;;
   
 let writestring filename s =
   let sd = Pervasives.open_out filename in
@@ -57,6 +58,7 @@ let cdebootstrap cp target wdir =
   run "cdebootstrap" [cp#get "cd" "suite"; target; "file://" ^ wdir ^ "/mirror"];
   writestring (target ^ "/etc/apt/sources.list") 
     ("deb " ^ (cp#get "cd" "mirror") ^ " " ^ (cp#get "cd" "suite") ^ " main\n");
+  rename_file (wdir ^ "/mirror") (target ^ "/opt/packages");
 ;;
 
 let installpkgs cp target =
