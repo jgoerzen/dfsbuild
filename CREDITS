@@ -1,5 +1,10 @@
-Main program: John Goerzen <jgoerzen@complete.org>
+John Goerzen <jgoerzen@complete.org>
+  Main program
+  i386 support (grub)
+  amd64 support
+  alpha support (aboot)
 
-PowerPC/Yaboot support: Robert Jordens <jordens@debian.org>
+Robert Jordens <jordens@debian.org>
+  powerpc support (yaboot)
 
 arch-tag: Credits file

@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-02 02:37:36 GMT	John Goerzen <jgoerzen@complete.org>	patch-67
+
+    Summary:
+      Revised CREDITS and listed in debian/docs
+    Revision:
+      dfsbuild--head--0.5--patch-67
+
+
+    modified files:
+     CREDITS ChangeLog debian/docs
+
+
 2004-06-02 02:34:42 GMT	John Goerzen <jgoerzen@complete.org>	patch-66
 
     Summary:
