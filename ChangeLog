@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-07 20:20:21 GMT	John Goerzen <jgoerzen@complete.org>	patch-86
+
+    Summary:
+      [grub] Install ramdisk, then calculate its size.
+    Revision:
+      dfsbuild--head--0.5--patch-86
+
+
+    modified files:
+     ChangeLog bootloaders/grub.ml
+
+
 2004-06-07 19:44:05 GMT	John Goerzen <jgoerzen@complete.org>	patch-85
 
     Summary:

@@ -57,15 +57,15 @@ configfile /boot/grub/menu.lst
   Pervasives.close_out sd2;;
   
 let grub_eltorito cp target =
-  grub_generic cp target "initrd /opt/dfsruntime/initrd.dfs";
   installrd_cramfs target;
+  grub_generic cp target "initrd /opt/dfsruntime/initrd.dfs";
   (["-b"; "boot/grub/stage2_eltorito"; "-no-emul-boot";
    "-boot-load-size"; "1"; "-boot-info-table"],
    fun cp wdir target isoname -> ());;
 
 let grub_hd cp workdir target =
-  grub_generic cp target "initrd /boot/initrd.dfs";
   installrd_cramfs target;
+  grub_generic cp target "initrd /boot/initrd.dfs";
   let workbootdir = workdir ^ "/boot" in
   let workboottar = workdir ^ "/boot.tar.gz" in
   run "cp" ["-r"; target ^ "/boot"; workbootdir];
