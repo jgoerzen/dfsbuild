@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-06 03:05:24 GMT	John Goerzen <jgoerzen@complete.org>	patch-80
+
+    Summary:
+      Remove archpackages now that we have interpolation.
+    Revision:
+      dfsbuild--head--0.5--patch-80
+
+
+    modified files:
+     ChangeLog debian/changelog dfs.cfg dfsbuild.ml
+
+
 2004-06-06 02:16:14 GMT	John Goerzen <jgoerzen@complete.org>	patch-79
 
     Summary:

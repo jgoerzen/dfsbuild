@@ -1,3 +1,10 @@
+dfsbuild (0.6.5) unstable; urgency=low
+
+  * Updated to use MissingLib 0.4.0.  Reduced some code complexity
+    and removed some now-obsolete code.
+
+ -- John Goerzen <jgoerzen@complete.org>  Sat,  5 Jun 2004 21:22:13 -0500
+
 dfsbuild (0.6.4) unstable; urgency=low
 
   * Various fixes for Alpha.  Ramdisk size specification for i386
