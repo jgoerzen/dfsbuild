@@ -89,8 +89,7 @@ let compress cp wdir target =
   end;
 ;;
 
-
-let installrd cp libdir target =
+let preprd cp libdir target =
   p "Preparing ramdisk...";
   let chr args = run "chroot" (target :: args) in
   mkdir (target ^ "/opt/initrd") 0o755;
@@ -117,9 +116,7 @@ let installrd cp libdir target =
   writestring (target ^ "/opt/dfsruntime/marker") marker;
   writestring (target ^ "/opt/initrd/marker") marker;
   writestring (target ^ "/opt/initrd/devices") (getdevices cp);
-  run "mkcramfs" [target ^ "/opt/initrd"; target ^
-    "/opt/dfsruntime/initrd.dfs"];
-  rm ~recursive:true (target ^ "/opt/initrd");;
+;;
 
 let installdebs cp imageroot =
   p "Installing .debs...";
@@ -144,56 +141,9 @@ let installkernels cp target =
     let modlist = glob (split_ws (cp#get "cd" "modules")) in
     run "cp" ("-r" :: (modlist @ [target ^ "/lib/modules"]));
   end;
-  mkdir (target ^ "/boot/grub") 0o755;
-  run "cp" ("-rv" :: glob ["/usr/lib/grub/*/*"] @ [target ^ "/boot/grub/"]);
-  let sd = open_out (target ^ "/boot/grub/menu.lst") in
-  if cp#has_option "cd" "grubconfig" then begin
-    output_string sd (cp#get "cd" "grubconfig");
-    output_string sd "\n";
-  end;
-  output_string sd "color cyan/blue blue/light-gray\n";
-  let newkerns = glob [target ^ "/boot/vmlinu*"] in
-  let os s = output_string sd (s ^ "\n") in
-  let fake s = os ("title " ^ s ^ "\ncolor cyan/blue blue/light-gray") in
-  List.iter (fun x ->
-    os ("title  Boot " ^ (Filename.basename x));
-    os ("kernel /boot/" ^ (Filename.basename x) ^ " root=/dev/ram0");
-    os ("initrd /opt/dfsruntime/initrd.dfs");
-    os ("boot\n");
-  ) newkerns;
-
-  (*
-  fake ".";
-  os ("title Help/Information Menu\nconfigfile /boot/grub/help.lst\n");
-  *)
-  fake ".";
-  fake (Configfiles.getidstring cp);
-
-  Pervasives.close_out sd;
-
-  let sd2 = open_out (target ^ "/boot/grub/help.lst") in
-  output_string sd2 "color cyan/black blue/light-gray
-pager on
-title Basic Booting Info
-cat /opt/dfsruntime/dfs.html/booting.html.txt
-
-title Selecting CD-ROM device
-cat /opt/dfsruntime/dfs.html/dfsbood-selcd.html.txt
-
-title About This CD
-cat /opt/dfsruntime/buildinfo
-
-title .
-color cyan/black blue/light-gray
-
-title Return to main menu...
-configfile /boot/grub/menu.lst
-";
-
-  Pervasives.close_out sd2;
 ;;
 
-let preprd cp imageroot =
+let preprtrd cp imageroot =
   p "Preparing run-time rd"; 
   mkdir (imageroot ^ "/opt/dfsruntime/runtimemnt") 0o755 ;
   let rdpath = imageroot ^ "/opt/dfsruntime/runtimerd" in
@@ -218,20 +168,19 @@ let installlib docdir libdir imageroot =
   Unix.mkdir (imageroot ^ "/opt/dfsruntime/doc") 0o755;
   List.iter (fun x ->
     run "cp" ["-r"; docdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/doc/"])
-    ["dfs.txt"; "html/"];
+    ["dfs.txt.gz"; "html/"];
   List.iter (fun x ->
     run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/usr/local/bin/"];
     Unix.chmod (imageroot ^ "/usr/local/bin/" ^ x) 0o755)
     ["dfshelp"; "dfshints"; "dfsbuildinfo"];
 ;;
 
-let mkiso cp wdir imageroot =
+let mkiso cp wdir imageroot isoargs =
   p "Preparing ISO image";
   let isofile = wdir ^ "/image.iso" in
   let compressopts = if cp#getbool "cd" "compress" then ["-z"] else [] in
-  run "mkisofs" (compressopts @ 
-    ["-R"; "-b"; "boot/grub/stage2_eltorito"; "-no-emul-boot";
-    "-boot-load-size"; "1"; "-boot-info-table"; "-o"; isofile; imageroot]);;
+  run "mkisofs" (compressopts @ isoargs @ 
+    ["-R"; "-o"; isofile; imageroot]);;
 
 let _ = 
   let cp, wdir = parsecmdline () in
@@ -258,9 +207,10 @@ let _ =
   Configfiles.writecfgfiles cp imageroot;
   Configfiles.fixrc imageroot;
   Configfiles.writebuildinfo cp imageroot;
-  installrd cp libdir imageroot;
+  preprd cp libdir imageroot;
   installkernels cp imageroot; 
-  preprd cp imageroot;
-  mkiso cp wdir imageroot;
+  let isoargs = Bootloader.install cp wdir imageroot in
+  preprtrd cp imageroot;
+  mkiso cp wdir imageroot isoargs;
 ;;
 

@@ -16,7 +16,7 @@ clean:
 	-rm -f `find . -name "*~"` `find . -name "*.o"`
 
 
-dfsbuild: dfsutils.cmx cashutil.cmx mirror.cmx configfiles.cmx dfsbuild.cmx
+dfsbuild: dfsutils.cmx cashutil.cmx mirror.cmx configfiles.cmx bootloader.cmx dfsbuild.cmx
 	ocamlfind ocamlopt $(PACKAGES) -package pcre -linkpkg \
 		camlp4/camlp4.cmxa cash.cmxa -o $@ $^
 
