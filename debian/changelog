@@ -1,3 +1,11 @@
+dfsbuild (0.6.16) unstable; urgency=low
+
+  * Added note to manpage explaining that dfsbuild does not support
+    woody.  Closes: #277100, #254762.
+  * Added note to manpage about gawk bug.
+
+ -- John Goerzen <jgoerzen@complete.org>  Wed, 17 Nov 2004 12:20:35 -0600
+
 dfsbuild (0.6.15) unstable; urgency=low
 
   * Updated dfs.cfg for more recent kernels.

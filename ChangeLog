@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-11-17 18:34:04 GMT	John Goerzen <jgoerzen@complete.org>	patch-119
+
+    Summary:
+      Documented awk mess
+    Revision:
+      dfsbuild--head--0.5--patch-119
+
+
+    modified files:
+     ChangeLog debian/changelog doc/dfsbuild.sgml
+
+
 2004-11-17 18:18:23 GMT	John Goerzen <jgoerzen@complete.org>	patch-118
 
     Summary:
