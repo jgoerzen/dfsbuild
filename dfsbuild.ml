@@ -69,9 +69,7 @@ let installpkgs cp target =
 
   run "chroot" [target; "apt-get"; "update"];
   let allpkgstr = Strutil.strip (get cp "allpackages") in
-  let archpkgstr = if cp#has_option (getarch()) "archpackages" then begin
-    get cp "archpackages"
-  end else "" in
+  let archpkgstr = try get cp "archpackages" with Not_found -> "" in
   let pkgs = (split_ws allpkgstr) @ (split_ws archpkgstr) in
   run "chroot" (target :: "apt-get" :: "-y" :: "install" :: pkgs) ;
   rm (target ^ "/etc/resolv.conf");
@@ -89,10 +87,10 @@ let compress cp wdir target =
     p "Compressing image...";
     let noncom = wdir ^ "/noncom" in
     Unix.mkdir noncom 0o755;
-    let noncomfiles = if cp#has_option (getarch()) "dontcompress" then 
+    let noncomfiles = try
       List.filter (fun x -> exists (target ^ x)) 
         (split_ws (get cp "dontcompress")) 
-       else [] in
+    with Not_found -> [] in
     let noncommap = let rec m l c = match l with
        [] -> [] | x :: xs -> (x, string_of_int c) :: m xs (c + 1) in
        m noncomfiles 0 in
@@ -138,26 +136,26 @@ let preprd cp libdir target =
 let installdebs cp imageroot =
   p "Installing .debs...";
   let rootopt = sprintf "--root=%s" imageroot in
-  if cp#has_option (getarch()) "installdebs" then begin
+  try
     run "dpkg" (rootopt :: "-i" :: (split_ws (get cp "installdebs")));
-  end;
-  if cp#has_option (getarch()) "unpackdebs" then begin
+  with Not_found -> ();
+  try
     run "dpkg" (rootopt :: "--force-depends" :: "--force-conflicts" :: 
          "--force-overwrite" :: "--force-architecture" :: "--unpack" 
          :: (split_ws (get cp "unpackdebs")));
-  end;
+  with Not_found -> ();
 ;;
 
 let installkernels cp target =
   p "Installing kernels...";
-  if cp#has_option (getarch()) "kernels" then begin
+  try
     let kernlist = glob (split_ws (get cp "kernels")) in
     run "cp" ("-v" :: (kernlist @ [(target ^ "/boot")]));
-  end;
-  if cp#has_option (getarch()) "modules" then begin
+  with Not_found -> ();
+  try
     let modlist = glob (split_ws (get cp "modules")) in
     run "cp" ("-r" :: (modlist @ [target ^ "/lib/modules"]));
-  end;
+  with Not_found -> ();
 ;;
 
 let preprtrd cp imageroot =

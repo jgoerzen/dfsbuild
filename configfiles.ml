@@ -45,20 +45,19 @@ let writecfgfiles cp basedir =
     List.iter (fun fn -> w fn (cp#get "createfiles" fn))
       (cp#options "createfiles");
   end;
-  if cp#has_option (getarch()) "makedirs" then begin
+  try 
     List.iter (fun x -> Unix.mkdir (basedir ^ x) 0o755)
       (split_ws (get cp "makedirs"))
-  end;
+  with Not_found -> ();
   if cp#has_section "symlinks" then begin
     List.iter (fun from -> Unix.symlink (cp#get "symlinks" from) (basedir ^
     from))
       (cp#options "symlinks");
   end;
-  if cp#has_option (getarch()) "deletefiles" then begin
+  try
     List.iter (fun x -> rm ~force:true (basedir ^ x))
       (glob (split_ws (get cp "deletefiles")))
-  end;
-
+  with Not_found -> ();
 ;;
 
 let fixrc target =

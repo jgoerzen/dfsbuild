@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-28 15:10:03 GMT	John Goerzen <jgoerzen@complete.org>	patch-51
+
+    Summary:
+      Fixed a bug with calling has_option
+    Revision:
+      dfsbuild--head--0.5--patch-51
+
+
+    modified files:
+     ChangeLog configfiles.ml dfsbuild.ml mirror.ml
+
+
 2004-05-28 14:50:28 GMT	John Goerzen <jgoerzen@complete.org>	patch-50
 
     Summary:

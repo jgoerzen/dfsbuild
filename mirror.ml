@@ -34,9 +34,7 @@ let mirror_data cp repos target mirrordir  workdir =
     let sect = "repo " ^ repo in
     let suite = cp#get sect "suite" in
     let mirror = cp#get sect "mirror" in
-    let archargs = if cp#has_option sect "arch" then
-      ["-a"; cp#get sect "arch"]
-    else [] in
+    let archargs = try ["-a"; cp#get sect "arch"] with Not_found -> [] in
     run "cdebootstrap" (archargs @ ["--debug"; "-v"; "-d"; suite; target; mirror]);
     let cfgfilename = workdir ^ "/apt-move.conf" in
     let cfd = open_out cfgfilename in
@@ -44,9 +42,7 @@ let mirror_data cp repos target mirrordir  workdir =
     fprintf cfd "FILECACHE=%s/var/cache/apt/archives\n" target;
     fprintf cfd "LISTSTATE=%s/var/lib/apt/lists\n" target;
     fprintf cfd "DIST=%s\n" suite;
-    if cp#has_option sect "arch" then begin
-      fprintf cfd "ARCH=%s\n" (cp#get sect "arch");
-    end;
+    try fprintf cfd "ARCH=%s\n" (cp#get sect "arch") with Not_found -> ();
     output_string cfd
     "COPYONLY=yes\nCONTENTS=yes\nAPTSITES=/all/\nPKGCOMP=\"none gzip\"\n";
     Pervasives.close_out cfd;
