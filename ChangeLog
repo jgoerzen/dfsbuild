@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-11-17 18:18:23 GMT	John Goerzen <jgoerzen@complete.org>	patch-118
+
+    Summary:
+      Attempt to fix failure to copy modules in installkernels
+    Revision:
+      dfsbuild--head--0.5--patch-118
+
+
+    modified files:
+     ChangeLog dfsbuild.ml
+
+
 2004-10-29 00:41:21 GMT	John Goerzen <jgoerzen@complete.org>	patch-117
 
     Summary:

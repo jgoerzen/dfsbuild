@@ -155,14 +155,14 @@ let installdebs cp imageroot =
 
 let installkernels cp target =
   p "Installing kernels...";
-  try
+  (try
     let kernlist = glob (split_ws (get cp "kernels")) in
     run "cp" ("-v" :: (kernlist @ [(target ^ "/boot")]));
-  with Not_found -> ();
-  try
+  with Not_found -> ());
+  (try
     let modlist = glob (split_ws (get cp "modules")) in
-    run "cp" ("-r" :: (modlist @ [target ^ "/lib/modules"]));
-  with Not_found -> ();
+    run "cp" ("-rv" :: (modlist @ [(target ^ "/lib/modules")]));
+  with Not_found -> ());
 ;;
 
 let preprtrd cp imageroot =
