@@ -51,7 +51,7 @@ let parsecmdline () =
    exit 1;
    (new ConfigParser.configParser, "");
   end else (
-    let cp = new ConfigParser.rawConfigParser in
+    let cp = new ConfigParser.configParser in
     cp#readfile !cffile;
     (cp, !wdir));;
 

@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-07 19:21:14 GMT	John Goerzen <jgoerzen@complete.org>	patch-83
+
+    Summary:
+      Fixed configparser support; use configParser instead of rawConfigParser now
+    Revision:
+      dfsbuild--head--0.5--patch-83
+
+
+    modified files:
+     ChangeLog dfsbuild.ml
+
+
 2004-06-07 19:07:55 GMT	John Goerzen <jgoerzen@complete.org>	patch-82
 
     Summary:
