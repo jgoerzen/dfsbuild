@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-10-28 16:05:22 GMT	John Goerzen <jgoerzen@complete.org>	patch-111
+
+    Summary:
+      Added conflict on gawk
+    Revision:
+      dfsbuild--head--0.5--patch-111
+
+
+    modified files:
+     ChangeLog debian/changelog debian/control
+
+
 2004-10-28 16:04:00 GMT	John Goerzen <jgoerzen@complete.org>	patch-110
 
     Summary:
