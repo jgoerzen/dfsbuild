@@ -21,7 +21,7 @@ let grub_generic cp target entryline =
   let fake s = os ("title " ^ s ^ "\ncolor cyan/blue blue/light-gray") in
   List.iter (fun x ->
     os ("title  Boot " ^ (Filename.basename x));
-    os ("kernel /boot/" ^ (Filename.basename x) ^ " root=/dev/ram0 " ^ \
+    os ("kernel /boot/" ^ (Filename.basename x) ^ " root=/dev/ram0 " ^ 
       (Bootloaderutil.getrdparam target));
     os (entryline);
     os ("boot\n");
