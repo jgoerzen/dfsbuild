@@ -81,10 +81,19 @@ let installpkgs cp target =
     "/var/cache/apt/*.bin"; "/var/cache/debconf/*"; "/etc/X11" ]; *)
   ;;
 
+let compress cp wdir target =
+  if (cp#getbool "cd" "compress") then begin
+    p "Compressing image...";
+    run "mkzftree" [target; wdir ^ "/zftree"];
+    rm ~recursive:true target;
+    rename_file (wdir ^ "/zftree") target;
+  end;
+;;
+
+
 let installrd cp libdir target =
   p "Preparing ramdisk...";
   let chr args = run "chroot" (target :: args) in
-  mkdir (target ^ "/opt/dfsruntime") 0o755;
   mkdir (target ^ "/opt/initrd") 0o755;
   List.iter (fun x -> mkdir (target ^ "/opt/initrd/" ^ x) 0o755) 
     ["bin"; "lib"; "sbin"; "proc"; "usr"; "usr/sbin"; "usr/bin"; "realroot"; ];
@@ -112,12 +121,29 @@ let installrd cp libdir target =
     "/opt/dfsruntime/initrd.dfs"];
   rm ~recursive:true (target ^ "/opt/initrd");;
 
+let installdebs cp imageroot =
+  p "Installing .debs...";
+  let rootopt = sprintf "--root=%s" imageroot in
+  if cp#has_option "cd" "installdebs" then begin
+    run "dpkg" (rootopt :: "-i" :: (split_ws (cp#get "cd" "installdebs")));
+  end;
+  if cp#has_option "cd" "unpackdebs" then begin
+    run "dpkg" (rootopt :: "--force-depends" :: "--force-conflicts" :: 
+         "--force-overwrite" :: "--unpack" 
+         :: (split_ws (cp#get "cd" "unpackdebs")));
+  end;
+;;
+
 let installkernels cp target =
   p "Installing kernels...";
-  let kernlist = glob (split_ws (cp#get "cd" "kernels")) in
-  let modlist = glob (split_ws (cp#get "cd" "modules")) in
-  run "cp" ("-v" :: (kernlist @ [(target ^ "/boot")]));
-  run "cp" ("-r" :: (modlist @ [target ^ "/lib/modules"]));
+  if cp#has_option "cd" "kernels" then begin
+    let kernlist = glob (split_ws (cp#get "cd" "kernels")) in
+    run "cp" ("-v" :: (kernlist @ [(target ^ "/boot")]));
+  end;
+  if cp#has_option "cd" "modules" then begin
+    let modlist = glob (split_ws (cp#get "cd" "modules")) in
+    run "cp" ("-r" :: (modlist @ [target ^ "/lib/modules"]));
+  end;
   mkdir (target ^ "/boot/grub") 0o755;
   run "cp" ("-rv" :: glob ["/usr/lib/grub/*/*"] @ [target ^ "/boot/grub/"]);
   let sd = open_out (target ^ "/boot/grub/menu.lst") in
@@ -155,11 +181,13 @@ let installlib libdir imageroot =
     run "cp" [libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
     ["startup"];;
 
-let mkiso wdir imageroot =
+let mkiso cp wdir imageroot =
   p "Preparing ISO image";
   let isofile = wdir ^ "/image.iso" in
-  run "mkisofs" ["-R"; "-b"; "boot/grub/stage2_eltorito"; "-no-emul-boot";
-    "-boot-load-size"; "1"; "-boot-info-table"; "-o"; isofile; imageroot];;
+  let compressopts = if cp#getbool "cd" "compress" then ["-z"] else [] in
+  run "mkisofs" (compressopts @ 
+    ["-R"; "-b"; "boot/grub/stage2_eltorito"; "-no-emul-boot";
+    "-boot-load-size"; "1"; "-boot-info-table"; "-o"; isofile; imageroot]);;
 
 let _ = 
   let cp, wdir = parsecmdline () in
@@ -173,15 +201,21 @@ let _ =
   let wdir = getcwd () in
   let imageroot = wdir ^ "/image" in
   mkdir imageroot 0o755;
+  mkdir (imageroot ^ "/opt") 0o755;
+  mkdir (imageroot ^ "/opt/dfsruntime") 0o755;
   dlmirrors cp wdir;
   cdebootstrap cp imageroot wdir;
   installpkgs cp imageroot;
+  installlib libdir imageroot;
+  (* 
+  compress cp wdir imageroot;
+  *)
+  installdebs cp imageroot;
   Configfiles.writecfgfiles imageroot;
   Configfiles.fixrc imageroot;
   installrd cp libdir imageroot;
   installkernels cp imageroot; 
-  installlib libdir imageroot;
   preprd cp imageroot;
-  mkiso wdir imageroot;
+  mkiso cp wdir imageroot;
 ;;
 

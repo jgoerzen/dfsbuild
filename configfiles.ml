@@ -13,6 +13,19 @@ let writecfgfiles basedir =
     output_string outfd s;
     close_out outfd
   in
+  a "/etc/network/interfaces" "
+iface eth0 inet dhcp
+
+iface eth1 inet dhcp
+
+iface eth2 inet dhcp
+
+iface wlan0 inet dhcp
+
+iface wlan2 inet dhcp
+
+iface ath0 inet dhcp
+";
   a "/etc/issue" "
 Welcome to Debian From Scratch (DFS)
 
