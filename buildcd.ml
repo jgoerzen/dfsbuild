@@ -92,7 +92,7 @@ let installrd cp target =
   writestring (target ^ "/opt/initrd/devices") (getdevices cp);
   run "mkcramfs" [target ^ "/opt/initrd"; target ^
     "/opt/dfsruntime/initrd.dfs"];
-  run "rm" ["-rv"; "/opt/initrd"];;
+  run "rm" ["-rv"; target ^ "/opt/initrd"];;
 
 let installkernels cp target =
   p "Installing kernels...";
@@ -101,7 +101,7 @@ let installkernels cp target =
   run "cp" ("-v" :: (kernlist @ [(target ^ "/boot")]));
   run "cp" ("-r" :: (modlist @ [target ^ "/lib/modules"]));
   mkdir (target ^ "/boot/grub") 0o755;
-  run "cp" ["-rv"; "/usr/lib/grub/*/*"; "/boot/grub/"];
+  run "cp" ("-rv" :: glob ["/usr/lib/grub/*/*"] @ ["/boot/grub/"]);
   let sd = open_out (target ^ "/boot/grub/menu.lst") in
   output_string sd "color cyan/blue white/blue\n";
   List.iter (fun x ->
