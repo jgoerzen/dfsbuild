@@ -2,6 +2,19 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-02 13:24:42 GMT	John Goerzen <jgoerzen@complete.org>	patch-70
+
+    Summary:
+      [powerpc] Use actual ramdisk size for initrd-size parameter and append line
+    Revision:
+      dfsbuild--head--0.5--patch-70
+
+
+    modified files:
+     ChangeLog Makefile bootloaders/bootloaderutil.ml
+     bootloaders/yaboot.ml
+
+
 2004-06-02 13:19:34 GMT	John Goerzen <jgoerzen@complete.org>	patch-69
 
     Summary:

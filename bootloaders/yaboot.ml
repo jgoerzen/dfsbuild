@@ -6,6 +6,7 @@ open Unix;;
 open Shellutil;;
 open Dfsutils;;
 open Archsupport;;
+open Bootloaderutil;;
 
 let yaboot cp target =
   run "cp" ["/usr/lib/yaboot/yaboot"; target ^ "/boot/"];
@@ -103,11 +104,11 @@ device=cd:
     Printf.fprintf sd 
 "	label=%s
 	initrd=/opt/dfsruntime/initrd.dfs
-	initrd-size=8192
-	append=\"initrd=/opt/dfsruntime/initrd.dfs root=/dev/ram0\"
+	initrd-size=%d
+	append=\"initrd=/opt/dfsruntime/initrd.dfs root=/dev/ram0 %s\"
 	read-only
 
-" (Filename.basename kern);
+" (Filename.basename kern) (getrdsize_kb target) (getrdparam target);
     ) newkerns;
   Pervasives.close_out sd;
   (["--netatalk"; "-hfs"; "-probe"; "-part"; "-no-desktop";
