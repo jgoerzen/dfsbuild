@@ -3,7 +3,7 @@
 #
 PACKAGES := -package shell -package missinglib
 all:	dfsbuild lib lib/linuxrc lib/startup lib/dfs.html/index.html \
-	lib/dfs.pdf lib/dfs.ps lib/dfs.txt
+	lib/dfs.pdf lib/dfs.ps lib/dfs.txt lib/dfshelp
 
 lib:
 	if [ ! -d lib ] ; then mkdir lib; fi
@@ -29,6 +29,8 @@ lib/startup.cmx: dfsutils.cmx shellutil.cmx
 mirror.cmx: dfsutils.cmx shellutil.cmx
 mirror.cmo: dfsutils.cmo shellutil.cmo
 
+lib/dfshelp: libsrc/dfshelp
+	cp $^  $@
 lib/linuxrc: dfsutils.cmx shellutil.cmx libsrc/linuxrc.cmx
 	ocamlfind ocamlopt -cclib -static -cclib --unresolved-symbols=ignore-all \
 	$(PACKAGES) -linkpkg \

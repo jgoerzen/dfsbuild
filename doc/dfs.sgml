@@ -101,7 +101,86 @@
     </sect1>
   </chapter>
 
-  &index;
+  <chapter id="booting">
+    <title>Booting DFS</title>
+    <para>
+      Booting DFS usually is as simple as inserting a CD into the
+      drive.  DFS can boot from an IDE or SCSI CD-ROM.  On some
+      systems,
+      you may need to access your BIOS to enable booting from CD.
+      When you have successfully booted DFS the CD, you'll see a blue
+      selection screen.
+    </para>
+    <sect1 id="dfsboot-kernel">
+      <title>Booting a Kernel</title>
+      <para>
+        Depending on how your CD was built, you'll see options for one
+        or more different kernel images.  Select one appropriate for
+        your system.  If a given image says "amd64", this should only
+        be used on amd64 systems such as Opteron or Athlon64 system.
+      </para>
+    </sect1>
+    <sect1 id="dfsboot-hardware">
+      <title>Detecting Hardware</title>
+      <para>
+        Some hardware will automatically be configured.  You can
+        attempt to autodetect more hardware by running
+        <command>/etc/init.d/discover start</command>.  If you want to
+        use USB devices, try <command>/etc/init.d/hotplug
+          start</command>.  Otherwise, you will likely need to
+        manually load kernel modules.  You can find them under
+        <filename>/lib/modules/<replaceable>kernelversion</replaceable></filename>.  
+        Tools such as <command>lspci</command> can help you find out
+        what hardware you have that needs to be loaded.
+      </para>
+    </sect1>
+    <sect1 id="network">
+      <title>Enabling Networking</title>
+      <para>
+        If your network hardware was detected and your LAN uses DHCP,
+        you can simply say <command>ifup eth0</command>.  Your network
+        will be activated.
+      </para>
+      <para>
+        If your LAN does not use DHCP, you will need to edit
+        <filename>/etc/networking/interfaces</filename>.  You should
+        delete the eth0 line and replace it with something along these
+        lines:</para>
+      <screen>
+iface eth0 inet static
+    address 192.168.0.4
+    netmask 255.255.255.0
+    gateway 192.168.0.1
+      </screen>
+      <para>Then run <command>ifup eth0</command>.
+      </para>
+    </sect1>
+    
+  </chapter>
+
+  <chapter id="install">
+    <title>Installation</title>
+    <para>
+      Installation from DFS involves the following general steps:
+    </para>
+    <orderedlist>
+      <listitem><para>Partitioning</para>
+      </listitem>
+      <listitem><para>Formatting and Mounting Filesystems</para>
+      </listitem>
+      <listitem><para>Installing Base System</para>
+      </listitem>
+      <listitem><para>Configuring Base System</para>
+      </listitem>
+      <listitem><para>Installing Kernel</para>
+      </listitem>
+      <listitem><para>Installing Grub</para>
+      </listitem>
+      <listitem><para>Rebooting into new system</para>
+      </listitem>
+    </orderedlist>
+  </chapter>
+
 </book>
 
 <!--
