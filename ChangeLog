@@ -2,6 +2,40 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-08-02 13:46:40 GMT	John Goerzen <jgoerzen@complete.org>	patch-96
+
+    Summary:
+      Merged with jordens (no actual changes to code)
+    Revision:
+      dfsbuild--head--0.5--patch-96
+
+    Patches applied:
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-49
+       star merge john
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-50
+       star-merge john
+    
+
+    modified files:
+     ChangeLog
+
+    modified directories:
+     {arch}/dfsbuild {arch}/dfsbuild/dfsbuild--head
+     {arch}/dfsbuild/dfsbuild--head/dfsbuild--head--0.5
+     {arch}/dfsbuild/dfsbuild--head/dfsbuild--head--0.5/jgoerzen@complete.org--projects
+     {arch}/dfsbuild/dfsbuild--head/dfsbuild--head--0.5/jgoerzen@complete.org--projects/patch-log
+     {arch}/dfsbuild/dfsbuild--jordens
+     {arch}/dfsbuild/dfsbuild--jordens/dfsbuild--jordens--0.5
+     {arch}/dfsbuild/dfsbuild--jordens/dfsbuild--jordens--0.5/jordens@debian.org--debian--2004
+     {arch}/dfsbuild/dfsbuild--jordens/dfsbuild--jordens--0.5/jordens@debian.org--debian--2004/patch-log
+
+    new patches:
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-49
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-50
+
+
 2004-06-18 01:24:41 GMT	John Goerzen <jgoerzen@complete.org>	patch-95
 
     Summary:
