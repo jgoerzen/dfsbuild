@@ -45,7 +45,7 @@
 	</listitem>
 	<listitem><para>Kernel and userland support for all major
 	    filesystems, including ext2, ext3, JFS, XFS, ReiserFS,
-	    FAT, VFAT, NTFS, ISO9660, CramFS, tmpfs, and more.
+	    FAT, VFAT, NTFS, ISO9660, CramFS, tmpfs, and more.  Userland support for Reiser4.
 	  </para>
 	</listitem>
 	<listitem><para>Kernel and userland support for different disk
@@ -88,8 +88,6 @@
               </para>
 	    </listitem>
             <listitem><para>Mail reader (mutt)</para>
-            </listitem>
-            <listitem><para>User-Mode-Linux (UML)</para>
             </listitem>
           </itemizedlist>
 	</listitem>
