@@ -390,6 +390,8 @@ iface eth0 inet static
 	  </listitem>
 	  <listitem><para>i386: <command>mkdir /boot/grub; cp
                 /usr/lib/grub/i386-pc/* /boot/grub</command></para>
+                <para>If your /boot is its own partition, also run
+                 <command>cd /boot; ln -s . boot</command>.</para>
 	    <note><para>
 	      amd64 did not have a grub package as of the last check.
 	      However, you can simulate it; just 

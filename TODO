@@ -6,5 +6,12 @@
 
  * Support standard Debian kernels or other .debs that expect to
    have module support on the initrd.
+ 
+ * [config] user-specified args for cdebootstrap
+
+ * [config] user-specified mkisofs args
+
+ * [config] option to drop user into shell if various actions fail
+   (package install, kernel install, etc.)
 
 arch-tag: to do list
