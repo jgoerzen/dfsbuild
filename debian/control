@@ -7,7 +7,7 @@ Standards-Version: 3.6.0
 
 Package: dfsbuild
 Architecture: i386 alpha powerpc
-Depends: ${shlibs:Depends}, ${misc:Depends}, cdebootstrap, mkisofs, apt-move, grub [i386], aboot [alpha], yaboot [powerpc], cramfsprogs
+Depends: ${shlibs:Depends}, ${misc:Depends}, cdebootstrap, mkisofs, apt-move, cramfsprogs, ${dep${Arch}}
 Description: Build Debian From Scratch CD/DVD images
  Debian From Scratch (DFS) is a live bootable CD that is designed to
  provide a fully-featured kernel and a fully-featured rescue environment.

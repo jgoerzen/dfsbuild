@@ -100,7 +100,10 @@ binary-arch: build install
 #	dh_makeshlibs
 	dh_installdeb
 	dh_shlibdeps
-	dh_gencontrol
+	dh_gencontrol -- \
+		"-Vdepi386=grub" \
+		"-Vdepalpha=aboot" \
+		"-Vdeppowerpc=yaboot"
 	dh_md5sums
 	dh_builddeb
 

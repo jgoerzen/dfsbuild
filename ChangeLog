@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-04 18:17:18 GMT	John Goerzen <jgoerzen@complete.org>	patch-77
+
+    Summary:
+      Fixed Depends: line in dfsbuild.  This is 0.6.4.
+    Revision:
+      dfsbuild--head--0.5--patch-77
+
+
+    modified files:
+     ChangeLog debian/changelog debian/control debian/rules
+
+
 2004-06-03 13:40:08 GMT	John Goerzen <jgoerzen@complete.org>	patch-76
 
     Summary:

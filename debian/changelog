@@ -5,6 +5,7 @@ dfsbuild (0.6.4) unstable; urgency=low
   * Merged in experimental PowerPC/Yaboot support from
     Robert Jordens <jordens@debian.org>
   * Added Alpha/SRM info to manual
+  * Fixed Depends line in dfsbuild .deb.
 
  -- John Goerzen <jgoerzen@complete.org>  Tue,  1 Jun 2004 21:16:15 -0500
 
