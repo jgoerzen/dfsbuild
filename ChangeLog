@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-02 13:31:56 GMT	John Goerzen <jgoerzen@complete.org>	patch-72
+
+    Summary:
+      Better fix for cp; preserve links for ld* only
+    Revision:
+      dfsbuild--head--0.5--patch-72
+
+
+    modified files:
+     ChangeLog dfsbuild.ml
+
+
 2004-06-02 13:28:46 GMT	John Goerzen <jgoerzen@complete.org>	patch-71
 
     Summary:

@@ -113,7 +113,8 @@ let preprd cp libdir target =
   (*
   chr ["sh"; "-c"; "cp -v /lib/libc.so* /lib/libm.so* /lib/libdl.so* /lib/ld-linux.so* /opt/initrd/lib"];
   *)
-  chr ["sh"; "-c"; "cp -dv /lib/libc.so* /lib/ld* /opt/initrd/lib"];
+  chr ["sh"; "-c"; "cp -dv /lib/ld* /opt/initrd/lib"];
+  chr ["sh"; "-c"; "cp -v /lib/libc.so* /opt/initrd/lib"];
   chr ["cp"; "-v"; "/bin/busybox"; "/opt/initrd/bin"];
   chr ["cp"; "-v"; "/usr/sbin/chroot"; "/opt/initrd/usr/sbin/"];
   chr ["cp"; "-v"; "/sbin/pivot_root"; "/opt/initrd/sbin/"];
