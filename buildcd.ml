@@ -112,7 +112,7 @@ let installkernels cp target =
   List.iter (fun x ->
     let os s = output_string sd (s ^ "\n") in
     os ("title  Boot " ^ x);
-    os ("kernel /boot/" ^ (Filename.basename x));
+    os ("kernel /boot/" ^ (Filename.basename x) ^ " single");
     os ("initrd /opt/dfsruntime/initrd.dfs");
     os ("boot\n");
   ) kernlist;
@@ -139,7 +139,7 @@ let installlib libdir imageroot =
   p "Installing runtime library files.";
   List.iter (fun x -> 
     run "cp" [libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
-    ["linuxrc"];;
+    ["startup"];;
 
 let mkiso wdir imageroot =
   p "Preparing ISO image";

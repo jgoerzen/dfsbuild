@@ -6,9 +6,6 @@ open Unix;;
 open Dfsutils;;
 open Strutil;;
 
-let p = print_endline;;
-let pn s = print_string s; Pervasives.flush Pervasives.stdout;;
-
 putenv "PATH" "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";;
 let mountloc = "/realroot";;
 
