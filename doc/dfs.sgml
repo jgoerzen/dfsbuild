@@ -1,0 +1,125 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+  <!ENTITY index SYSTEM "index/index.sgml">
+]>
+
+<book id="dfs">
+  <bookinfo>
+    <title>Using Debian From Scratch</title>
+    <author>
+      <firstname>John</firstname> <surname>Goerzen</surname>
+    </author>
+    <address><email>jgoerzen@complete.org</email></address>
+    <legalnotice>
+      FIXME: add copyright here
+    </legalnotice>
+  </bookinfo>
+
+
+  <chapter id="intro">
+    <title>Introduction to DFS</title>
+    <para>
+      Welcome to Debian From Scratch (DFS).  DFS is really two
+      systems: 1) a bootable CD for repairing Linux systems or
+      installing Debian; and 2) the program that generates the CDs
+      that are used for #1.  Most of this manual focuses on #1.
+      A wide variety of DFS CDs can be made using the DFS build
+      tools.  This manual will refer to CDs made using the default
+      configuration.
+    </para>
+    <sect1 id="features">
+      <title>DFS Features</title>
+      <para>
+	You can expect the following from your DFS CD:
+      </para>
+      <itemizedlist>
+	<listitem><para>Bootable CD featuring the GNU Grub
+	    bootloader.  Can be used to boot hard disk partitions even
+	    if no hard disk bootloader is present.</para>
+	</listitem>
+	<listitem><para>Kernel and userland support for all major
+	    filesystems, including ext2, ext3, JFS, XFS, ReiserFS,
+	    FAT, VFAT, NTFS, ISO9660, CramFS, tmpfs, and more.
+	  </para>
+	</listitem>
+	<listitem><para>Kernel and userland support for different disk
+	    layout schemes including standard partitioning, Logical
+	    Volume Manager 2 (LVM2), software RAID, etc.
+	  </para>
+	</listitem>
+	<listitem><para>Full recovery tools runnable directly from CD,
+	    including:
+	  </para>
+	  <itemizedlist>
+	    <listitem><para>Filesystem utilities</para>
+	    </listitem>
+	    <listitem><para>Partition editors (fdisk, cfdisk, parted)</para>
+	    </listitem>
+	    <listitem><para>Text editors (nano, joe, vim, emacs)</para>
+	    </listitem>
+	    <listitem><para>C, Perl, Python, and OCaml development
+		environments.  Enough to configure and compile a new
+		kernel and build basic .debs.</para>
+	    </listitem>
+	    <listitem><para>Full networking support, including PPP and
+		various Ethernet cards and DHCP</para>
+	    </listitem>
+	    <listitem><para>Network tools including FTP clients, Web
+		client, ssh, telnet, NFS, smbclient, tcpdump, netcat, etc.
+	      </para>
+	    </listitem>
+	    <listitem><para>Backup restoration tools such as
+		rdiff-backup, dump/restore, tar, cpio, amanda client,
+		afbackup client, etc.</para>
+	    </listitem>
+	    <listitem><para>CD and DVD burning tools</para>
+	    </listitem>
+	    <listitem><para>Basic printing tools</para>
+	    </listitem>
+	  </itemizedlist>
+	</listitem>
+	<listitem><para>Base systems for multiple versions of Debian
+	    installable directly from CD, including: woody (i386),
+	    sarge (i386), sid (i386), and sid (amd64).
+	  </para>
+	</listitem>
+	<listitem><para>i386 or x86_64 (amd64) kernels bootable
+	    directly from initial boot menu.</para>
+	</listitem>
+	<listitem><para>DFS generation scripts support custom kernels,
+	    packages, mirrors, compressed ISO images, and a high
+	    degree of flexibility.
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect1>
+
+
+
+      
+      John G
+  &ch.intro;
+  &ch.getstart;
+  &ch.import;
+  &ch.regular;
+
+  <appendix id="tbp.man.reference">
+    <title>Command Reference</title>
+    &man.tbp.importdsc;
+    &man.tbp.importorig;
+    &man.tbp.markdeb;
+    &man.tbp.initarchive;
+    &man.tla.buildpackage;
+  </appendix>
+
+  &index;
+</book>
+
+<!--
+Local Variables:
+mode: sgml
+sgml-set-face: T
+End:
+
+# arch-tag: top-level whole manual file
+-->
+    
