@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-10-28 16:09:54 GMT	John Goerzen <jgoerzen@complete.org>	patch-112
+
+    Summary:
+      update dfs.cfg with more recent kernels
+    Revision:
+      dfsbuild--head--0.5--patch-112
+
+
+    modified files:
+     ChangeLog dfs.cfg
+
+
 2004-10-28 16:05:22 GMT	John Goerzen <jgoerzen@complete.org>	patch-111
 
     Summary:
