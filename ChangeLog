@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-27 23:55:51 GMT	John Goerzen <jgoerzen@complete.org>	patch-43
+
+    Summary:
+      Fixed a bug with rm not forcing always
+    Revision:
+      dfsbuild--head--0.5--patch-43
+
+
+    modified files:
+     ChangeLog utils/shellutil.ml
+
+
 2004-05-27 23:45:54 GMT	John Goerzen <jgoerzen@complete.org>	patch-42
 
     Summary:
