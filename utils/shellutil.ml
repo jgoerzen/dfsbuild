@@ -48,13 +48,13 @@ let rm ?(recursive=false) ?(force=false) filename =
     with (Unix.Unix_error _) as exc ->
       if not force then raise exc
   in
-  if recursive then
-    recurse_cmd recunl filename
-  else
-    try
+  try
+    if recursive then
+      recurse_cmd recunl filename
+    else
       recunl (Unix.lstat filename) filename
-    with (Unix.Unix_error _) as exc ->
-      if not force then raise exc;;
+  with (Unix.Unix_error _) as exc ->
+    if not force then raise exc;;
 
 let installrd_cramfs target =
   run "mkcramfs" [target ^ "/opt/initrd"; target ^

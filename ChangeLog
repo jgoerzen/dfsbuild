@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-28 15:48:51 GMT	John Goerzen <jgoerzen@complete.org>	patch-52
+
+    Summary:
+      Really fixed the bug in rm this time.
+    Revision:
+      dfsbuild--head--0.5--patch-52
+
+
+    modified files:
+     ChangeLog utils/shellutil.ml
+
+
 2004-05-28 15:10:03 GMT	John Goerzen <jgoerzen@complete.org>	patch-51
 
     Summary:
