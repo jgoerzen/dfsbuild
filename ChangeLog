@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-02 13:28:46 GMT	John Goerzen <jgoerzen@complete.org>	patch-71
+
+    Summary:
+      [powerpc] Add mac-fdisk to arch packages
+    Revision:
+      dfsbuild--head--0.5--patch-71
+
+
+    modified files:
+     ChangeLog dfs.cfg
+
+
 2004-06-02 13:24:42 GMT	John Goerzen <jgoerzen@complete.org>	patch-70
 
     Summary:
