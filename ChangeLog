@@ -2,6 +2,20 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-08-18 21:45:33 GMT	John Goerzen <jgoerzen@complete.org>	patch-108
+
+    Summary:
+      * Added patch from Ken Yamaguchi to wait for USB devices to settle.
+    Revision:
+      dfsbuild--head--0.5--patch-108
+
+    Keywords: 
+    
+
+    modified files:
+     ChangeLog debian/changelog libsrc/linuxrc.ml
+
+
 2004-08-12 14:54:18 GMT	John Goerzen <jgoerzen@complete.org>	patch-107
 
     Summary:

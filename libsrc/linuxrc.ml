@@ -52,6 +52,8 @@ let getcddev () =
     run "busybox" ["mount"; "-n"; "-t"; "proc"; "none"; "/proc"];
     let cline = getfirstline "/proc/cmdline" in
     run "busybox" ["umount"; "/proc"];
+    p "Sleeping for 5 seconds to wait for any USB devices.";
+    run "busybox" ["sleep"; "5"];
     let r = regexp "dfscd=\\([^ ]+\\)" in
     if string_match r cline 0 then begin
       let dev = matched_group 1 cline in
