@@ -38,8 +38,8 @@ lib/startup: dfsutils.cmx shellutil.cmx lib/startup.cmx
 buildcd.cmx: cashutil.cmx configfiles.cmx
 
 %.cmx: %.ml
-	ocamlfind ocamlopt $(PACKAGES) -c -o $@ $<
+	ocamlfind ocamlopt $(PACKAGES) -warn-error A -c -o $@ $<
 
 %.cmo: %.ml
-	ocamlfind ocamlc $(PACKAGES) -c -o $@ $<
+	ocamlfind ocamlc $(PACKAGES) -warn-error A -c -o $@ $<
 

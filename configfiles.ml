@@ -8,7 +8,8 @@ let writecfgfiles basedir =
     close_out outfd
   in
   let a fn s =
-    let outfd = open_out_gen [Open_append; Open_wronly; Open_creat] 0o644 fn in
+    let outfd = open_out_gen [Open_append; Open_wronly; Open_creat] 0o644
+    (basedir ^ fn) in
     output_string outfd s;
     close_out outfd
   in
@@ -37,7 +38,12 @@ reboot                      Reboot the system
 /etc/init.d/pcmcia start    Initialize PCMCIA subsystem
 nano, vim, joe, or emacs    Text editors
 EOF
-"
-  i "/etc/hostname" "dfs\n";
+";
+  w "/etc/hostname" "dfs\n";
 ;;
 
+let fixrc target =
+  Cashutil.rm ~recursive:true (target ^ "/etc/rc2.d");
+  Cashutil.run "cp" ["-r"; (target ^ "/etc/rc1.d"); (target ^ "/etc/rc2.d")];
+  List.iter (fun x -> Cashutil.rm x) (Cash.glob [target ^ "/etc/rc2.d/S*single"]);
+;;

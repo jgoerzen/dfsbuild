@@ -126,7 +126,7 @@ let installkernels cp target =
   List.iter (fun x ->
     let os s = output_string sd (s ^ "\n") in
     os ("title  Boot " ^ x);
-    os ("kernel /boot/" ^ (Filename.basename x) ^ " root=/dev/ram0 single");
+    os ("kernel /boot/" ^ (Filename.basename x) ^ " root=/dev/ram0");
     os ("initrd /opt/dfsruntime/initrd.dfs");
     os ("boot\n");
   ) newkerns;
@@ -176,6 +176,8 @@ let _ =
   dlmirrors cp wdir;
   cdebootstrap cp imageroot wdir;
   installpkgs cp imageroot;
+  Configfiles.writecfgfiles imageroot;
+  Configfiles.fixrc imageroot;
   installrd cp libdir imageroot;
   installkernels cp imageroot; 
   installlib libdir imageroot;
