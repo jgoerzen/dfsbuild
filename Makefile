@@ -24,6 +24,15 @@ dfsbuild: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
 	ocamlfind ocamlopt $(PACKAGES) -linkpkg \
 		-o $@ $^
 
+
+dfsbuild.bc: utils/dfsutils.cmo utils/unixutil.cmo utils/shellutil.cmo \
+	archsupport.cmo mirror.cmo \
+	configfiles.cmo bootloaders/grub.cmo bootloaders/aboot.cmo \
+	bootloaders/bootloader.cmo \
+	dfsbuild.cmo
+	ocamlfind ocamlc -g $(PACKAGES) -linkpkg \
+		-o $@ $^
+
 test: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx  test.cmx
 	ocamlfind ocamlopt -compact $(PACKAGES) -linkpkg \
 		-o $@ $^

@@ -20,6 +20,7 @@ let writebuildinfo cp target =
 
 let getidstring cp =
   Printf.sprintf "%s %s (%s)" (get cp "name") (get cp "version") datestr;;
+
 let writecfgfiles cp basedir =
   let w fn s =
     let outfd = open_out (basedir ^ fn) in
@@ -45,18 +46,18 @@ let writecfgfiles cp basedir =
     List.iter (fun fn -> w fn (cp#get "createfiles" fn))
       (cp#options "createfiles");
   end;
-  try 
-    List.iter (fun x -> Unix.mkdir (basedir ^ x) 0o755)
-      (split_ws (get cp "makedirs"))
-  with Not_found -> ();
   if cp#has_section "symlinks" then begin
-    List.iter (fun from -> Unix.symlink (cp#get "symlinks" from) (basedir ^
+    List.iter (fun from -> p("Symlinking " ^ from); Unix.symlink (cp#get "symlinks" from) (basedir ^
     from))
       (cp#options "symlinks");
   end;
   try
-    List.iter (fun x -> rm ~force:true (basedir ^ x))
+    List.iter (fun x -> p("Deleting " ^ x); rm ~force:true (basedir ^ x))
       (glob (split_ws (get cp "deletefiles")))
+  with Not_found -> ();
+  try 
+    List.iter (fun x -> Unix.mkdir (basedir ^ x) 0o755)
+      (split_ws (get cp "makedirs"))
   with Not_found -> ();
 ;;
 
