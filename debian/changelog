@@ -1,7 +1,7 @@
 dfsbuild (0.6.5) unstable; urgency=low
 
   * Updated to use MissingLib 0.4.0.  Reduced some code complexity
-    and removed some now-obsolete code.
+    and removed some now-obsolete code.  Closes: #253586.
   * i386 image: 0.6.3 image lacked amd64 packages.  Fixed.
   * i386 image: Added support for Compaq array controllers.
 
