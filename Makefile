@@ -2,10 +2,13 @@
 # Copyright (c) 2004 John Goerzen
 #
 PACKAGES := -package shell -package missinglib
-all:	buildcd lib/linuxrc lib/startup
+all:	buildcd lib lib/linuxrc lib/startup
+
+lib:
+	if [ ! -d lib ] ; then mkdir lib; fi
 
 clean:
-	-rm -f buildcd lib/linuxrc lib/startup
+	-rm -rf buildcd lib
 	-rm -f `find . -name "*.cm*"`
 	-rm -f `find . -name "*~"`
 
@@ -24,13 +27,13 @@ lib/startup.cmx: dfsutils.cmx shellutil.cmx
 mirror.cmx: dfsutils.cmx shellutil.cmx
 mirror.cmo: dfsutils.cmo shellutil.cmo
 
-lib/linuxrc: dfsutils.cmx shellutil.cmx lib/linuxrc.cmx
+lib/linuxrc: dfsutils.cmx shellutil.cmx libsrc/linuxrc.cmx
 	ocamlfind ocamlopt -cclib -static -cclib --unresolved-symbols=ignore-all \
 	$(PACKAGES) -linkpkg \
 		-o $@ $^
 	strip -s $@
 
-lib/startup: dfsutils.cmx shellutil.cmx lib/startup.cmx
+lib/startup: dfsutils.cmx shellutil.cmx libsrc/startup.cmx
 	ocamlfind ocamlopt -cclib -static -cclib --unresolved-symbols=ignore-all \
 	$(PACKAGES) -linkpkg -o $@ $^
 	strip -s $@
