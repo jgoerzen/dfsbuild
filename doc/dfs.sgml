@@ -68,7 +68,7 @@
 	    <listitem><para>C, Perl, Python, and OCaml development
 		environments.  Enough to configure and compile a new
 		kernel and build basic .debs.  Kernel 2.6.6 sources
-              included on CD.</para>
+                included on CD.</para>
 	    </listitem>
 	    <listitem><para>Full networking support, including PPP and
 		various Ethernet cards and DHCP</para>
@@ -241,8 +241,10 @@
         or more different kernel images.  Select one appropriate for
         your system.  If a given image says "amd64", this should only
         be used on amd64 systems such as Opteron or Athlon64 system.
-	Note: if you intend to install a 64-bit amd64 system, you must
-	boot from the 64-bit amd64 kernel.
+	<emphasis>
+          Note: if you intend to install a 64-bit amd64 system, you MUST
+          boot from the 64-bit amd64 kernel.
+        </emphasis>
       </para>
     </sect1>
     <sect1 id="dfsboot-selcd">
@@ -371,7 +373,8 @@ iface eth0 inet static
 	<para>You should copy your
 	  <filename>/etc/resolv.conf</filename> to the new system.
 	  Then, configure its
-	  <filename>/etc/apt/sources.list</filename> and
+	  <filename>/etc/apt/sources.list</filename>,
+          <filename>/etc/fstab</filename>, and
 	  <filename>/etc/network/interfaces</filename>.  Then,
 	  <filename>chroot /mnt</filename> and:
 	</para>
