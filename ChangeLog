@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-28 13:53:51 GMT	John Goerzen <jgoerzen@complete.org>	patch-46
+
+    Summary:
+      Noted yaboot dep for .deb
+    Revision:
+      dfsbuild--head--0.5--patch-46
+
+
+    modified files:
+     ChangeLog debian/control
+
+
 2004-05-28 13:32:45 GMT	John Goerzen <jgoerzen@complete.org>	patch-45
 
     Summary:
