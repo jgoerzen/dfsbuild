@@ -1,0 +1,4 @@
+#!/bin/sh
+# arch-tag: Display DFS build information
+exec cat /opt/dfsruntime/buildinfo
+

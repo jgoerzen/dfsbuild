@@ -155,7 +155,12 @@ let installkernels cp target =
     os ("initrd /opt/dfsruntime/initrd.dfs");
     os ("boot\n");
   ) newkerns;
+  output_string sd "title Test menu\nconfigfile /boot/grub/test.lst\n";
   Pervasives.close_out sd;
+  let sd2 = open_out (target ^ "/boot/grub/test.lst") in
+  output_string sd2 "color cyan/blue white/red\n";
+  output_string sd2 "title Main menu\nconfigfile /boot/grub/menu.lst\n";
+  Pervasives.close_out sd2;
 ;;
 
 let preprd cp imageroot =
@@ -178,10 +183,10 @@ let installlib libdir imageroot =
   p "Installing runtime library files.";
   List.iter (fun x -> 
     run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
-    ["startup"; "dfs.html"; "dfs.txt"; "dfs.pdf"; "dfs.ps"];
+    ["startup"; "dfs.html"; "dfs.txt"; "dfs.pdf"; "dfs.ps"; "elinks.html"];
   List.iter (fun x ->
     run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/usr/local/bin/"])
-    ["dfshelp"];
+    ["dfshelp"; "dfshints"; "dfsbuildinfo"];
 ;;
 
 let mkiso cp wdir imageroot =
@@ -216,6 +221,7 @@ let _ =
   installdebs cp imageroot;
   Configfiles.writecfgfiles cp imageroot;
   Configfiles.fixrc imageroot;
+  Configfiles.writebuildinfo cp imageroot;
   installrd cp libdir imageroot;
   installkernels cp imageroot; 
   preprd cp imageroot;

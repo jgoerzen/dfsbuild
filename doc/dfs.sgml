@@ -103,6 +103,7 @@
 
   <chapter id="booting">
     <title>Booting DFS</title>
+    <indexterm><primary>Booting</></>
     <para>
       Booting DFS usually is as simple as inserting a CD into the
       drive.  DFS can boot from an IDE or SCSI CD-ROM.  On some
@@ -122,6 +123,9 @@
     </sect1>
     <sect1 id="dfsboot-hardware">
       <title>Detecting Hardware</title>
+      <indexterm><primary>Hardware</><secondary>Detecting</></>
+      <indexterm><primary>discover</></>
+      <indexterm><primary>USB</></>
       <para>
         Some hardware will automatically be configured.  You can
         attempt to autodetect more hardware by running
@@ -133,15 +137,25 @@
         Tools such as <command>lspci</command> can help you find out
         what hardware you have that needs to be loaded.
       </para>
-    </sect1>
-    <sect1 id="network">
-      <title>Enabling Networking</title>
       <para>
+        <indexterm><primary>PCMCIA</></>
+        If you have PCMCIA devices, run <command>/etc/init.d/pcmcia
+          start</command>.
+      </para>
+    </sect1>
+
+    <sect1 id="ethernet">
+      <title>Enabling Ethernet</title>
+      <indexterm><primary>Ethernet</><see>Networking, Ethernet</></>
+      <indexterm><primary>Networking</><secondary>Ethernet</></>
+      <para>
+        <indexterm><primary>ifup</primary></indexterm>
         If your network hardware was detected and your LAN uses DHCP,
         you can simply say <command>ifup eth0</command>.  Your network
         will be activated.
       </para>
       <para>
+        <indexterm><primary>/etc/network/interfaces</></>
         If your LAN does not use DHCP, you will need to edit
         <filename>/etc/networking/interfaces</filename>.  You should
         delete the eth0 line and replace it with something along these
@@ -152,9 +166,33 @@ iface eth0 inet static
     netmask 255.255.255.0
     gateway 192.168.0.1
       </screen>
-      <para>Then run <command>ifup eth0</command>.
+      <para>Then run <command>ifup eth0</command>.  You'll also need
+        to edit <filename>/etc/resolv.conf</filename> and add a line
+        such as <command>nameserver 192.168.0.1</command> to specify
+        your nameserver.  (If you run DHCP, this is usually taken care
+        of for you, but you may occasionally need to do it anyway.)
       </para>
+      <sect2 id="wireless">
+        <title>Wireless Networking</title>
+        <indexterm><primary>Networking</><secondary>Wireless</></>
+        <indexterm><primary>Wireless</><see>Networking, Wireless</></>
+        <para>
+          If you are using wireless networking, first make sure that
+          your hardware is detected.  Sometimes the device name is not
+          eth0; if so, figure out what your device is called.  If your
+          network is open -- has no encryption -- you should be able
+          to enable your wireless device the same as a wired device.
+          Otherwise, you will need to modify
+          <filename>/etc/network/interfaces</filename> as described in
+          the file
+          <filename>/usr/share/doc/wireless-tools/README.Debian</filename> on the live DFS system.
+        </para>
+      </sect2>
+
     </sect1>
+
+    <!-- 
+    <sect1 id="dfsboot.ppp"> -->
     
   </chapter>
 
@@ -165,6 +203,8 @@ iface eth0 inet static
     </para>
     <orderedlist>
       <listitem><para>Partitioning</para>
+      </listitem>
+      <listitem><para>Initialize and mount swap</para>
       </listitem>
       <listitem><para>Formatting and Mounting Filesystems</para>
       </listitem>

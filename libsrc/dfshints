@@ -1,0 +1,24 @@
+#!/bin/sh
+# arch-tag: dfshints: display useful hints
+
+dfsbuildinfo
+cat <<EOF
+Here are some useful DFS commands:
+
+Command                     Description
+--------------------------- -------------------------------------------------
+dfshelp                     Access primary DFS documentation.  Describes
+                            network configuration, Debian installation,
+                            more system usage.
+dfshints                    Display this information
+reboot                      Reboot the system
+elinks                      Web browser
+lftp                        FTP client
+/etc/init.d/lvm2 start      Initialize LVM subsystem
+/etc/init.d/discover start  Autodetect hardware
+/etc/init.d/hotplug start   Initialize support for USB devices
+/etc/init.d/pcmcia start    Initialize PCMCIA subsystem
+nano, vim, joe, or emacs    Text editors
+Alt-F1 through Alt-F6       Switch to other virtual terminals
+Alt-F7, Alt-F8              Display log (F7) or debug (F8) messages
+EOF

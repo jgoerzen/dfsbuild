@@ -37,7 +37,7 @@ let mirror_data cp repos target mirrordir  workdir =
     let archargs = if cp#has_option sect "arch" then
       ["-a"; cp#get sect "arch"]
     else [] in
-    run "cdebootstrap" (archargs @ ["-d"; suite; target; mirror]);
+    run "cdebootstrap" (archargs @ ["--debug"; "-v"; "-d"; suite; target; mirror]);
     let cfgfilename = workdir ^ "/apt-move.conf" in
     let cfd = open_out cfgfilename in
     fprintf cfd "LOCALDIR=%s\n" mirrordir;
@@ -71,12 +71,12 @@ let mirror_data cp repos target mirrordir  workdir =
       then 
         create_symlink suite (sprintf "%s/dists/%s" mirrordir codename);
     end;
+    run "rm" ("-v" :: glob [sprintf "%s/var/lib/apt/lists/*" target]);
     (*
     rm cfgfilename;
     *)
 
   in
-  p "mirror_data";
   List.iter procrepo repos;
   (*
   rm ~recursive:true target;
