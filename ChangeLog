@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-07 19:44:05 GMT	John Goerzen <jgoerzen@complete.org>	patch-85
+
+    Summary:
+      Post-merge fix: re-genericize configParser -> rawConfigParser
+    Revision:
+      dfsbuild--head--0.5--patch-85
+
+
+    modified files:
+     ChangeLog dfsbuild.ml
+
+
 2004-06-07 19:43:08 GMT	John Goerzen <jgoerzen@complete.org>	patch-84
 
     Summary:
