@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-26 19:34:35 GMT	John Goerzen <jgoerzen@complete.org>	patch-32
+
+    Summary:
+      This is 0.6.2
+    Revision:
+      dfsbuild--head--0.5--patch-32
+
+
+    modified files:
+     ChangeLog cashutil.ml configfiles.ml
+
+
 2004-05-26 18:27:03 GMT	John Goerzen <jgoerzen@complete.org>	patch-31
 
     Summary:

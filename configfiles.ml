@@ -48,12 +48,13 @@ let writecfgfiles cp basedir =
       (split_ws (cp#get "cd" "makedirs"))
   end;
   if cp#has_section "symlinks" then begin
-    List.iter (fun from -> Unix.symlink (cp#get "symlinks" from) from)
+    List.iter (fun from -> Unix.symlink (cp#get "symlinks" from) (basedir ^
+    from))
       (cp#options "symlinks");
   end;
   if cp#has_option "cd" "deletefiles" then begin
     List.iter (fun x -> rm ~force:true (basedir ^ x))
-      (split_ws (cp#get "cd" "deletefiles"))
+      (Cash.glob (split_ws (cp#get "cd" "deletefiles")))
   end;
 
 ;;

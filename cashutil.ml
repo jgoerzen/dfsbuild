@@ -39,7 +39,7 @@ let rm ?(recursive=false) ?(force=false) filename =
       else
         Unix.unlink name
     with (Unix.Unix_error _) as exc ->
-      if not force; then raise exc;
+      if not force then raise exc
   in
   if recursive then
     recurse_cmd recunl filename
