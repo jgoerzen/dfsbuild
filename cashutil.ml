@@ -32,17 +32,7 @@ let rec recurse_cmd f startname = recurse_cmd_do f (abspath startname);;
 
 exception RMError of string;;
 let rm ?(recursive=false) ?(force=false) filename =
-  print_endline "this is rm";
   let recunl info name = 
-    print_endline "foo";
-    print_endline (match info.st_kind with
-      S_REG -> "reg"
-    | S_DIR -> "dir"
-    | S_CHR -> "chr"
-    | S_BLK -> "blk"
-    | S_LNK -> "lnk"
-    | S_FIFO -> "fifo"
-    | S_SOCK -> "sock");
     try
       if info.st_kind = S_DIR then 
         Unix.rmdir name

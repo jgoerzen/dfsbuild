@@ -23,6 +23,11 @@ let genmarker () =
 let getdevices cp =
   let devlist = split_ws (cp#get "cd" "devices") in
   (String.concat "\n" devlist) ^ "\n";;
+
+let dlmirrors cp wdir =
+  let suites = split_ws (cp#get "cd" "dlsuites") in
+  let mirror = (cp#get "cd" "mirror") in
+  List.iter (fun x -> Mirror.mirror_workdir x mirror wdir) suites;;
   
 let writestring filename s =
   let sd = Pervasives.open_out filename in
@@ -47,9 +52,9 @@ let parsecmdline () =
     cp#readfile !cffile;
     (cp, !wdir));;
 
-let cdebootstrap cp target =
+let cdebootstrap cp target wdir =
   p ("Bootstrapping into " ^ target);
-  run "cdebootstrap" [cp#get "cd" "suite"; target; cp#get "cd" "mirror"];
+  run "cdebootstrap" [cp#get "cd" "suite"; target; "file://" ^ wdir ^ "/mirror"];
   writestring (target ^ "/etc/apt/sources.list") 
     ("deb " ^ (cp#get "cd" "mirror") ^ " " ^ (cp#get "cd" "suite") ^ " main\n");
 ;;
@@ -166,7 +171,8 @@ let _ =
   let wdir = getcwd () in
   let imageroot = wdir ^ "/image" in
   mkdir imageroot 0o755;
-  cdebootstrap cp imageroot;
+  dlmirrors cp wdir;
+  cdebootstrap cp imageroot wdir;
   installpkgs cp imageroot;
   installrd cp libdir imageroot;
   installkernels cp imageroot; 
