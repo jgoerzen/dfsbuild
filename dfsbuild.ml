@@ -209,12 +209,16 @@ let preprd cp imageroot =
   List.iter file2rd (glob (split_ws (cp#get "cd" "ramdisk_files")));
 ;;
 
-let installlib libdir imageroot =
+let installlib docdir libdir imageroot =
   p "Installing runtime library files.";
   List.iter (fun x -> 
     run "cp" ["-rL"; libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
-    ["startup"; "dfs.html"; "dfs.txt"; "dfs.pdf"; "dfs.ps"; "home.html"];
+    ["startup"; "dfs.html"];
   Unix.chmod (imageroot ^ "/opt/dfsruntime/startup") 0o755;
+  Unix.mkdir (imageroot ^ "/opt/dfsruntime/doc") 0o755;
+  List.iter (fun x ->
+    run "cp" ["-rL"; docdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/doc/"])
+    ["html"; "dfs.txt.gz"];
   List.iter (fun x ->
     run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/usr/local/bin/"];
     Unix.chmod (imageroot ^ "/usr/local/bin/" ^ x) 0o755)
@@ -246,7 +250,7 @@ let _ =
   dlmirrors cp wdir;
   cdebootstrap cp imageroot wdir;
   installpkgs cp imageroot;
-  installlib libdir imageroot;
+  installlib (cp#get "cd" "docdir") libdir imageroot;
   (* 
   compress cp wdir imageroot;
   *)
