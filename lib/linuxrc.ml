@@ -15,7 +15,7 @@ let getcddev () =
     let dev = "/dev/" ^ x in
     let canmount loc =
       try
-        runnoout "mount" ["-t"; "iso9660"; "-o"; "ro"; loc; mountloc];
+        runnoout "busybox" ["mount"; "-n"; "-t"; "iso9660"; "-o"; "ro"; loc; mountloc];
         true;
       with Shell.Subprocess_error x ->
         false;
@@ -35,7 +35,7 @@ let getcddev () =
         true
       end else begin
         p "Found a CD, but not proper DFS CD.";
-        run "umount" [mountloc];
+        run "busybox" ["umount"; "-n"; mountloc];
         false;
       end
     end else begin

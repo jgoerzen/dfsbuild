@@ -18,13 +18,16 @@ let getfirstline filename =
 let getlines filename =
   let fd = open_in filename in
   let retval = ref [] in
-  try
-    while true do
-      retval := (input_line fd) :: !retval
-    done
-  with End_of_file -> ();
+  begin
+    try
+      while true do
+        retval := (input_line fd) :: !retval
+      done
+    with End_of_file -> ();
+  end;
   close_in fd;
-  !retval;;
+  !retval;
+;;
 
 let exec_passing_args filename =
   let args = Array.copy Sys.argv in

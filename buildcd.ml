@@ -82,13 +82,15 @@ let installrd cp libdir target =
   (*
   chr ["sh"; "-c"; "cp -v /lib/libc.so* /lib/libm.so* /lib/libdl.so* /lib/ld-linux.so* /opt/initrd/lib"];
   *)
+  chr ["sh"; "-c"; "cp -v /lib/libc.so* /lib/ld-linux.so* /opt/initrd/lib"];
   chr ["cp"; "-v"; "/bin/busybox"; "/opt/initrd/bin"];
   chr ["cp"; "-v"; "/usr/sbin/chroot"; "/opt/initrd/usr/sbin/"];
   chr ["cp"; "-v"; "/sbin/pivot_root"; "/opt/initrd/sbin/"];
   chr ["cp"; "-r"; "/dev"; "/opt/initrd/"];
+  (*
   run "mount" ["-t"; "proc"; "none"; target ^ "/opt/initrd/proc"];
   run "chroot" [target ^ "/opt/initrd"; "/bin/busybox"; "--install"];
-  run "umount" [target ^ "/opt/initrd/proc"];
+  run "umount" [target ^ "/opt/initrd/proc"]; *)
   if (is_file_existing_fn (target ^ "/opt/initrd/linuxrc")) then begin
     unlink (target ^ "/opt/initrd/linuxrc")
   end;
