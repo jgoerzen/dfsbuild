@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-10-29 00:41:21 GMT	John Goerzen <jgoerzen@complete.org>	patch-117
+
+    Summary:
+      Added dep on bash
+    Revision:
+      dfsbuild--head--0.5--patch-117
+
+
+    modified files:
+     ChangeLog debian/control
+
+
 2004-10-29 00:40:38 GMT	John Goerzen <jgoerzen@complete.org>	patch-116
 
     Summary:

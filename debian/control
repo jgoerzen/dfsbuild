@@ -2,12 +2,12 @@ Source: dfsbuild
 Section: utils
 Priority: optional
 Maintainer: John Goerzen <jgoerzen@complete.org>
-Build-Depends: debhelper (>= 4.0.0), gtk-doc-tools, sgml2x, docbook-utils, jade, lynx, scons, ocaml-nox, libextlib-ocaml-dev, libequeue-ocaml-dev, libmissinglib-ocaml-dev (>= 0.4.7), xpdf-utils
+Build-Depends: debhelper (>= 4.0.0), gtk-doc-tools, sgml2x, docbook-utils, jade, lynx, scons, ocaml-nox, libextlib-ocaml-dev, libequeue-ocaml-dev, libmissinglib-ocaml-dev (>= 0.4.7), xpdf-utils, bash
 Standards-Version: 3.6.0
 
 Package: dfsbuild
 Architecture: i386 alpha powerpc amd64
-Depends: ${shlibs:Depends}, ${misc:Depends}, ucf (>= 0.28), debconf, cdebootstrap, mkisofs, apt-move, cramfsprogs, ${dep${Arch}}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ucf (>= 0.28), debconf, cdebootstrap, mkisofs, apt-move, cramfsprogs, ${dep${Arch}}, bash
 Description: Build Debian From Scratch CD/DVD images
  Debian From Scratch (DFS) is a live bootable CD that is designed to
  provide a fully-featured kernel and a fully-featured rescue environment.
