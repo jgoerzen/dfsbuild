@@ -33,10 +33,13 @@ let _ =
   p " *** Debian From Scratch CD initializing ***";
   print_pid () ;
   Unix.chdir "/";
+
+  (*
   p "Umounting bootup initrd.";
   try
     run "umount" ["-n"; initrdloc];
   with Shell.Subprocess_error x -> ();
+  *)
   initruntimerd ();
   initcfgfiles ();
   p "";

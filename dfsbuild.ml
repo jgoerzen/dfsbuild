@@ -128,7 +128,7 @@ let installdebs cp imageroot =
   end;
   if cp#has_option "cd" "unpackdebs" then begin
     run "dpkg" (rootopt :: "--force-depends" :: "--force-conflicts" :: 
-         "--force-overwrite" :: "--unpack" 
+         "--force-overwrite" :: "--force-architecture" :: "--unpack" 
          :: (split_ws (cp#get "cd" "unpackdebs")));
   end;
 ;;
