@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-28 14:49:29 GMT	John Goerzen <jgoerzen@complete.org>	patch-49
+
+    Summary:
+      Updated version in dfs.cfg
+    Revision:
+      dfsbuild--head--0.5--patch-49
+
+
+    modified files:
+     ChangeLog dfs.cfg
+
+
 2004-05-28 14:42:59 GMT	John Goerzen <jgoerzen@complete.org>	patch-48
 
     Summary:
