@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-26 13:29:37 GMT	John Goerzen <jgoerzen@complete.org>	patch-27
+
+    Summary:
+      Added symlink generation support to fix /etc/mtab issue
+    Revision:
+      dfsbuild--head--0.5--patch-27
+
+
+    modified files:
+     ChangeLog configfiles.ml dfs.cfg
+
+
 2004-05-26 13:20:33 GMT	John Goerzen <jgoerzen@complete.org>	patch-26
 
     Summary:

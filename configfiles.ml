@@ -46,6 +46,9 @@ let writecfgfiles cp basedir =
     List.iter (fun x -> Unix.mkdir (basedir ^ x) 0o755)
       (split_ws (cp#get "cd" "makedirs"))
   end;
+  if cp#has_section "symlinks" then begin
+    List.iter (fun from -> Unix.symlink (cp#get "symlinks" from) from)
+      (cp#options "symlinks");
 
 ;;
 
