@@ -1,3 +1,9 @@
+dfsbuild (0.6.6) unstable; urgency=low
+
+  * Added build-dep on xpdf-utils.  Closes: #253853.
+
+ -- John Goerzen <jgoerzen@excelhustler.com>  Tue, 15 Jun 2004 07:26:05 -0500
+
 dfsbuild (0.6.5) unstable; urgency=low
 
   * Updated to use MissingLib 0.4.0.  Reduced some code complexity
