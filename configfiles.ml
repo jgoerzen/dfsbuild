@@ -1,58 +1,29 @@
 (* arch-tag: write config files
 *)
 
-let writecfgfiles basedir =
+let writecfgfiles cp basedir =
   let w fn s =
     let outfd = open_out (basedir ^ fn) in
     output_string outfd s;
+    output_string outfd "\n";
     close_out outfd
   in
   let a fn s =
     let outfd = open_out_gen [Open_append; Open_wronly; Open_creat] 0o644
     (basedir ^ fn) in
     output_string outfd s;
+    output_string outfd "\n";
     close_out outfd
   in
-  a "/etc/network/interfaces" "
-iface eth0 inet dhcp
+  if cp#has_section "appendfiles" then begin
+    List.iter (fun fn -> a fn (cp#get "appendfiles" fn))
+     (cp#options "appendfiles");
+  end;
+  if cp#has_section "createfiles" then begin
+    List.iter (fun fn -> a fn (cp#get "createfiles" fn))
+      (cp#options "createfiles");
+  end;
 
-iface eth1 inet dhcp
-
-iface eth2 inet dhcp
-
-iface wlan0 inet dhcp
-
-iface wlan2 inet dhcp
-
-iface ath0 inet dhcp
-";
-  a "/etc/issue" "
-Welcome to Debian From Scratch (DFS)
-
-To login, supply username \"root\" and just press Enter if asked for a
-password.
-";
-
-  a "/root/.bashrc" "
-cat <<EOF
-Welcome to Debian From Scratch (DFS)
-
-Here are some useful commands:
-
-Command                     Description
---------------------------- -------------------------------------------------
-dfshelp                     Access primary DFS documentation.  Describes
-                            network configuration, Debian installation,
-                            more system usage.
-reboot                      Reboot the system
-/etc/init.d/lvm2 start      Initialize LVM subsystem
-/etc/init.d/discover start  Autodetect hardware
-/etc/init.d/hotplug start   Initialize support for USB devices
-/etc/init.d/pcmcia start    Initialize PCMCIA subsystem
-nano, vim, joe, or emacs    Text editors
-EOF
-";
-  w "/etc/hostname" "dfs\n";
 ;;
 
 let fixrc target =

@@ -26,12 +26,17 @@ let find_codename target suite =
     !retval;
   with End_of_file -> !retval;;
 
-let mirror_data suites target mirrordir mirror workdir =
+let mirror_data cp suites target mirrordir  workdir =
   if is_file_existing_fn target then (rm ~recursive:true target);
   if not (is_file_existing_fn mirrordir) then 
     (mkdir mirrordir 0o755);
   let procsuite suite =
-    run "cdebootstrap" ["-d"; suite; target; mirror];
+    let sect = "repo " ^ suite in
+    let mirror = cp#get sect "mirror" in
+    let archargs = if cp#has_option sect "arch" then
+      ["-a"; cp#get sect "arch"]
+    else [] in
+    run "cdebootstrap" (archargs @ ["-d"; suite; target; mirror]);
     let cfgfilename = workdir ^ "/apt-move.conf" in
     let cfd = open_out cfgfilename in
     fprintf cfd "LOCALDIR=%s\n" mirrordir;
@@ -62,7 +67,7 @@ let mirror_data suites target mirrordir mirror workdir =
   rm ~recursive:true target;
 ;;
 
-let mirror_workdir suites mirror workdir =
-  mirror_data suites (workdir ^ "/target") (workdir ^ "/mirror") mirror workdir;;
+let mirror_workdir cp suites workdir =
+  mirror_data cp suites (workdir ^ "/target") (workdir ^ "/mirror") mirror workdir;;
 
 

@@ -25,9 +25,8 @@ let getdevices cp =
   (String.concat "\n" devlist) ^ "\n";;
 
 let dlmirrors cp wdir =
-  let suites = split_ws (cp#get "cd" "dlsuites") in
-  let mirror = (cp#get "cd" "mirror") in
-  Mirror.mirror_workdir suites mirror wdir;
+  let suites = split_ws (cp#get "cd" "dlrepos") in
+  Mirror.mirror_workdir cp suites wdir;
 ;;
   
 let writestring filename s =
