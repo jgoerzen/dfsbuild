@@ -38,5 +38,6 @@ reboot                      Reboot the system
 nano, vim, joe, or emacs    Text editors
 EOF
 "
+  i "/etc/hostname" "dfs\n";
 ;;
 
