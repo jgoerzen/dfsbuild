@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-28 13:32:45 GMT	John Goerzen <jgoerzen@complete.org>	patch-45
+
+    Summary:
+      Noted Alpha support.
+    Revision:
+      dfsbuild--head--0.5--patch-45
+
+
+    modified files:
+     ChangeLog debian/control
+
+
 2004-05-28 02:13:52 GMT	John Goerzen <jgoerzen@complete.org>	patch-44
 
     Summary:

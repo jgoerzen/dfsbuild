@@ -27,8 +27,6 @@ Description: Build Debian From Scratch CD/DVD images
  generated image can be used to install the base Debian system on a PC as
  well.
  .
- dfsbuild currently supports bootloaders from i386 only, but could easily
- be extended to support other architectures.  The generated CD, however,
- works on amd64 as well.
-
-
+ On i386 and amd64 platforms, dfsbuild supports the Grub bootloader.
+ .
+ On Alpha, dfsbuild supports the aboot bootloader.
