@@ -87,9 +87,22 @@ let installpkgs cp target =
 let compress cp wdir target =
   if (cp#getbool (getarch()) "compress") then begin
     p "Compressing image...";
+    let noncom = wdir ^ "/noncom" in
+    Unix.mkdir noncom 0o755;
+    let noncomfiles = if cp#has_option (getarch()) "dontcompress" then 
+      List.filter (fun x -> exists (target ^ x)) 
+        (split_ws (get cp "dontcompress")) 
+       else [] in
+    let noncommap = let rec m l c = match l with
+       [] -> [] | x :: xs -> (x, string_of_int c) :: m xs (c + 1) in
+       m noncomfiles 0 in
+    List.iter (fun (orig, tmp) -> Unix.rename (target ^ orig) (noncom ^ "/" ^
+      tmp)) noncommap;
     run "mkzftree" [target; wdir ^ "/zftree"];
     rm ~recursive:true target;
     Unix.rename (wdir ^ "/zftree") target;
+    List.iter (fun (orig, tmp) ->
+      Unix.rename (noncom ^ "/" ^ tmp) (target ^ orig)) noncommap;
   end;
 ;;
 
@@ -208,9 +221,6 @@ let _ =
   cdebootstrap cp imageroot wdir;
   installpkgs cp imageroot;
   installlib (get cp "docdir") libdir imageroot;
-  (* 
-  compress cp wdir imageroot;
-  *)
   installdebs cp imageroot;
   Configfiles.writecfgfiles cp imageroot;
   Configfiles.fixrc imageroot;
@@ -219,6 +229,7 @@ let _ =
   installkernels cp imageroot; 
   let isoargs, postisofunc = Bootloader.install cp wdir imageroot in
   preprtrd cp imageroot;
+  compress cp wdir imageroot;
   let isoname = mkiso cp wdir imageroot isoargs in
   postisofunc cp wdir imageroot isoname;
 ;;

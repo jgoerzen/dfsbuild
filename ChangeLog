@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-28 14:28:05 GMT	John Goerzen <jgoerzen@complete.org>	patch-47
+
+    Summary:
+      Fixed up mkzftree support
+    Revision:
+      dfsbuild--head--0.5--patch-47
+
+
+    modified files:
+     ChangeLog dfs.cfg dfsbuild.ml
+
+
 2004-05-28 13:53:51 GMT	John Goerzen <jgoerzen@complete.org>	patch-46
 
     Summary:
