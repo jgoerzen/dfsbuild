@@ -3,6 +3,7 @@ dfsbuild (0.6.3) unstable; urgency=low
   * Modularized bootloader code.
   * Introduced support for Alpha.
   * Eliminated dependency on Cash.
+  * Compression now works.  DFS image now compressed.
 
  -- John Goerzen <jgoerzen@complete.org>  Thu, 27 May 2004 20:18:26 -0500
 

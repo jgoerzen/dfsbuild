@@ -12,7 +12,7 @@ let newrdfiles = "/opt/dfsruntime/runtimerd";;
 
 let initruntimerd () =
   pn "Creating new runtime ramdisk: ";
-  run "mount" ["-t"; "tmpfs"; "none"; newrdloc];
+  run "mount" ["-n"; "-t"; "tmpfs"; "none"; newrdloc];
   p newrdloc;
 
   pn "Populating runtime ramdisk: ";

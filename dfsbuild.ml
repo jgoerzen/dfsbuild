@@ -96,7 +96,7 @@ let compress cp wdir target =
        m noncomfiles 0 in
     List.iter (fun (orig, tmp) -> print_endline ("Preserving " ^ orig);
       Unix.rename (target ^ orig) (noncom ^ "/" ^ tmp)) noncommap;
-    run "mkzftree" [target; wdir ^ "/zftree"];
+    run "mkzftree" ["-v"; target; wdir ^ "/zftree"];
     rm ~recursive:true target;
     Unix.rename (wdir ^ "/zftree") target;
     List.iter (fun (orig, tmp) ->
