@@ -2,6 +2,22 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-27 19:16:38 GMT	John Goerzen <jgoerzen@complete.org>	patch-34
+
+    Summary:
+      Initial pass at making this all work with multiple archs.
+    Revision:
+      dfsbuild--head--0.5--patch-34
+
+
+    new files:
+     archsupport.ml unixutil.ml
+
+    modified files:
+     ChangeLog Makefile bootloader.ml configfiles.ml dfs.cfg
+     dfsbuild.ml shellutil.ml
+
+
 2004-05-26 19:43:58 GMT	John Goerzen <jgoerzen@complete.org>	patch-33
 
     Summary:

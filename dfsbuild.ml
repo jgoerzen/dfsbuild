@@ -5,15 +5,17 @@
 open Unix;;
 open Printf;;
 open Str;;
-open Cash;;
 open Cashutil;;
+open Cash;;
+open Unixutil;;
 open Dfsutils;;
+open Archsupport;;
 
 let p = print_endline;;
 
 let run prog args =
   p ("Running: " ^ prog ^ " " ^ (String.concat " " args));
-  Cashutil.run prog args;;
+  Shellutil.run prog args;;
 
 let genmarker () = 
   Random.self_init ();
@@ -21,11 +23,11 @@ let genmarker () =
     (Random.bits());;
 
 let getdevices cp =
-  let devlist = split_ws (cp#get "cd" "devices") in
+  let devlist = split_ws (get cp "devices") in
   (String.concat "\n" devlist) ^ "\n";;
 
 let dlmirrors cp wdir =
-  let suites = split_ws (cp#get "cd" "dlrepos") in
+  let suites = split_ws (get cp "dlrepos") in
   Mirror.mirror_workdir cp suites wdir;
 ;;
   
@@ -54,10 +56,10 @@ let parsecmdline () =
 
 let cdebootstrap cp target wdir =
   p ("Bootstrapping into " ^ target);
-  run "cdebootstrap" [cp#get "cd" "suite"; target; "file://" ^ wdir ^ "/mirror"];
+  run "cdebootstrap" [get cp "suite"; target; "file://" ^ wdir ^ "/mirror"];
   writestring (target ^ "/etc/apt/sources.list") 
-    ("deb " ^ (cp#get "cd" "mirror") ^ " " ^ (cp#get "cd" "suite") ^ " main\n");
-  rename_file (wdir ^ "/mirror") (target ^ "/opt/packages");
+    ("deb " ^ (get cp "mirror") ^ " " ^ (get cp "suite") ^ " main\n");
+  Unix.rename (wdir ^ "/mirror") (target ^ "/opt/packages");
 ;;
 
 let installpkgs cp target =
@@ -67,7 +69,7 @@ let installpkgs cp target =
   run "cp" ["/etc/resolv.conf"; target ^ "/etc" ];
 
   run "chroot" [target; "apt-get"; "update"];
-  let pkgstr = Strutil.strip (cp#get "cd" "packages") in
+  let pkgstr = Strutil.strip (get cp "packages") in
   let pkgs = split_ws pkgstr in
   run "chroot" (target :: "apt-get" :: "-y" :: "install" :: pkgs) ;
   rm (target ^ "/etc/resolv.conf");
@@ -81,11 +83,11 @@ let installpkgs cp target =
   ;;
 
 let compress cp wdir target =
-  if (cp#getbool "cd" "compress") then begin
+  if (cp#getbool (getarch()) "compress") then begin
     p "Compressing image...";
     run "mkzftree" [target; wdir ^ "/zftree"];
     rm ~recursive:true target;
-    rename_file (wdir ^ "/zftree") target;
+    Unix.rename (wdir ^ "/zftree") target;
   end;
 ;;
 
@@ -107,7 +109,7 @@ let preprd cp libdir target =
   run "mount" ["-t"; "proc"; "none"; target ^ "/opt/initrd/proc"];
   run "chroot" [target ^ "/opt/initrd"; "/bin/busybox"; "--install"];
   run "umount" [target ^ "/opt/initrd/proc"]; *)
-  if (is_file_existing_fn (target ^ "/opt/initrd/linuxrc")) then begin
+  if (exists (target ^ "/opt/initrd/linuxrc")) then begin
     unlink (target ^ "/opt/initrd/linuxrc")
   end;
   run "cp" [libdir ^ "/linuxrc"; target ^ "/opt/initrd/sbin/init"];
@@ -121,24 +123,24 @@ let preprd cp libdir target =
 let installdebs cp imageroot =
   p "Installing .debs...";
   let rootopt = sprintf "--root=%s" imageroot in
-  if cp#has_option "cd" "installdebs" then begin
-    run "dpkg" (rootopt :: "-i" :: (split_ws (cp#get "cd" "installdebs")));
+  if cp#has_option (getarch()) "installdebs" then begin
+    run "dpkg" (rootopt :: "-i" :: (split_ws (get cp "installdebs")));
   end;
-  if cp#has_option "cd" "unpackdebs" then begin
+  if cp#has_option (getarch()) "unpackdebs" then begin
     run "dpkg" (rootopt :: "--force-depends" :: "--force-conflicts" :: 
          "--force-overwrite" :: "--force-architecture" :: "--unpack" 
-         :: (split_ws (cp#get "cd" "unpackdebs")));
+         :: (split_ws (get cp "unpackdebs")));
   end;
 ;;
 
 let installkernels cp target =
   p "Installing kernels...";
-  if cp#has_option "cd" "kernels" then begin
-    let kernlist = glob (split_ws (cp#get "cd" "kernels")) in
+  if cp#has_option (getarch()) "kernels" then begin
+    let kernlist = glob (split_ws (get cp "kernels")) in
     run "cp" ("-v" :: (kernlist @ [(target ^ "/boot")]));
   end;
-  if cp#has_option "cd" "modules" then begin
-    let modlist = glob (split_ws (cp#get "cd" "modules")) in
+  if cp#has_option (getarch()) "modules" then begin
+    let modlist = glob (split_ws (get cp "modules")) in
     run "cp" ("-r" :: (modlist @ [target ^ "/lib/modules"]));
   end;
 ;;
@@ -156,7 +158,7 @@ let preprtrd cp imageroot =
     if is_file_existing_fn src then (rename_file src dest);
     create_symlink ("/opt/dfsruntime/runtimemnt" ^ f) src;
   in
-  List.iter file2rd (glob (split_ws (cp#get "cd" "ramdisk_files")));
+  List.iter file2rd (glob (split_ws (get cp "ramdisk_files")));
 ;;
 
 let installlib docdir libdir imageroot =
@@ -178,14 +180,14 @@ let installlib docdir libdir imageroot =
 let mkiso cp wdir imageroot isoargs =
   p "Preparing ISO image";
   let isofile = wdir ^ "/image.iso" in
-  let compressopts = if cp#getbool "cd" "compress" then ["-z"] else [] in
+  let compressopts = if cp#getbool (getarch()) "compress" then ["-z"] else [] in
   run "mkisofs" (compressopts @ isoargs @ 
     ["-pad"; "-R"; "-o"; isofile; imageroot]);;
 
 let _ = 
   let cp, wdir = parsecmdline () in
   p ("Using working directory: " ^ wdir);
-  let libdir = resolve_file_name ~dir:(Unix.getcwd ()) (cp#get "cd" "libdir") in
+  let libdir = resolve_file_name ~dir:(Unix.getcwd ()) (get cp "libdir") in
 
   p ("Using library directory: " ^ libdir);
   rm ~recursive:true ~force:true wdir;
@@ -199,7 +201,7 @@ let _ =
   dlmirrors cp wdir;
   cdebootstrap cp imageroot wdir;
   installpkgs cp imageroot;
-  installlib (cp#get "cd" "docdir") libdir imageroot;
+  installlib (get cp "docdir") libdir imageroot;
   (* 
   compress cp wdir imageroot;
   *)

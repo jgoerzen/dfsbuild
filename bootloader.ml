@@ -6,6 +6,7 @@ open Unix;;
 open Cash;;
 open Cashutil;;
 open Dfsutils;;
+open Archsupport;;
 
 let run prog args =
   p ("Running: " ^ prog ^ " " ^ (String.concat " " args));
@@ -20,8 +21,8 @@ let grub_generic cp target entryline =
   mkdir (target ^ "/boot/grub") 0o755;
   run "cp" ("-rv" :: glob ["/usr/lib/grub/*/*"] @ [target ^ "/boot/grub/"]);
   let sd = open_out (target ^ "/boot/grub/menu.lst") in
-  if cp#has_option "cd" "grubconfig" then begin
-    output_string sd (cp#get "cd" "grubconfig");
+  if cp#has_option (getarch()) "grubconfig" then begin
+    output_string sd (get cp "grubconfig");
     output_string sd "\n";
   end;
   output_string sd "color cyan/blue blue/light-gray\n";
@@ -84,7 +85,7 @@ let grub_hd cp workdir target =
   ["-b"; "boot/hd.image"; "-hard-disk-boot"; "-c"; "boot/boot.catalog"];;
 
 let install cp workdir target =
-  match cp#get "cd" "bootloader" with
+  match get cp "bootloader" with
   "grub-no-emul" -> grub_eltorito cp target
   | "grub-hd" -> grub_hd cp workdir target
   | _ -> ( p("Invalid bootloader specified"); exit 2; [])

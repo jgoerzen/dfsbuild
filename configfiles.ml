@@ -2,13 +2,14 @@
 *)
 open Dfsutils;;
 open Cashutil;;
+open Archsupport;;
 
 let datestr = (Cash.string_of_date (Cash.date ()));;
 
 let getbuildinfo cp = 
-  "Name: " ^ (cp#get "cd" "name") ^ 
-  "\nVersion: " ^ (cp#get "cd" "version") ^
-  "\nBuilder: " ^ (cp#get "cd" "builder") ^
+  "Name: " ^ (get cp "name") ^ 
+  "\nVersion: " ^ (get cp "version") ^
+  "\nBuilder: " ^ (get cp "builder") ^
   "\nPreparation Date: " ^ datestr ^ "\n";;
 
 let writebuildinfo cp target =
@@ -17,7 +18,7 @@ let writebuildinfo cp target =
   Pervasives.close_out fd;;
 
 let getidstring cp =
-  Printf.sprintf "%s %s (%s)" (cp#get "cd" "name") (cp#get "cd" "version") datestr;;
+  Printf.sprintf "%s %s (%s)" (get cp "name") (get cp "version") datestr;;
 let writecfgfiles cp basedir =
   let w fn s =
     let outfd = open_out (basedir ^ fn) in
@@ -43,18 +44,18 @@ let writecfgfiles cp basedir =
     List.iter (fun fn -> w fn (cp#get "createfiles" fn))
       (cp#options "createfiles");
   end;
-  if cp#has_option "cd" "makedirs" then begin
+  if cp#has_option (getarch()) "makedirs" then begin
     List.iter (fun x -> Unix.mkdir (basedir ^ x) 0o755)
-      (split_ws (cp#get "cd" "makedirs"))
+      (split_ws (get cp "makedirs"))
   end;
   if cp#has_section "symlinks" then begin
     List.iter (fun from -> Unix.symlink (cp#get "symlinks" from) (basedir ^
     from))
       (cp#options "symlinks");
   end;
-  if cp#has_option "cd" "deletefiles" then begin
+  if cp#has_option (getarch()) "deletefiles" then begin
     List.iter (fun x -> rm ~force:true (basedir ^ x))
-      (Cash.glob (split_ws (cp#get "cd" "deletefiles")))
+      (Cash.glob (split_ws (get cp "deletefiles")))
   end;
 
 ;;
