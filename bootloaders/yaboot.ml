@@ -8,11 +8,11 @@ open Dfsutils;;
 open Archsupport;;
 open Bootloaderutil;;
 
-let yaboot cp target =
+let yaboot cp workdir target =
   run "cp" ["/usr/lib/yaboot/yaboot"; target ^ "/boot/"];
   installrd_cramfs target;
   let sd = open_out (target ^ "/boot/yaboot.conf") in
-  let hfsmap = open_out (target ^ "/boot/hfs.map") in
+  let hfsmap = open_out (workdir ^ "/hfs.map") in
   let ofboot = open_out (target ^ "/boot/ofboot.b") in
   let newkerns = glob [target ^ "/boot/vmlinu*"] in
   output_string hfsmap 
@@ -34,7 +34,7 @@ GNU/Linux PPC bootloader
 <BOOT-SCRIPT>
 \" screen\" output
 load-base release-load-area
-boot cd:,\\boot\\yaboot
+boot cd:2,\\\\yaboot
 </BOOT-SCRIPT>
 <OS-BADGE-ICONS>
 1010
@@ -123,7 +123,7 @@ device=cd:
     ) newkerns;
   Pervasives.close_out sd;
   (["--netatalk"; "-hfs"; "-probe"; "-map"; 
-   target ^ "/boot/hfs.map"; 
+   workdir ^ "/hfs.map"; 
    "-part"; "-no-desktop";
    "-hfs-bless"; target ^ "/boot"; 
    "-hfs-volid"; "DFS/PPC"], 

@@ -13,6 +13,6 @@ let install cp workdir target =
   "grub-no-emul" -> Grub.grub_eltorito cp target
   | "grub-hd" -> Grub.grub_hd cp workdir target
   | "aboot" -> Aboot.aboot cp target
-  | "yaboot" -> Yaboot.yaboot cp target
+  | "yaboot" -> Yaboot.yaboot cp workdir target
   | _ -> ( p("Invalid bootloader specified"); exit 2; ([], fun _ _ _ _ -> ()))
 ;;

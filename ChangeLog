@@ -2,6 +2,39 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-10 00:51:10 GMT	John Goerzen <jgoerzen@complete.org>	patch-89
+
+    Summary:
+      Merged with Robert
+    Revision:
+      dfsbuild--head--0.5--patch-89
+
+    Patches applied:
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-38
+       star-merge john
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-39
+       [powerpc] create hfs.map in workdir and not in target/boot
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-40
+       add bootloader/yaboot.cmo to dfsbuild.bc
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-41
+       [powerpc] use cd:2,\\yaboot instead of cd:,\boot\yaboot
+    
+
+    modified files:
+     ChangeLog Makefile bootloaders/bootloader.ml
+     bootloaders/yaboot.ml
+
+    new patches:
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-38
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-39
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-40
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-41
+
+
 2004-06-08 14:48:48 GMT	John Goerzen <jgoerzen@complete.org>	patch-88
 
     Summary:

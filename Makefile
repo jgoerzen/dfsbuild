@@ -31,6 +31,7 @@ dfsbuild.bc: utils/dfsutils.cmo utils/unixutil.cmo utils/shellutil.cmo \
 	archsupport.cmo mirror.cmo \
 	configfiles.cmo bootloaders/bootloaderutil.cmx \
 	bootloaders/grub.cmo bootloaders/aboot.cmo \
+	bootloaders/yaboot.cmo \
 	bootloaders/bootloader.cmo \
 	dfsbuild.cmo
 	ocamlfind ocamlc -g $(PACKAGES) -linkpkg \
