@@ -1,3 +1,9 @@
+dfsbuild (0.6.10) unstable; urgency=low
+
+  * Accept relative path for -w.  Closes: #254723.
+
+ -- John Goerzen <jgoerzen@complete.org>  Fri,  6 Aug 2004 16:53:42 -0500
+
 dfsbuild (0.6.9) unstable; urgency=low
 
   * Updated for OCaml 3.08; now build-deps on ocaml-nox instead of

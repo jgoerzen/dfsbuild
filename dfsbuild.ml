@@ -206,7 +206,10 @@ let mkiso (cp:rawConfigParser) wdir imageroot isoargs =
   isofile;;
 
 let _ = 
-  let cp, wdir = parsecmdline () in
+  let cp, origwdir = parsecmdline () in
+  let wdir = Unixutil.abspath origwdir in
+  let startdir = getcwd () in
+  
   p ("Using working directory: " ^ wdir);
   let libdir = (get cp "libdir") in 
   (*
