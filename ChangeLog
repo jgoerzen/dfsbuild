@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-26 19:43:58 GMT	John Goerzen <jgoerzen@complete.org>	patch-33
+
+    Summary:
+      No logner auto-probe for LVM on boot
+    Revision:
+      dfsbuild--head--0.5--patch-33
+
+
+    modified files:
+     ChangeLog dfs.cfg
+
+
 2004-05-26 19:34:35 GMT	John Goerzen <jgoerzen@complete.org>	patch-32
 
     Summary:
