@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-25 19:22:06 GMT	John Goerzen <jgoerzen@complete.org>	patch-22
+
+    Summary:
+      Cleanups to make us more Lintian-friendly
+    Revision:
+      dfsbuild--head--0.5--patch-22
+
+
+    modified files:
+     ChangeLog debian/conffiles debian/control debian/rules
+
+
 2004-05-25 18:33:39 GMT	John Goerzen <jgoerzen@complete.org>	patch-21
 
     Summary:
