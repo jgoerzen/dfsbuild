@@ -121,6 +121,20 @@
         be used on amd64 systems such as Opteron or Athlon64 system.
       </para>
     </sect1>
+    <sect1 id="dfsboot-selcd">
+      <title>Selecting CD-ROM device</title>
+      <para>
+        In most cases, DFS can automatically detect which drive holds
+        your DFS CD.  However, if that check is time-consuming or
+        fails, you can manually specify your CD with the
+        <command>dfscd</command> parameter.  To use it, select the
+        kernel
+        you wish, press e to edit the command and edit the "kernel"
+        line.  Insert something such as
+        <command>dfscd=/dev/hdc</command>, press Enter, then b to
+        boot.
+      </para>
+    </sect1>
     <sect1 id="dfsboot-hardware">
       <title>Detecting Hardware</title>
       <indexterm><primary>Hardware</><secondary>Detecting</></>

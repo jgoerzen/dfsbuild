@@ -146,20 +146,47 @@ let installkernels cp target =
   mkdir (target ^ "/boot/grub") 0o755;
   run "cp" ("-rv" :: glob ["/usr/lib/grub/*/*"] @ [target ^ "/boot/grub/"]);
   let sd = open_out (target ^ "/boot/grub/menu.lst") in
-  output_string sd "color cyan/blue white/blue\n";
-  let newkerns = glob ["/boot/vmlinu*"] in
+  if cp#has_option "cd" "grubconfig" then begin
+    output_string sd (cp#get "cd" "grubconfig");
+    output_string sd "\n";
+  end;
+  output_string sd "color cyan/blue blue/light-gray\n";
+  let newkerns = glob [target ^ "/boot/vmlinu*"] in
+  let os s = output_string sd (s ^ "\n") in
+  let fake s = os ("title " ^ s ^ "\ncolor cyan/blue blue/light-gray") in
   List.iter (fun x ->
-    let os s = output_string sd (s ^ "\n") in
     os ("title  Boot " ^ x);
     os ("kernel /boot/" ^ (Filename.basename x) ^ " root=/dev/ram0");
     os ("initrd /opt/dfsruntime/initrd.dfs");
     os ("boot\n");
   ) newkerns;
-  output_string sd "title Test menu\nconfigfile /boot/grub/test.lst\n";
+
+  fake ".";
+  os ("title Help/Information Menu\nconfigfile /boot/grub/help.lst\n");
+  fake ".";
+  fake (Configfiles.getidstring cp);
+
   Pervasives.close_out sd;
-  let sd2 = open_out (target ^ "/boot/grub/test.lst") in
-  output_string sd2 "color cyan/blue white/red\n";
-  output_string sd2 "title Main menu\nconfigfile /boot/grub/menu.lst\n";
+
+  let sd2 = open_out (target ^ "/boot/grub/help.lst") in
+  output_string sd2 "color cyan/black blue/light-gray
+pager on
+title Basic Booting Info
+cat /opt/dfsruntime/dfs.html/booting.html.txt
+
+title Selecting CD-ROM device
+cat /opt/dfsruntime/dfs.html/dfsbood-selcd.html.txt
+
+title About This CD
+cat /opt/dfsruntime/buildinfo
+
+title .
+color cyan/black blue/light-gray
+
+title Return to main menu...
+configfile /boot/grub/menu.lst
+";
+
   Pervasives.close_out sd2;
 ;;
 
@@ -176,7 +203,7 @@ let preprd cp imageroot =
     if is_file_existing_fn src then (rename_file src dest);
     create_symlink ("/opt/dfsruntime/runtimemnt" ^ f) src;
   in
-  List.iter file2rd (split_ws (cp#get "cd" "ramdisk_files"));
+  List.iter file2rd (glob (split_ws (cp#get "cd" "ramdisk_files")));
 ;;
 
 let installlib libdir imageroot =

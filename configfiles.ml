@@ -21,11 +21,11 @@ let writecfgfiles cp basedir =
      (cp#options "appendfiles");
   end;
   if cp#has_section "createfiles" then begin
-    List.iter (fun fn -> a fn (cp#get "createfiles" fn))
+    List.iter (fun fn -> w fn (cp#get "createfiles" fn))
       (cp#options "createfiles");
   end;
   if cp#has_option "cd" "makedirs" then begin
-    List.iter (fun x -> Unix.mkdir x 0o755)
+    List.iter (fun x -> Unix.mkdir (basedir ^ x) 0o755)
       (split_ws (cp#get "cd" "makedirs"))
   end;
 
@@ -39,12 +39,18 @@ let fixrc target =
   List.iter (fun x -> Cashutil.rm x) (Cash.glob [target ^ "/etc/rc2.d/S*single"]);
 ;;
 
+let datestr = (Cash.string_of_date (Cash.date ()));;
+
+let getbuildinfo cp = 
+  "Name: " ^ (cp#get "cd" "name") ^ 
+  "\nVersion: " ^ (cp#get "cd" "version") ^
+  "\nBuilder: " ^ (cp#get "cd" "builder") ^
+  "\nPreparation Date: " ^ datestr ^ "\n";;
+
 let writebuildinfo cp target =
   let fd = open_out (target ^ "/opt/dfsruntime/buildinfo") in
-  let o s = output_string fd (s ^ "\n") in
-  o ("Name: " ^ (cp#get "cd" "name"));
-  o ("Builder: " ^ (cp#get "cd" "builder"));
-  o ("Preparation Date: " ^ (Cash.string_of_date (Cash.date ())));
+  output_string fd (getbuildinfo cp);
   Pervasives.close_out fd;;
 
-
+let getidstring cp =
+  Printf.sprintf "%s %s (%s)" (cp#get "cd" "name") (cp#get "cd" "version") datestr;;
