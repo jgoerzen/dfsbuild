@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-01 21:45:41 GMT	John Goerzen <jgoerzen@complete.org>	patch-60
+
+    Summary:
+      Added Alpha info to docs
+    Revision:
+      dfsbuild--head--0.5--patch-60
+
+
+    modified files:
+     ChangeLog debian/changelog doc/dfs.sgml
+
+
 2004-06-01 20:53:05 GMT	John Goerzen <jgoerzen@complete.org>	patch-59
 
     Summary:

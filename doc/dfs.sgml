@@ -95,7 +95,8 @@
 	</listitem>
 	<listitem><para>Base systems for multiple versions of Debian
 	    installable directly from CD, including: woody (i386),
-	    sarge (i386), sid (i386), and sid (amd64).
+	    sarge (i386), sid (i386), and sid (amd64).  Alpha CD can
+            install woody, sarge, or sid for Alpha.
 	  </para>
 	</listitem>
         <listitem><para>amd64 support: Enough to install or fix an
@@ -122,13 +123,80 @@
     <title>Booting DFS</title>
     <indexterm><primary>Booting</></>
     <para>
-      Booting DFS usually is as simple as inserting a CD into the
-      drive.  DFS can boot from an IDE or SCSI CD-ROM.  On some
-      systems,
-      you may need to access your BIOS to enable booting from CD.
-      When you have successfully booted DFS the CD, you'll see a blue
-      selection screen.
+      Booting procedures vary by architecture.  Here are some basics:
     </para>
+    <sect1 id="booting.i386">
+      <title>Booting on i386 (PC)</title>
+      <para>
+        Booting DFS usually is as simple as inserting a CD into the
+        drive.  DFS can boot from an IDE or SCSI CD-ROM.  On some
+        systems,
+        you may need to access your BIOS to enable booting from CD.
+        When you have successfully booted DFS the CD, you'll see a blue
+        selection screen.
+      </para>
+    </sect1>
+    <sect1 id="booting.alpha">
+      <title>Booting on Alpha</title>
+      <para>
+        The DFS images for Alpha support the SRM console only at this
+        time.  If your system uses AlphaBIOS or some other BIOS, you
+        may need to convert to SRM.  If you need the SRM firmware, you
+        may be able to find it on the <ulink
+          url="http://ftp.digital.com/pub/DEC/Alpha/firmware/">Alpha
+          firmware updates</ulink> page.
+      </para>
+      <para>
+        Details about SRM can be found at the SRM HOWTO.  If you are
+        reading this manual directly from the DFS CD-ROM, you can find
+        the HOWTO at <ulink
+          url="file:///usr/share/doc/aboot-base/SRM-HOWTO/index.html"></ulink>.
+        If you are reading this on the Web, the SRM HOWTO can be found
+        at <ulink url="http://www.tldp.org/HOWTO/SRM-HOWTO/"></ulink>
+        or <ulink
+          url="http://www.alphalinux.org/faq/srm.html"></ulink>.
+      </para>
+      <para>
+        Booting the DFS CD generally involves these steps:
+      </para>
+      <orderedlist>
+        <listitem><para>Boot to an SRM prompt.  If your system is set
+            to automatically boot an operating system, Ctrl-C at the
+            appropriate time may accomplish this.
+          </para>
+        </listitem>
+        <listitem><para>Set the operating system type with:
+            <command>set os_type Unix</command>.</para>
+        </listitem>
+        <listitem><para>Find the device that represents your CD-ROM
+            drive.  Typing <command>show dev</command> will help you
+            out.  IDE users may often find dqa2 as their CD-ROM
+            device.
+            Please consult <command>show dev</command> to discover the
+            proper value for your system.
+          </para>
+        </listitem>
+        <listitem><para>Boot the aboot bootloader.  Run: <command>boot
+              <replaceable>device</replaceable> -fl i</command>.
+            Replace <replaceable>device</replaceable> with your
+            particular CD-ROM device.
+          </para>
+        </listitem>
+        <listitem><para>
+            You should now see an aboot prompt.  You can press "l"
+            (lower-case "L") to see a list of available kernels.
+            Press zero through 9 to boot one of them; the default
+            should be set to 0.  If you don't know what to do, just
+            press 0.
+          </para>
+        </listitem>
+        <listitem><para>
+            Linux should not start.
+          </para>
+        </listitem>
+      </orderedlist>
+    </sect1>
+            
     <sect1 id="dfsboot-kernel">
       <title>Booting a Kernel</title>
       <para>
@@ -273,15 +341,16 @@ iface eth0 inet static
 	<orderedlist>
 	  <listitem><para><command>apt-get update</command></para>
 	  </listitem>
-	  <listitem><para><command>apt-get install module-init-tools
+	  <listitem><para>i386: <command>apt-get install module-init-tools
 		grub ppp</command></para>
+            <para>alpha: <command>apt-get install module-init-tools
+                aboot ppp</command></para>
 	  </listitem>
 	  <listitem><para><command>apt-get install</command>
 	      appropriate filesystem tools for your chosen filesystem</para>
 	  </listitem>
-	  <listitem><para><command>mkdir /boot/grub</command></para>
-	    <para><command>cp /usr/lib/grub/i386-pc/*
-		/boot/grub</command></para>
+	  <listitem><para>i386: <command>mkdir /boot/grub; cp
+                /usr/lib/grub/i386-pc/* /boot/grub</command></para>
 	    <note><para>
 	      amd64 did not have a grub package as of the last check.
 	      However, you can simulate it; just 
@@ -291,6 +360,7 @@ iface eth0 inet static
 	      live CD image to <filename>/boot/grub</filename>
 		on your new system.</para>
 	    </note>
+            <para>alpha: see aboot docs</para>
 
 	  </listitem>
 	</orderedlist>
