@@ -139,11 +139,17 @@ let installdebs cp imageroot =
   try
     run "dpkg" (rootopt :: "-i" :: (split_ws (get cp "installdebs")));
   with Not_found -> ();
-  try
-    run "dpkg" (rootopt :: "--force-depends" :: "--force-conflicts" :: 
+  let deblist = try (split_ws (get cp "unpackdebs")) with Not_found -> [] in
+  let chroottmpdir = "/insttmp" in
+  let realtmpdir = imageroot ^ chroottmpdir in
+  Unix.mkdir (imageroot ^ "/insttmp") 0o755;
+  List.iter (fun x -> run "cp" ["-v"; x; chroottmpdir ^ "/"]) deblist;
+  let debnames = List.map (fun x -> chroottmpdir ^ "/" ^ Filename.basename x)
+     deblist in
+  run "chroot" (imageroot :: "--force-depends" :: "--force-conflicts" :: 
          "--force-overwrite" :: "--force-architecture" :: "--unpack" 
-         :: (split_ws (get cp "unpackdebs")));
-  with Not_found -> ();
+         :: debnames);
+ rm ~recursive:true realtmpdir;
 ;;
 
 let installkernels cp target =
