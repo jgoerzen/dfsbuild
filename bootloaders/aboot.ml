@@ -14,8 +14,8 @@ let aboot cp target =
   let newkerns = glob [target ^ "/boot/vmlinu*"] in
   ignore (List.fold_left (fun count x ->
     Printf.fprintf sd 
-      "%d:boot/%s initrd=opt/dfsruntime/initrd.dfs root=/dev/ram0\n"
-      count (Filename.basename x);
+      "%d:boot/%s initrd=opt/dfsruntime/initrd.dfs root=/dev/ram0 ide=nodma %s\n"
+      count (Filename.basename x) (Bootloaderutil.getrdparam target);
     count + 1) 0 newkerns);
   Pervasives.close_out sd;
   ([], fun cp wdir target isoname -> 

@@ -2,6 +2,21 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-01 23:07:53 GMT	John Goerzen <jgoerzen@complete.org>	patch-62
+
+    Summary:
+      Miscellaneous fixes for Alpha
+    Revision:
+      dfsbuild--head--0.5--patch-62
+
+
+    new files:
+     bootloaders/bootloaderutil.ml
+
+    modified files:
+     ChangeLog bootloaders/aboot.ml bootloaders/grub.ml
+
+
 2004-06-01 21:47:43 GMT	John Goerzen <jgoerzen@complete.org>	patch-61
 
     Summary:
