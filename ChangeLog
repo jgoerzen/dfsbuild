@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-27 21:31:28 GMT	John Goerzen <jgoerzen@complete.org>	patch-40
+
+    Summary:
+      Noted lack of cash build-dep
+    Revision:
+      dfsbuild--head--0.5--patch-40
+
+
+    modified files:
+     ChangeLog debian/control
+
+
 2004-05-27 21:13:17 GMT	John Goerzen <jgoerzen@complete.org>	patch-39
 
     Summary:
