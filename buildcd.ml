@@ -64,7 +64,9 @@ let installpkgs cp target =
   run "chroot" (target :: "apt-get" :: "-y" :: "install" :: pkgs) ;
   run "rm" [target ^ "/etc/resolv.conf"];
   run "chroot" [target; "apt-get"; "clean" ];
+  (*
   run "chroot" [target; "/bin/bash"; "-c"; ". /etc/updatedb.conf; updatedb"];
+  *)
   (* 
   run "chroot" [target; "rm -rvf"; "/var/lib/apt/lists/*";
     "/var/cache/apt/*.bin"; "/var/cache/debconf/*"; "/etc/X11" ]; *)
@@ -76,7 +78,7 @@ let installrd cp target =
   mkdir (target ^ "/opt/dfsruntime") 0o755;
   mkdir (target ^ "/opt/initrd") 0o755;
   List.iter (fun x -> mkdir (target ^ "/opt/initrd/" ^ x) 0o755) 
-    ["bin"; "lib"; "sbin"; "proc"; "usr/sbin"; "usr/bin"; "realroot"; ];
+    ["bin"; "lib"; "sbin"; "proc"; "usr"; "usr/sbin"; "usr/bin"; "realroot"; ];
   chr ["sh"; "-c"; "cp -v /lib/libc.so* /lib/libdl.so* /lib/ld-linux.so* /opt/initrd/lib"];
   chr ["cp"; "-v"; "/bin/busybox"; "/opt/initrd/bin"];
   chr ["cp"; "-v"; "/usr/sbin/chroot"; "/opt/initrd/usr/sbin/"];
