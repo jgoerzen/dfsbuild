@@ -1,7 +1,7 @@
 John Goerzen <jgoerzen@complete.org>
   Main program
   i386 support (grub)
-  amd64 support
+  amd64 support (grub)
   alpha support (aboot)
 
 Robert Jordens <jordens@debian.org>

@@ -1,10 +1,10 @@
 dfsbuild (0.6.11) unstable; urgency=low
 
-  * [powerpc] since mkisofs doesn't seem to bless directories on 
+  * [jordens] [powerpc] since mkisofs doesn't seem to bless directories on 
     hfs hybrid filesystem successfully, leave the image --hfs-unlocked and
     bless with hfsutils afterwards
 
- -- Robert Jordens <jordens@debian.org>  Sat,  7 Aug 2004 21:17:57 +0200
+ -- John Goerzen <jgoerzen@complete.org>  Sat,  7 Aug 2004 21:17:57 +0200
 
 dfsbuild (0.6.10) unstable; urgency=low
 
