@@ -392,7 +392,7 @@ iface eth0 inet static
 	      appropriate filesystem tools for your chosen filesystem</para>
 	  </listitem>
 	  <listitem><para>i386: <command>mkdir /boot/grub; cp
-                /usr/lib/grub/i386-pc/* /boot/grub</command></para>
+                /lib/grub/i386-pc/* /boot/grub</command></para>
                 <para>If your /boot is its own partition, also run
                  <command>cd /boot; ln -s . boot</command>.</para>
 	    <note><para>
@@ -400,7 +400,7 @@ iface eth0 inet static
 	      However, you can simulate it; just 
 		<command>mkdir /mnt/boot/grub</command>
 	      and copy the files from
-		<filename>/usr/lib/grub/i386-pc</filename> on the
+		<filename>/lib/grub/i386-pc</filename> on the
 	      live CD image to <filename>/boot/grub</filename>
 		on your new system.</para>
 	    </note>

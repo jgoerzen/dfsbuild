@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-12-13 14:14:07 GMT	John Goerzen <jgoerzen@complete.org>	patch-121
+
+    Summary:
+      Noted new Grub file location in manual
+    Revision:
+      dfsbuild--head--0.5--patch-121
+
+
+    modified files:
+     ChangeLog doc/dfs.sgml
+
+
 2004-11-19 22:26:01 GMT	John Goerzen <jgoerzen@complete.org>	patch-120
 
     Summary:
