@@ -38,7 +38,7 @@ let getcddev () =
         true
       end else begin
         p "Found a CD, but not proper DFS CD.";
-        run "busybox" ["umount"; "-n"; mountloc];
+        run "busybox" ["umount"; mountloc];
         false;
       end
     end else begin
@@ -48,9 +48,9 @@ let getcddev () =
   in
 
   let getcdcmdline () =
-    runnoout "busybox" ["mount"; "-n"; "-t"; "proc"; "none"; "/proc"];
+    run "busybox" ["mount"; "-n"; "-t"; "proc"; "none"; "/proc"];
     let cline = getfirstline "/proc/cmdline" in
-    runnoout "busybox" ["umount"; "-n"; "/proc"];
+    run "busybox" ["umount"; "/proc"];
     let r = regexp "dfscd=\\([^ ]+\\)" in
     if string_match r cline 0 then begin
       let dev = matched_group 1 cline in

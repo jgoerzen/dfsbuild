@@ -155,14 +155,16 @@ let installkernels cp target =
   let os s = output_string sd (s ^ "\n") in
   let fake s = os ("title " ^ s ^ "\ncolor cyan/blue blue/light-gray") in
   List.iter (fun x ->
-    os ("title  Boot " ^ x);
+    os ("title  Boot " ^ (Filename.basename x));
     os ("kernel /boot/" ^ (Filename.basename x) ^ " root=/dev/ram0");
     os ("initrd /opt/dfsruntime/initrd.dfs");
     os ("boot\n");
   ) newkerns;
 
+  (*
   fake ".";
   os ("title Help/Information Menu\nconfigfile /boot/grub/help.lst\n");
+  *)
   fake ".";
   fake (Configfiles.getidstring cp);
 

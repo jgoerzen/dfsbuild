@@ -57,7 +57,7 @@
 	    including:
 	  </para>
 	  <itemizedlist>
-	    <listitem><para>Filesystem utilities</para>
+	    <listitem><para>Filesystem utilities for all mazjor filesystems, including undeletion tools for ext2</para>
 	    </listitem>
 	    <listitem><para>Partition editors (fdisk, cfdisk, parted)</para>
 	    </listitem>
@@ -219,7 +219,7 @@ iface eth0 inet static
       </sect2>
 
     </sect1>
-
+    
     <sect1 id="dfsboot.ppp">
       <title>Dialup with PPP</title>
       <indexterm><primary>PPP</><see>Networking, PPP</></>
@@ -249,6 +249,8 @@ iface eth0 inet static
       <listitem><para>Formatting and Mounting Filesystems</para>
       </listitem>
       <listitem><para>Installing Base System</para>
+        <para>You can do this (assuming you have mounted your new
+          partitions at /mnt) with: <command>cdebootstrap sid /mnt file:///opt/packages</command>.</para>
       </listitem>
       <listitem><para>Configuring Base System</para>
       </listitem>
