@@ -122,9 +122,14 @@ device=cd:
     *)
     ) newkerns;
   Pervasives.close_out sd;
-  (["--netatalk"; "-hfs"; "-probe"; "-map"; 
-   workdir ^ "/hfs.map"; 
-   "-part"; "-no-desktop";
+  (["--netatalk"; "-hfs"; "-probe"; "-hfs-unlock"; "-part"; "-no-desktop";
+   "-map"; workdir ^ "/hfs.map"; 
    "-hfs-bless"; target ^ "/boot"; 
    "-hfs-volid"; "DFS/PPC"], 
-   fun cp wdir target isoname -> ());;
+   (* fail-safe blessing: mkisofs doesnt seem to bless sucessfully,
+   leaving the image --hfs-unlock'ed and the blessing it with hfsutils *)
+   (fun cp wdir target isoname ->
+     run "hmount" [isoname];
+     run "hattrib" ["-b"; ":boot"];
+     run "humount" [];)
+   );;
