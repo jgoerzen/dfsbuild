@@ -6,6 +6,7 @@ open Unix;;
 open Printf;;
 open Str;;
 open Cash;;
+open Dfsutils;;
 
 let p = print_endline;;
 
@@ -19,7 +20,7 @@ let genmarker () =
     (Random.bits());;
 
 let getdevices cp =
-  let devlist = split (regexp "[ \n\t]") (cp#get "cd" "devices") in
+  let devlist = split_ws (cp#get "cd" "devices") in
   (String.concat "\n" devlist) ^ "\n";;
   
 let writestring filename s =
@@ -59,7 +60,7 @@ let installpkgs cp target =
   run "cp" ["/etc/resolv.conf"; target ^ "/etc" ];
   run "chroot" [target; "apt-get"; "update"];
   let pkgstr = Strutil.strip (cp#get "cd" "packages") in
-  let pkgs = Str.split (Str.regexp "[ \n\t]") pkgstr in
+  let pkgs = split_ws pkgstr in
   run "chroot" (target :: "apt-get" :: "-y" :: "install" :: pkgs) ;
   run "rm" [target ^ "/etc/resolv.conf"];
   run "chroot" [target; "apt-get"; "clean" ];
@@ -91,6 +92,42 @@ let installrd cp target =
     "/opt/dfsruntime/initrd.dfs"];
   run "rm" ["-rv"; "/opt/initrd"];;
 
+let installkernels cp target =
+  p "Installing kernels...";
+  let kernlist = glob (split_ws (cp#get "cd" "kernels")) in
+  let modlist = glob (split_ws (cp#get "cd" "modules")) in
+  run "cp" ("-v" :: (kernlist @ [(target ^ "/boot")]));
+  run "cp" ("-r" :: (modlist @ [target ^ "/lib/modules"]));
+  mkdir (target ^ "/boot/grub") 0o755;
+  run "cp" ["-rv"; "/usr/lib/grub/*/*"; "/boot/grub/"];
+  let sd = open_out (target ^ "/boot/grub/menu.lst") in
+  output_string sd "color cyan/blue white/blue\n";
+  List.iter (fun x ->
+    let os s = output_string sd (s ^ "\n") in
+    os ("title  Boot " ^ x);
+    os ("kernel /boot/" ^ (Filename.basename x));
+    os ("initrd /opt/dfsruntime/initrd.dfs");
+    os ("boot\n");
+  ) kernlist;
+  Pervasives.close_out sd;
+;;
+
+let preprd cp imageroot =
+  p "Preparing run-time rd"; 
+  mkdir (imageroot ^ "/opt/dfsruntime/runtimemnt") 0o755 ;
+  let rdpath = imageroot ^ "/opt/dfsruntime/runtimerd" in
+  mkdir rdpath 0o755;
+  let file2rd f =
+    let src = imageroot ^ f in
+    let dest = rdpath ^ f in
+    let destdir = Filename.dirname dest in
+    if not (is_file_existing_fn destdir) then ( run "mkdir" ["-p"; destdir]);
+    if is_file_existing_fn src then (rename_file src dest);
+    create_symlink ("/opt/dfsruntime/runtimemnt" ^ f) src;
+  in
+  List.iter file2rd (split_ws (cp#get "cd" "ramdisk_files"));
+;;
+
 let _ = 
   let cp, wdir = parsecmdline () in
   p ("Using working directory: " ^ wdir);
@@ -103,6 +140,7 @@ let _ =
   cdebootstrap cp imageroot;
   installpkgs cp imageroot;
   installrd cp imageroot;
-  (* installkernels cp imageroot; *)
+  installkernels cp imageroot; 
+  preprd cp imageroot;
 ;;
 

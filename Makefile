@@ -4,7 +4,7 @@
 PACKAGES := -package shell -package missinglib -package pcre
 all:	buildcd
 
-buildcd: cashutil.cmx buildcd.cmx
+buildcd: dfsutils.cmx cashutil.cmx buildcd.cmx
 	ocamlfind ocamlopt $(PACKAGES) -linkpkg \
 		camlp4/camlp4.cmxa cash.cmxa -o $@ $^
 
