@@ -250,7 +250,13 @@ iface eth0 inet static
       </listitem>
       <listitem><para>Installing Base System</para>
         <para>You can do this (assuming you have mounted your new
-          partitions at /mnt) with: <command>cdebootstrap sid /mnt file:///opt/packages</command>.</para>
+          partitions at /mnt) with: <command>cdebootstrap sid /mnt
+	    file:///opt/packages</command>.  (amd64: add <command>-a
+	    amd64</command> before "sid".  Also, I recommend using the
+	amd64 mirror directly, since things change frequently and the
+	  data available when the CD was made may or may not be usable for
+	  you.
+	</para>
       </listitem>
       <listitem><para>Configuring Base System</para>
 	<para>You should copy your
