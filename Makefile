@@ -2,7 +2,7 @@
 # Copyright (c) 2004 John Goerzen
 #
 PACKAGES := -package shell -package missinglib
-all:	buildcd lib lib/linuxrc lib/startup lib/dfs.html/index.html \
+all:	dfsbuild lib lib/linuxrc lib/startup lib/dfs.html/index.html \
 	lib/dfs.pdf lib/dfs.ps lib/dfs.txt
 
 lib:
@@ -10,12 +10,12 @@ lib:
 
 clean:
 	-cd doc && scons -c && scons -c html pdf text ps
-	-rm -rf buildcd lib doc/.sconsign
+	-rm -rf dfsbuild lib doc/.sconsign
 	-rm -f `find . -name "*.cm*"`
-	-rm -f `find . -name "*~"`
+	-rm -f `find . -name "*~"` `find . -name "*.o"`
 
 
-buildcd: dfsutils.cmx cashutil.cmx mirror.cmx configfiles.cmx buildcd.cmx
+dfsbuild: dfsutils.cmx cashutil.cmx mirror.cmx configfiles.cmx dfsbuild.cmx
 	ocamlfind ocamlopt $(PACKAGES) -package pcre -linkpkg \
 		camlp4/camlp4.cmxa cash.cmxa -o $@ $^
 
@@ -40,7 +40,7 @@ lib/startup: dfsutils.cmx shellutil.cmx libsrc/startup.cmx
 	$(PACKAGES) -linkpkg -o $@ $^
 	strip -s $@
 
-buildcd.cmx: cashutil.cmx configfiles.cmx
+dfsbuild.cmx: cashutil.cmx configfiles.cmx
 
 %.cmx: %.ml
 	ocamlfind ocamlopt $(PACKAGES) -warn-error A -c -o $@ $<
