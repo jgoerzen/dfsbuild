@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-27 20:03:16 GMT	John Goerzen <jgoerzen@complete.org>	patch-36
+
+    Summary:
+      Forgot to closedir.  oops.
+    Revision:
+      dfsbuild--head--0.5--patch-36
+
+
+    modified files:
+     ChangeLog unixutil.ml
+
+
 2004-05-27 19:59:16 GMT	John Goerzen <jgoerzen@complete.org>	patch-35
 
     Summary:

@@ -15,7 +15,10 @@ let list_of_dir dirname =
     | Some ".." -> readit ()
     | Some x -> x :: readit ()
     | None -> []
-  in readit ();;
+  in 
+  let result = readit () in
+  closedir dirh;
+  result;;
 
 let fold_directory func firstval dirname =
   List.fold_left func firstval (list_of_dir dirname);;
