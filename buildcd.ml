@@ -101,7 +101,7 @@ let installkernels cp target =
   run "cp" ("-v" :: (kernlist @ [(target ^ "/boot")]));
   run "cp" ("-r" :: (modlist @ [target ^ "/lib/modules"]));
   mkdir (target ^ "/boot/grub") 0o755;
-  run "cp" ("-rv" :: glob ["/usr/lib/grub/*/*"] @ ["/boot/grub/"]);
+  run "cp" ("-rv" :: glob ["/usr/lib/grub/*/*"] @ [target ^ "/boot/grub/"]);
   let sd = open_out (target ^ "/boot/grub/menu.lst") in
   output_string sd "color cyan/blue white/blue\n";
   List.iter (fun x ->
@@ -130,6 +130,12 @@ let preprd cp imageroot =
   List.iter file2rd (split_ws (cp#get "cd" "ramdisk_files"));
 ;;
 
+let mkiso wdir imageroot =
+  p "Preparing ISO image";
+  let isofile = wdir ^ "/image.iso" in
+  run "mkisofs" ["-R"; "-b"; "boot/grub/stage2_eltorito"; "-no-emul-boot";
+    "-boot-load-size"; "1"; "-boot-info-table"; "-o"; isofile; imageroot];;
+
 let _ = 
   let cp, wdir = parsecmdline () in
   p ("Using working directory: " ^ wdir);
@@ -144,5 +150,6 @@ let _ =
   installrd cp imageroot;
   installkernels cp imageroot; 
   preprd cp imageroot;
+  mkiso wdir imageroot;
 ;;
 
