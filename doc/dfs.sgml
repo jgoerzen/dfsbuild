@@ -253,10 +253,44 @@ iface eth0 inet static
           partitions at /mnt) with: <command>cdebootstrap sid /mnt file:///opt/packages</command>.</para>
       </listitem>
       <listitem><para>Configuring Base System</para>
+	<para>You should copy your
+	  <filename>/etc/resolv.conf</filename> to the new system.
+	  Then, configure its
+	  <filename>/etc/apt/sources.list</filename> and
+	  <filename>/etc/network/interfaces</filename>.  Then,
+	  <filename>chroot /mnt</filename> and:
+	</para>
+	<orderedlist>
+	  <listitem><para><command>apt-get update</command></para>
+	  </listitem>
+	  <listitem><para><command>apt-get install module-init-tools
+		grub ppp</command></para>
+	  </listitem>
+	  <listitem><para><command>apt-get install</command>
+	      appropriate filesystem tools for your chosen filesystem</para>
+	  </listitem>
+	  <listitem><para><command>mkdir /boot/grub</command></para>
+	    <para><command>cp /usr/lib/grub/i386-pc/*
+		/boot/grub</command></para>
+	  </listitem>
+	</orderedlist>
       </listitem>
       <listitem><para>Installing Kernel</para>
+	<para>If you like the kernel on the DFS CD, you can do this:
+	  <command>cd /mnt/root; dpkg-repack
+	    kernel-image-2.6.6</command>.  Then, <command>chroot
+	    /mnt</command> and <command>dpkg -i
+	    /root/kernel-image-*</command>.
+	</para>
       </listitem>
       <listitem><para>Installing Grub</para>
+	    <screen>
+# grub
+grub> root (hd0,0)
+grub> setup (hd0)
+grub> quit
+# update-grub
+	    </screen>
       </listitem>
       <listitem><para>Rebooting into new system</para>
       </listitem>
