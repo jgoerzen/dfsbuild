@@ -20,6 +20,7 @@ dfsbuild: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
 	archsupport.cmx mirror.cmx \
 	configfiles.cmx bootloaders/bootloaderutil.cmx \
 	bootloaders/grub.cmx bootloaders/aboot.cmx \
+	bootloaders/yaboot.cmx \
 	bootloaders/bootloader.cmx \
 	dfsbuild.cmx
 	ocamlfind ocamlopt $(PACKAGES) -linkpkg \

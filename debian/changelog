@@ -1,3 +1,9 @@
+dfsbuild (0.6.3.rj1) unstable; urgency=low
+
+  * add powerpc (with yaboot) to supported architectures
+
+ -- Robert Jordens <jordens@debian.org>  Thu, 27 May 2004 19:38:12 +0200
+
 dfsbuild (0.6.3) unstable; urgency=low
 
   * Modularized bootloader code.
@@ -6,7 +12,7 @@ dfsbuild (0.6.3) unstable; urgency=low
   * Compression now works.  DFS image now compressed.  Saves over 200MB
     in the ISO.
 
- -- John Goerzen <jgoerzen@complete.org>  Thu, 27 May 2004 20:18:26 -0500
+ -- John Goerzen <jgoerzen@complete.org>  Thu, 27 May 2004 20:18:26 -0500 
 
 dfsbuild (0.6.2) unstable; urgency=low
 

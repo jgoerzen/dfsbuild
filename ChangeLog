@@ -2,6 +2,78 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-02 02:15:03 GMT	John Goerzen <jgoerzen@complete.org>	patch-65
+
+    Summary:
+      Merged in PowerPC/Yaboot patches from Robert Jordens <jordens@debian.org>
+    Revision:
+      dfsbuild--head--0.5--patch-65
+
+    Patches applied:
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--base-0
+       tag of jgoerzen@complete.org--projects/dfsbuild--head--0.5--patch-33
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-1
+       add missing b-deps libmissinglib-ocaml-dev and libpcre-ocaml-dev
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-2
+       add powerpc to debian/control
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-3
+       add changelog entry an new version 0.6.2.rj1
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-4
+       star merge johns upstream
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-5
+       star-merge john's upstream
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-6
+       remove ocaml-pcre from build-depends
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-7
+       add initial yaboot bootloader support
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-8
+       add powerpc configuration area to dfs.cfg
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-9
+       update chengelog entry to be more general
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-10
+       corrected kernel and initrd paths in generated yaboot.conf
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-11
+       star merge jgoerzens upstream
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-12
+       cleaned up packages list further, moving i386 stuff to archpackages
+    
+
+    new files:
+     CREDITS bootloaders/yaboot.ml
+
+    modified files:
+     ChangeLog Makefile bootloaders/bootloader.ml debian/changelog
+     debian/control dfs.cfg
+
+    new patches:
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--base-0
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-1
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-2
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-3
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-4
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-5
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-6
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-7
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-8
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-9
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-10
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-11
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-12
+
+
 2004-06-02 02:05:41 GMT	John Goerzen <jgoerzen@complete.org>	patch-64
 
     Summary:

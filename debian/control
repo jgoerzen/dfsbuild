@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 4.0.0), gtk-doc-tools, sgml2x, docbook-utils, jade,
 Standards-Version: 3.6.0
 
 Package: dfsbuild
-Architecture: i386 alpha
+Architecture: i386 alpha powerpc
 Depends: ${shlibs:Depends}, ${misc:Depends}, cdebootstrap, mkisofs, apt-move, grub [i386], aboot [alpha], yaboot [powerpc], cramfsprogs
 Description: Build Debian From Scratch CD/DVD images
  Debian From Scratch (DFS) is a live bootable CD that is designed to
@@ -30,3 +30,6 @@ Description: Build Debian From Scratch CD/DVD images
  On i386 and amd64 platforms, dfsbuild supports the Grub bootloader.
  .
  On Alpha, dfsbuild supports the aboot bootloader.
+ .
+ On Powerpc, dfsbuild supports the yaboot bootloader.
+
