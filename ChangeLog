@@ -2,6 +2,38 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-10-28 16:04:00 GMT	John Goerzen <jgoerzen@complete.org>	patch-110
+
+    Summary:
+      Merged from jordens
+    Revision:
+      dfsbuild--head--0.5--patch-110
+
+    Patches applied:
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-59
+       star-merge john (0.6.11, changelog fix)
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-60
+       star-merge john (amd64, config, grub path)
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-61
+       star-merge jofn (USB device wait)
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-62
+       star-merge john (grub, debian release)
+    
+
+    modified files:
+     ChangeLog
+
+    new patches:
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-59
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-60
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-61
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-62
+
+
 2004-10-25 21:14:58 GMT	John Goerzen <jgoerzen@complete.org>	patch-109
 
     Summary:
