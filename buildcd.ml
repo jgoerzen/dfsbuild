@@ -72,7 +72,7 @@ let installpkgs cp target =
     "/var/cache/apt/*.bin"; "/var/cache/debconf/*"; "/etc/X11" ]; *)
   ;;
 
-let installrd cp target =
+let installrd cp libdir target =
   p "Preparing ramdisk...";
   let chr args = run "chroot" (target :: args) in
   mkdir (target ^ "/opt/dfsruntime") 0o755;
@@ -87,6 +87,10 @@ let installrd cp target =
   run "mount" ["-t"; "proc"; "none"; target ^ "/opt/initrd/proc"];
   run "chroot" [target ^ "/opt/initrd"; "/bin/busybox"; "--install"];
   run "umount" [target ^ "/opt/initrd/proc"];
+  if (is_file_existing_fn (target ^ "/opt/initrd/linuxrc")) then begin
+    unlink (target ^ "/opt/initrd/linuxrc")
+  end;
+  run "cp" [libdir ^ "/linuxrc"; target ^ "/opt/initrd/"];
   let marker = genmarker () in
   writestring (target ^ "/opt/dfsruntime/marker") marker;
   writestring (target ^ "/opt/initrd/marker") marker;
@@ -131,6 +135,12 @@ let preprd cp imageroot =
   List.iter file2rd (split_ws (cp#get "cd" "ramdisk_files"));
 ;;
 
+let installlib libdir imageroot =
+  p "Installing runtime library files.";
+  List.iter (fun x -> 
+    run "cp" [libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
+    ["linuxrc"];;
+
 let mkiso wdir imageroot =
   p "Preparing ISO image";
   let isofile = wdir ^ "/image.iso" in
@@ -140,6 +150,9 @@ let mkiso wdir imageroot =
 let _ = 
   let cp, wdir = parsecmdline () in
   p ("Using working directory: " ^ wdir);
+  let libdir = resolve_file_name ~dir:(Unix.getcwd ()) (cp#get "cd" "libdir") in
+
+  p ("Using library directory: " ^ libdir);
   run "rm" ["-rf"; wdir]; 
   mkdir wdir 0o755; 
   Unix.chdir wdir;
@@ -148,8 +161,9 @@ let _ =
   mkdir imageroot 0o755;
   cdebootstrap cp imageroot;
   installpkgs cp imageroot;
-  installrd cp imageroot;
+  installrd cp libdir imageroot;
   installkernels cp imageroot; 
+  installlib libdir imageroot;
   preprd cp imageroot;
   mkiso wdir imageroot;
 ;;
