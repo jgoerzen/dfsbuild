@@ -1,6 +1,7 @@
 dfsbuild (0.6.12) unstable; urgency=low
 
   * Add dar to default config.  Closes: #257818.
+  * Experimental support for running on native amd64.  Closes: #254931.
 
  -- John Goerzen <jgoerzen@complete.org>  Tue, 10 Aug 2004 09:05:25 -0500
 
