@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-15 14:42:22 GMT	John Goerzen <jgoerzen@complete.org>	patch-94
+
+    Summary:
+      Noted Robert's UCF support in changelog
+    Revision:
+      dfsbuild--head--0.5--patch-94
+
+
+    modified files:
+     ChangeLog debian/changelog
+
+
 2004-06-15 14:40:36 GMT	John Goerzen <jgoerzen@complete.org>	patch-93
 
     Summary:
