@@ -18,7 +18,8 @@ clean:
 
 dfsbuild: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
 	archsupport.cmx mirror.cmx \
-	configfiles.cmx bootloaders/grub.cmx bootloaders/aboot.cmx \
+	configfiles.cmx bootloaders/bootloaderutil.cmx \
+	bootloaders/grub.cmx bootloaders/aboot.cmx \
 	bootloaders/bootloader.cmx \
 	dfsbuild.cmx
 	ocamlfind ocamlopt $(PACKAGES) -linkpkg \
@@ -27,7 +28,8 @@ dfsbuild: utils/dfsutils.cmx utils/unixutil.cmx utils/shellutil.cmx \
 
 dfsbuild.bc: utils/dfsutils.cmo utils/unixutil.cmo utils/shellutil.cmo \
 	archsupport.cmo mirror.cmo \
-	configfiles.cmo bootloaders/grub.cmo bootloaders/aboot.cmo \
+	configfiles.cmo bootloaders/bootloaderutil.cmx \
+	bootloaders/grub.cmo bootloaders/aboot.cmo \
 	bootloaders/bootloader.cmo \
 	dfsbuild.cmo
 	ocamlfind ocamlc -g $(PACKAGES) -linkpkg \
