@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-28 15:55:45 GMT	John Goerzen <jgoerzen@complete.org>	patch-53
+
+    Summary:
+      Fixed bug in mirror area
+    Revision:
+      dfsbuild--head--0.5--patch-53
+
+
+    modified files:
+     ChangeLog mirror.ml
+
+
 2004-05-28 15:48:51 GMT	John Goerzen <jgoerzen@complete.org>	patch-52
 
     Summary:

@@ -42,7 +42,7 @@ let mirror_data cp repos target mirrordir  workdir =
     fprintf cfd "FILECACHE=%s/var/cache/apt/archives\n" target;
     fprintf cfd "LISTSTATE=%s/var/lib/apt/lists\n" target;
     fprintf cfd "DIST=%s\n" suite;
-    try fprintf cfd "ARCH=%s\n" (cp#get sect "arch") with Not_found -> ();
+    try let a = cp#get sect "arch" in fprintf cfd "ARCH=%s\n" a with Not_found -> ();
     output_string cfd
     "COPYONLY=yes\nCONTENTS=yes\nAPTSITES=/all/\nPKGCOMP=\"none gzip\"\n";
     Pervasives.close_out cfd;
