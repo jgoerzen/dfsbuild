@@ -3,7 +3,8 @@
 #
 PACKAGES := -package shell -package missinglib
 all:	dfsbuild lib lib/linuxrc lib/startup lib/dfs.html/index.html \
-	lib/dfs.pdf lib/dfs.ps lib/dfs.txt lib/dfshelp lib/dfshints
+	lib/dfs.pdf lib/dfs.ps lib/dfs.txt lib/dfshelp lib/dfshints \
+	lib/home.html
 
 lib:
 	if [ ! -d lib ] ; then mkdir lib; fi
@@ -33,6 +34,9 @@ lib/dfshelp: libsrc/dfshelp
 	cp $^  $@
 
 lib/dfshints: libsrc/dfshints
+	cp $^ $@
+
+lib/home.html: libsrc/home.html
 	cp $^ $@
 
 lib/linuxrc: dfsutils.cmx shellutil.cmx libsrc/linuxrc.cmx

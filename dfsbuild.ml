@@ -183,7 +183,7 @@ let installlib libdir imageroot =
   p "Installing runtime library files.";
   List.iter (fun x -> 
     run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
-    ["startup"; "dfs.html"; "dfs.txt"; "dfs.pdf"; "dfs.ps"; "elinks.html"];
+    ["startup"; "dfs.html"; "dfs.txt"; "dfs.pdf"; "dfs.ps"; "home.html"];
   List.iter (fun x ->
     run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/usr/local/bin/"])
     ["dfshelp"; "dfshints"; "dfsbuildinfo"];

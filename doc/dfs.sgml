@@ -191,8 +191,19 @@ iface eth0 inet static
 
     </sect1>
 
-    <!-- 
-    <sect1 id="dfsboot.ppp"> -->
+    <sect1 id="dfsboot.ppp">
+      <title>Dialup with PPP</title>
+      <indexterm><primary>PPP</><see>Networking, PPP</></>
+      <indexterm><primary>Networking</><secondary>PPP</></>
+      <indexterm><primary>Dial-up</><see>Networking, PPP</></>
+      <para>
+        To dial-up with ppp, first run <command>pppconfig</> to set up
+        your access.  Name your connection "provider".  Now, you can
+        use
+        <command>pon</command> to connect and <command>poff</command>
+        to disconnect.
+      </para>
+    </sect1>
     
   </chapter>
 
