@@ -9,6 +9,7 @@ open Dfsutils;;
 open Shellutil;;
 open Unixutil;;
 open Printf;;
+open ConfigParser;;
 
 let find_codename target suite =
   p "Scanning for codename...";
@@ -26,7 +27,7 @@ let find_codename target suite =
     !retval;
   with End_of_file -> !retval;;
 
-let mirror_data cp repos target mirrordir  workdir =
+let mirror_data (cp:rawConfigParser) repos target mirrordir  workdir =
   if exists target then (rm ~recursive:true target);
   if not (exists mirrordir) then 
     (mkdir mirrordir 0o755);
@@ -42,7 +43,7 @@ let mirror_data cp repos target mirrordir  workdir =
     fprintf cfd "FILECACHE=%s/var/cache/apt/archives\n" target;
     fprintf cfd "LISTSTATE=%s/var/lib/apt/lists\n" target;
     fprintf cfd "DIST=%s\n" suite;
-    try let a = cp#get sect "arch" in fprintf cfd "ARCH=%s\n" a with Not_found -> ();
+    (try let a = cp#get sect "arch" in fprintf cfd "ARCH=%s\n" a with Not_found -> ());
     output_string cfd
     "COPYONLY=yes\nCONTENTS=yes\nAPTSITES=/all/\nPKGCOMP=\"none gzip\"\n";
     Pervasives.close_out cfd;

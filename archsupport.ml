@@ -13,5 +13,5 @@ let getarch () =
   end;
   !defaultarch;;
 
-let get (cp:rawConfigParser) = cp#get (getarch ());;
+let get ?default (cp:rawConfigParser) = cp#get ?default (getarch ());;
 

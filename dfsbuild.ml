@@ -9,6 +9,8 @@ open Unixutil;;
 open Dfsutils;;
 open Shellutil;;
 open Archsupport;;
+open Strutil;;
+open ConfigParser;;
 
 let p = print_endline;;
 
@@ -47,7 +49,7 @@ let parsecmdline () =
   if (!cffile = "") || (!wdir = "") then begin
    Arg.usage args usage;
    exit 1;
-   (new ConfigParser.rawConfigParser, "");
+   (new ConfigParser.configParser, "");
   end else (
     let cp = new ConfigParser.rawConfigParser in
     cp#readfile !cffile;
@@ -69,7 +71,7 @@ let installpkgs cp target =
 
   run "chroot" [target; "apt-get"; "update"];
   let allpkgstr = Strutil.strip (get cp "allpackages") in
-  let archpkgstr = try get cp "archpackages" with Not_found -> "" in
+  let archpkgstr = get ~default:"" cp "archpackages" in
   let pkgs = (split_ws allpkgstr) @ (split_ws archpkgstr) in
   run "chroot" (target :: "apt-get" :: "-y" :: "install" :: pkgs) ;
   rm (target ^ "/etc/resolv.conf");
@@ -82,15 +84,14 @@ let installpkgs cp target =
     "/var/cache/apt/*.bin"; "/var/cache/debconf/*"; "/etc/X11" ]; *)
   ;;
 
-let compress cp wdir target =
+let compress (cp:rawConfigParser) wdir target =
   if (cp#getbool (getarch()) "compress") then begin
     p "Compressing image...";
     let noncom = wdir ^ "/noncom" in
     Unix.mkdir noncom 0o755;
-    let noncomfiles = try
+    let noncomfiles = 
       List.filter (fun x -> exists (target ^ x)) 
-        (split_ws (get cp "dontcompress")) 
-    with Not_found -> [] in
+        (split_ws (get ~default:"" cp "dontcompress")) in
     let noncommap = let rec m l c = match l with
        [] -> [] | x :: xs -> (x, string_of_int c) :: m xs (c + 1) in
        m noncomfiles 0 in
@@ -142,7 +143,7 @@ let installdebs cp imageroot =
             run "dpkg" (rootopt :: "-i" :: (split_ws (get cp "installdebs")));
           with Not_found -> ();
   end;
-  let deblist = try (split_ws (get cp "unpackdebs")) with Not_found -> [] in
+  let deblist = split_ws (get ~default:"" cp "unpackdebs") in
   let chroottmpdir = "/insttmp" in
   let realtmpdir = imageroot ^ chroottmpdir in
   Unix.mkdir (imageroot ^ "/insttmp") 0o755;
@@ -202,7 +203,7 @@ let installlib docdir libdir imageroot =
     ["dfshelp"; "dfshints"; "dfsbuildinfo"];
 ;;
 
-let mkiso cp wdir imageroot isoargs =
+let mkiso (cp:rawConfigParser) wdir imageroot isoargs =
   p "Preparing ISO image";
   let isofile = wdir ^ "/image.iso" in
   let compressopts = if cp#getbool (getarch()) "compress" then ["-z"] else [] in

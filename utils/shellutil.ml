@@ -21,7 +21,7 @@ let run_getstring prog args =
   Buffer.contents b;;
 
 let glob patlist =
-  Dfsutils.split_ws (run_getstring "sh" ("-c" :: ["echo " ^ (String.concat " "
+  Strutil.split_ws (run_getstring "sh" ("-c" :: ["echo " ^ (String.concat " "
   patlist)]));;
 
 let rec recurse_cmd_do f startname =

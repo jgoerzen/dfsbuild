@@ -2,6 +2,28 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-06 02:16:14 GMT	John Goerzen <jgoerzen@complete.org>	patch-79
+
+    Summary:
+      Updated for missinglib 0.4.0
+    Revision:
+      dfsbuild--head--0.5--patch-79
+
+    Removed split_ws and accompanying functions that are now part of
+    missinglib 0.4.0.
+    
+    Updated build-dep to missinglib 0.4.0.
+    
+    Take advantage of new "default" arg to configparser stuff.
+    
+    Switch from rawConfigParser to configParser.
+
+    modified files:
+     ChangeLog archsupport.ml configfiles.ml debian/control
+     dfsbuild.ml libsrc/linuxrc.ml mirror.ml utils/dfsutils.ml
+     utils/shellutil.ml
+
+
 2004-06-04 19:39:24 GMT	John Goerzen <jgoerzen@complete.org>	patch-78
 
     Summary:

@@ -6,6 +6,7 @@ open Unix;;
 open Dfsutils;;
 open Strutil;;
 open Str;;
+open Fileutil;;
 
 putenv "PATH" "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";;
 let mountloc = "/realroot";;

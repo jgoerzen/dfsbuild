@@ -51,20 +51,12 @@ let writecfgfiles cp basedir =
     from))
       (cp#options "symlinks");
   end;
-  begin
-    try
       List.iter (fun x -> p("Deleting " ^ x); rm ~force:true (basedir ^ x))
-        (glob (split_ws (get cp "deletefiles")))
-    with Not_found -> ();
-  end;
+        (glob (split_ws (get ~default:"" cp "deletefiles")));
   p("Looking for dirs to make...");
   p (get cp "makedirs");
-  begin
-    try 
       List.iter (fun x -> p("Making dir " ^ x); Unix.mkdir (basedir ^ x) 0o755)
-        (split_ws (get cp "makedirs"))
-    with Not_found -> ();
-  end;
+        (split_ws (get ~default:"" cp "makedirs"));
 ;;
 
 let fixrc target =
