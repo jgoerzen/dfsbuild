@@ -25,12 +25,14 @@ mirror.cmx: dfsutils.cmx shellutil.cmx
 mirror.cmo: dfsutils.cmo shellutil.cmo
 
 lib/linuxrc: dfsutils.cmx shellutil.cmx lib/linuxrc.cmx
-	ocamlfind ocamlopt -cclib -static $(PACKAGES) -linkpkg \
+	ocamlfind ocamlopt -cclib -static -cclib --unresolved-symbols=ignore-all \
+	$(PACKAGES) -linkpkg \
 		-o $@ $^
 	strip -s $@
 
 lib/startup: dfsutils.cmx shellutil.cmx lib/startup.cmx
-	ocamlfind ocamlopt -cclib -static $(PACKAGES) -linkpkg -o $@ $^
+	ocamlfind ocamlopt -cclib -static -cclib --unresolved-symbols=ignore-all \
+	$(PACKAGES) -linkpkg -o $@ $^
 	strip -s $@
 
 buildcd.cmx: cashutil.cmx

@@ -27,7 +27,7 @@ let getdevices cp =
 let dlmirrors cp wdir =
   let suites = split_ws (cp#get "cd" "dlsuites") in
   let mirror = (cp#get "cd" "mirror") in
-  List.iter (fun x -> Mirror.mirror_workdir x mirror wdir) suites;;
+  Mirror.mirror_workdir suites mirror wdir;;
   
 let writestring filename s =
   let sd = Pervasives.open_out filename in
