@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-28 14:50:28 GMT	John Goerzen <jgoerzen@complete.org>	patch-50
+
+    Summary:
+      Fixed a syntax error in dfsbuild.ml
+    Revision:
+      dfsbuild--head--0.5--patch-50
+
+
+    modified files:
+     ChangeLog dfsbuild.ml
+
+
 2004-05-28 14:49:29 GMT	John Goerzen <jgoerzen@complete.org>	patch-49
 
     Summary:
