@@ -2,6 +2,30 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-02 14:03:48 GMT	John Goerzen <jgoerzen@complete.org>	patch-73
+
+    Summary:
+      [powerpc] Merged jordens again
+    Revision:
+      dfsbuild--head--0.5--patch-73
+
+    Patches applied:
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-17
+       add mac-fdisk macutils hfsutils hfsplus powerpc-utils to powerpc archpackages
+    
+     * jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-18
+       merge john
+    
+
+    modified files:
+     ChangeLog dfs.cfg
+
+    new patches:
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-17
+     jordens@debian.org--debian--2004/dfsbuild--jordens--0.5--patch-18
+
+
 2004-06-02 13:31:56 GMT	John Goerzen <jgoerzen@complete.org>	patch-72
 
     Summary:
