@@ -12,7 +12,7 @@ lib:
 clean:
 	-cd doc && scons -c && scons -c html pdf text ps
 	-rm -rf dfsbuild lib doc/.sconsign
-	-rm -f `find . -name "*.cm*"`
+	-rm -f `find . -name "*.cm*"` doc/manpage* doc/*.1
 	-rm -f `find . -name "*~"` `find . -name "*.o"`
 
 

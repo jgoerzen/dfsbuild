@@ -73,7 +73,7 @@ let getcddev () =
 ;;
 
 let _ =
-  p "Welcome to Debian From Scratch.";
+  p "\n *** Welcome to Debian From Scratch ***\n";
   p "Initial RAM disk booting.";
   let cddev = getcddev () in
 

@@ -2,11 +2,11 @@ Source: dfsbuild
 Section: unknown
 Priority: optional
 Maintainer: John Goerzen <jgoerzen@excelhustler.com>
-Build-Depends: debhelper (>= 4.0.0)
+Build-Depends: debhelper (>= 4.0.0), gtk-doc-tools, sgml2x, docbook-utils, jade, lynx, scons, ocaml, libcash-ocaml-dev, libextlib-ocaml-dev, libequeue-ocaml-dev
 Standards-Version: 3.6.0
 
 Package: dfsbuild
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Architecture: i386
+Depends: ${shlibs:Depends}, ${misc:Depends}, grub, cdebootstrap, mkisofs, apt-move
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>

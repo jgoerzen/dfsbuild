@@ -112,6 +112,7 @@ let installrd cp libdir target =
     unlink (target ^ "/opt/initrd/linuxrc")
   end;
   run "cp" [libdir ^ "/linuxrc"; target ^ "/opt/initrd/sbin/init"];
+  Unix.chmod (target ^ "/opt/initrd/sbin/init") 0o755;
   let marker = genmarker () in
   writestring (target ^ "/opt/dfsruntime/marker") marker;
   writestring (target ^ "/opt/initrd/marker") marker;
@@ -211,10 +212,12 @@ let preprd cp imageroot =
 let installlib libdir imageroot =
   p "Installing runtime library files.";
   List.iter (fun x -> 
-    run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
+    run "cp" ["-rL"; libdir ^ "/" ^ x; imageroot ^ "/opt/dfsruntime/"])
     ["startup"; "dfs.html"; "dfs.txt"; "dfs.pdf"; "dfs.ps"; "home.html"];
+  Unix.chmod (imageroot ^ "/opt/dfsruntime/startup") 0o755;
   List.iter (fun x ->
-    run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/usr/local/bin/"])
+    run "cp" ["-r"; libdir ^ "/" ^ x; imageroot ^ "/usr/local/bin/"];
+    Unix.chmod (imageroot ^ "/usr/local/bin/" ^ x) 0o755)
     ["dfshelp"; "dfshints"; "dfsbuildinfo"];
 ;;
 
