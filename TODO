@@ -4,4 +4,7 @@
 
  * finish docs
 
+ * Support standard Debian kernels or other .debs that expect to
+   have module support on the initrd.
+
 arch-tag: to do list

@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-06-07 16:28:07 GMT	John Goerzen <jgoerzen@complete.org>	patch-81
+
+    Summary:
+      Updated for initrd stuff
+    Revision:
+      dfsbuild--head--0.5--patch-81
+
+
+    modified files:
+     ChangeLog TODO
+
+
 2004-06-06 03:05:24 GMT	John Goerzen <jgoerzen@complete.org>	patch-80
 
     Summary:
