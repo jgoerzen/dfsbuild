@@ -17,9 +17,14 @@ let getfirstline filename =
 
 let getlines filename =
   let fd = open_in filename in
-  let retval = Std.input_list fd in
+  let retval = ref [] in
+  try
+    while true do
+      retval := (input_line fd) :: !retval
+    done
+  with Eof -> ();
   close_in fd;
-  retval;;
+  !retval;;
 
 let exec_passing_args filename =
   let args = Array.copy Sys.argv in

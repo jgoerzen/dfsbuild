@@ -79,7 +79,9 @@ let installrd cp libdir target =
   mkdir (target ^ "/opt/initrd") 0o755;
   List.iter (fun x -> mkdir (target ^ "/opt/initrd/" ^ x) 0o755) 
     ["bin"; "lib"; "sbin"; "proc"; "usr"; "usr/sbin"; "usr/bin"; "realroot"; ];
+  (*
   chr ["sh"; "-c"; "cp -v /lib/libc.so* /lib/libm.so* /lib/libdl.so* /lib/ld-linux.so* /opt/initrd/lib"];
+  *)
   chr ["cp"; "-v"; "/bin/busybox"; "/opt/initrd/bin"];
   chr ["cp"; "-v"; "/usr/sbin/chroot"; "/opt/initrd/usr/sbin/"];
   chr ["cp"; "-v"; "/sbin/pivot_root"; "/opt/initrd/sbin/"];
