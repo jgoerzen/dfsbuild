@@ -2,6 +2,18 @@
 # arch-tag: automatic-ChangeLog--jgoerzen@complete.org--projects/dfsbuild--head--0.5
 #
 
+2004-05-27 23:45:54 GMT	John Goerzen <jgoerzen@complete.org>	patch-42
+
+    Summary:
+      Added missinglib to build-deps
+    Revision:
+      dfsbuild--head--0.5--patch-42
+
+
+    modified files:
+     ChangeLog debian/control dfs.cfg
+
+
 2004-05-27 21:31:55 GMT	John Goerzen <jgoerzen@complete.org>	patch-41
 
     Summary:
