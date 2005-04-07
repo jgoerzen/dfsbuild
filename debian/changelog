@@ -1,3 +1,9 @@
+dfsbuild (0.6.18) unstable; urgency=low
+
+  * Documented in manpage that dfsbuild must run as root.  Closes: #288637.
+
+ -- John Goerzen <jgoerzen@complete.org>  Thu,  7 Apr 2005 19:40:20 -0500
+
 dfsbuild (0.6.17) unstable; urgency=low
 
   * Depend on a version of apt-move with the gawk workaround in it.

@@ -52,6 +52,9 @@
         commented and shows all the available options.
       </para>
       <para>
+        dfsbuild must be run as root.
+      </para>
+      <para>
         The working directory is specified with -w.  <emphasis>NOTE:
           IF THIS SPECIFIES AN EXISTING DIRECTORY, IT IS AUTOMATICALLY DELETED
           WITHOUT FURTHER WARNING.
