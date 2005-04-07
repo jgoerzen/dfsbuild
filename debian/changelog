@@ -4,7 +4,7 @@ dfsbuild (0.6.18) unstable; urgency=low
 
  -- John Goerzen <jgoerzen@complete.org>  Thu,  7 Apr 2005 19:40:20 -0500
 
-dfsbuild (0.6.17) unstable; urgency=low
+dfsbuild (0.6.17) unstable; urgency=medium
 
   * Depend on a version of apt-move with the gawk workaround in it.
     Remove manpage section on gawk.
