@@ -1,3 +1,11 @@
+dfsbuild (0.6.19) unstable; urgency=low
+
+  * Add a few new packages
+  * Remove older raidtools2
+  * Tweaks to build-depends for newer ocaml
+
+ -- John Goerzen <jgoerzen@complete.org>  Fri, 29 Apr 2005 05:07:30 -0500
+
 dfsbuild (0.6.18) unstable; urgency=low
 
   * Documented in manpage that dfsbuild must run as root.  Closes: #288637.
