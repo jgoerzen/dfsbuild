@@ -2,7 +2,7 @@ Source: dfsbuild
 Section: utils
 Priority: optional
 Maintainer: John Goerzen <jgoerzen@complete.org>
-Build-Depends: debhelper (>= 4.0.0), gtk-doc-tools, sgml2x, docbook-utils, jade, lynx, scons, ocaml-nox, libextlib-ocaml-dev, libequeue-ocaml-dev, libmissinglib-ocaml-dev (>= 0.4.10), xpdf-utils, bash
+Build-Depends: debhelper (>= 4.0.0), gtk-doc-tools, sgml2x, docbook-utils, jade, lynx, scons, ocaml-nox, libextlib-ocaml-dev, libequeue-ocaml-dev, libmissinglib-ocaml-dev (>= 0.4.10.debian-1), xpdf-utils, bash
 Standards-Version: 3.6.0
 
 Package: dfsbuild
