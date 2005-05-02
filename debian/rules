@@ -66,8 +66,8 @@ install: build
 	cp dfsbuild $(RDIR)/usr/bin/
 	cp dfs.cfg $(SHAREDIR)
 	cp COPYRIGHT $(DOCDIR)/copyright
-	chmod a-x $(LIBDIR)/{linuxrc,startup}
-	strip -s $(LIBDIR)/{linuxrc,startup}
+	chmod a-x $(LIBDIR)/linuxrc $(LIBDIR)/startup
+	strip -s $(LIBDIR)/linuxrc $(LIBDIR)/startup
 
 
 # Build architecture-independent files here.
