@@ -1,3 +1,6 @@
+ * Add lftp back to the dfs.cfg list (or update dfshints to note the lack
+   of it)
+ 
  * config option to copy files from existing fs
 
  * remastering hints such as http://www.knoppix.net/docs/index.php/KnoppixRemasteringHowto
