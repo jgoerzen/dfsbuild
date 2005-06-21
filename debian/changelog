@@ -1,3 +1,11 @@
+dfsbuild (0.6.20) unstable; urgency=low
+
+  * Switched default cfg to stable.  cdebootstrap doesn't
+    work with testing (see 315154).  This addresses 314813, which I will
+    merge with 315154.
+
+ -- John Goerzen <jgoerzen@complete.org>  Tue, 21 Jun 2005 06:52:39 -0500
+
 dfsbuild (0.6.19) unstable; urgency=low
 
   * Add a few new packages
