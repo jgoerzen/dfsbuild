@@ -1,3 +1,9 @@
+dfsbuild (0.6.21) unstable; urgency=low
+
+  * Update relationship to debconf.  Closes: #314815.
+
+ -- John Goerzen <jgoerzen@complete.org>  Fri,  7 Oct 2005 22:50:42 -0500
+
 dfsbuild (0.6.20) unstable; urgency=low
 
   * Switched default cfg to stable.  cdebootstrap doesn't
