@@ -5,6 +5,11 @@ Please see COPYRIGHT for more details
 
 module Utils where
 import System.Random
+import MissingH.Logging.Logger
+
+im = infoM "dfsdbuild"
+wm = warningM "dfsbuild"
+dm = debugM "dfdsbuild"
 
 getUniqueCDID :: IO String
 getUniqueCDID = 
