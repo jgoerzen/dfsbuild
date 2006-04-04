@@ -17,5 +17,5 @@ getUniqueCDID =
        random1 <- randomIO
        random2 <- randomIO
        return $ printf "DFS CD IMAGE, format 2, ID: %d,%d,%d\n"
-                (\(TOD x _ -> x) t) random1::Int random2::Int
+                ((\(TOD x _) -> x) t) random1::Int random2::Int
 
