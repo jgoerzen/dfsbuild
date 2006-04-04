@@ -1,41 +1,25 @@
 # arch-tag: Primary makefile
-# Copyright (c) 2004 John Goerzen
+# Copyright (c) 2004-2006 John Goerzen
 #
-PACKAGES := -package shell -package missinglib -I . -I bootloaders -I utils
-all:	.depend dfsbuild lib lib/linuxrc lib/startup lib/dfs.html/index.html \
-	lib/dfs.pdf lib/dfs.ps lib/dfs.txt lib/dfshelp lib/dfshints \
-	lib/home.html lib/dfsbuildinfo
 
-lib:
-	if [ ! -d lib ] ; then mkdir lib; fi
+all: setup			# GHC build
+	./setup configure
+	./setup build
+
+hugsbuild: setup
+	./setup configure --hugs
+	./setup build
+
+setup: Setup.lhs dfsbuild.cabal
+	ghc -package Cabal Setup.lhs -o setup
 
 clean:
+	-./setup clean
+	-rm -rf dist *.ho *.hi *.o *.a setup *~
 	-cd doc && scons -c && scons -c html pdf text ps
 	-rm -rf dfsbuild lib doc/.sconsign .depend test dfsbuild.bc
 	-rm -f `find . -name "*.cm*"` doc/manpage* doc/*.1
 	-rm -f `find . -name "*~"` `find . -name "*.o"`
-
-
-dfsbuild: utils/dfsutils.cmx utils/shellutil.cmx \
-	archsupport.cmx mirror.cmx \
-	configfiles.cmx bootloaders/bootloaderutil.cmx \
-	bootloaders/grub.cmx bootloaders/aboot.cmx \
-	bootloaders/yaboot.cmx \
-	bootloaders/bootloader.cmx \
-	dfsbuild.cmx
-	ocamlfind ocamlopt $(PACKAGES) -linkpkg \
-		-o $@ $^
-
-
-dfsbuild.bc: utils/dfsutils.cmo utils/shellutil.cmo \
-	archsupport.cmo mirror.cmo \
-	configfiles.cmo bootloaders/bootloaderutil.cmx \
-	bootloaders/grub.cmo bootloaders/aboot.cmo \
-	bootloaders/yaboot.cmo \
-	bootloaders/bootloader.cmo \
-	dfsbuild.cmo
-	ocamlfind ocamlc -g $(PACKAGES) -linkpkg \
-		-o $@ $^
 
 test: utils/dfsutils.cmx utils/shellutil.cmx  test.cmx
 	ocamlfind ocamlopt -compact $(PACKAGES) -linkpkg \
@@ -92,7 +76,3 @@ lib/dfs.txt: doc/dfs.sgml lib
 	cd doc && scons text
 	cp doc/dfs.txt lib
 
-.depend:
-	ocamldep -I . -I bootloaders -I utils `find . -name "*.ml"` > .depend
-
--include .depend
