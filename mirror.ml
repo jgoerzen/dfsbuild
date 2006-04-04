@@ -40,8 +40,8 @@ let mirror_data (cp:rawConfigParser) repos target mirrordir  workdir =
     let cfgfilename = workdir ^ "/apt-move.conf" in
     let cfd = open_out cfgfilename in
     fprintf cfd "LOCALDIR=%s\n" mirrordir;
-    fprintf cfd "FILECACHE=%s/var/cache/apt/archives\n" target;
-    fprintf cfd "LISTSTATE=%s/var/lib/apt/lists\n" target;
+    fprintf cfd "FILECACHE=%s/var/cache/bootstrap\n" target;
+    fprintf cfd "LISTSTATE=%s/var/cache/bootstrap\n" target;
     fprintf cfd "DIST=%s\n" suite;
     (try let a = cp#get sect "arch" in fprintf cfd "ARCH=%s\n" a with Not_found -> ());
     output_string cfd
