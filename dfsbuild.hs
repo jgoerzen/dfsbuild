@@ -17,11 +17,11 @@ import System.Console.GetOpt
 import MissingH.Path
 import qualified Actions(run)
   
-procCmdLine :: IO (ConfigParser, String)
+procCmdLine :: IO (Bool, ConfigParser, String)
 procCmdLine =
     do (args, _) <- validateCmdLine RequireOrder options header validate
-       when (lookup "v" args == Just "")
-            (setLogLevel DEBUG)
+       let debugmode = (lookup "v" args == Just "")
+       when debugmode (setLogLevel DEBUG)
        dm "VERBOSE MODE (DEBUG) engaged."
        dm $ "Command line parsed, results: " ++ (show args)
        val <- readfile (emptyCP {accessfunc = interpolatingAccess 5})
@@ -34,7 +34,8 @@ procCmdLine =
        dm $ "Working dir created"
        cwd <- getWorkingDirectory
        dm $ "Initial cwd is " ++ cwd
-       return (cp, forceMaybeMsg "absNormPath" $ absNormPath cwd wdir)
+       return (debugmode, cp, 
+               forceMaybeMsg "absNormPath" $ absNormPath cwd wdir)
     where options = [Option "c" [] (ReqArg (stdRequired "c") "FILE")
                             "Configuration file (required)",
                      Option "w" [] (ReqArg (stdRequired "w") "DIR")
@@ -52,7 +53,7 @@ procCmdLine =
 main =
     do setLogLevel INFO 
        im "Welcome to dfsbuild."
-       (incp, workdir) <- procCmdLine 
+       (debugmode, incp, workdir) <- procCmdLine 
        changeWorkingDirectory workdir
        im $ "Using working directory " ++ workdir
        let cplibdir = forceMaybe $ absNormPath workdir (dget incp "libdir")
@@ -60,5 +61,6 @@ main =
        let env = DFSEnv {wdir = workdir,
                          libdir = cplibdir,
                          imagedir = workdir ++ "/image",
-                         cp = incp}
+                         cp = incp,
+                         isDebugging = debugmode}
        Actions.run env

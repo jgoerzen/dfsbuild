@@ -16,7 +16,8 @@ data DFSEnv = DFSEnv
     {wdir :: String,
      libdir :: String,
      imagedir :: String,
-     cp :: ConfigParser}
+     cp :: ConfigParser,
+     isDebugging :: Bool}
 
 im = infoM "dfsbuild.main"
 wm = warningM "dfsbuild.main"
@@ -42,3 +43,4 @@ getDevices cp =
 
 dget cp opt = forceEither $ get cp "dfs" opt
 eget env opt = dget (cp env) opt
+esget env s o = forceEither $ get (cp env) s o
