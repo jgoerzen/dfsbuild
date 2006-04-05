@@ -42,7 +42,7 @@ getDevices env =
 
 getDefaultArch = 
     do (ph, iarchstr) <- pipeFrom "dpkg" ["--print-architecture"]
-       archstr <- return $! (seqList (strip iarchstr))
+       let archstr = (seqList (strip iarchstr))
        forceSuccess ph
        return archstr
 
