@@ -12,12 +12,6 @@ import MissingH.Str
 import Utils
 import MissingH.Logging.Logger
 
-{- | Take a ConfigParser and return a list of devices given, separated by
-"\n" -}
-getDevices :: ConfigParser -> String
-getDevices cp = 
-    (++ "\n") . join "\n" . splitWs . forceEither . get cp "devices"
-
 dlMirrors cp workdir = 
     do let suites = splitWs (forceEither $ get cp "dlrepos")
        Mirror.mirror_workdir cp suites workdir
