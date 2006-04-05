@@ -18,7 +18,7 @@ dm = debugM "dfdsbuild"
 
 getUniqueCDID :: IO String
 getUniqueCDID = 
-    do (t::ClockTime) <- getClockTime
+    do t <- getClockTime
        random1 <- randomIO
        random2 <- randomIO
        return $ printf "DFS CD IMAGE, format 2, ID: %d,%d,%d\n"
@@ -28,5 +28,5 @@ getUniqueCDID =
 "\n" -}
 getDevices :: ConfigParser -> String
 getDevices cp = 
-    (++ "\n") . join "\n" . splitWs . forceEither . get cp "devices"
+    (++ "\n") . join "\n" . splitWs . forceEither $ get cp "dfs" "devices"
 

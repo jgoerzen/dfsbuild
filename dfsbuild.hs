@@ -11,27 +11,35 @@ import MissingH.Either
 import MissingH.Str
 import Utils
 import MissingH.Logging.Logger
+import Control.Monad
+import MissingH.GetOpt
+import MissingH.Maybe
+import System.Posix.Directory
+import System.Console.GetOpt
+import MissingH.Path
 
+{-
 dlMirrors cp workdir = 
     do let suites = splitWs (forceEither $ get cp "dlrepos")
        Mirror.mirror_workdir cp suites workdir
+-}
   
-parseCmdLine :: IO (ConfigParser, String)
-parseCmdLine =
+procCmdLine :: IO (ConfigParser, String)
+procCmdLine =
     do (args, _) <- validateCmdLine RequireOrder options header validate
        when (lookup "v" args == Just "")
             (updateGlobalLogger "dfsbuild" (setLevel DEBUG))
        dm "VERBOSE MODE (DEBUG) engaged."
-       dm $, "Command line parsed, results: " ++ (show args)
-       val <- readfile (emptyCP {accessFunc = interpolatingAccess 5})
-              (forceMaybe $ lookup args "c")
-       dm $ "Config file parsed: " ++ show val
+       dm $ "Command line parsed, results: " ++ (show args)
+       val <- readfile (emptyCP {accessfunc = interpolatingAccess 5})
+              (forceMaybe $ lookup "c" args)
        let cp = forceEither val
-       let wdir = lookup args "w"
+       dm $ "Config file parsed: " ++ show (content cp)
+       let wdir = forceMaybeMsg "working dir" $ lookup "w" args
        dm $ "Working dir is " ++ wdir
        createDirectory wdir 0o755
        dm $ "Working dir created"
-       cwd <- getCurrentDirectory
+       cwd <- getWorkingDirectory
        dm $ "Initial cwd is " ++ cwd
        return (cp, forceMaybeMsg "absNormPath" $ absNormPath cwd wdir)
     where options = [Option "i" [] (ReqArg (stdRequired "i") "FILE")
@@ -46,7 +54,7 @@ parseCmdLine =
 
 main =
     do updateGlobalLogger "dfsbuild" (setLevel INFO)
-       (cp, workdir) <- parseCmdLine 
-       setCurrentDirectory workdir
+       (cp, workdir) <- procCmdLine 
+       changeWorkingDirectory workdir
        dm "Changed cwd to workdir"
        
