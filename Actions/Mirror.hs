@@ -13,6 +13,8 @@ import Data.List
 import MissingH.Path
 import System.IO
 import Text.Printf
+import MissingH.Path
+import MissingH.IO.HVFS(SystemFS)
 
 mirrorToWorkdir env repos =
     do im "Mirroring process starting."
@@ -47,6 +49,8 @@ procrepo env repo =
             "for INFILE in " ++ targetdir ++ "/var/cache/bootstrap/*.deb; do "
             ++ "reprepro " ++ repdebugargs ++ " -b . includedeb " ++ suite ++
             " \"$INFILE\"; done"]
+       -- Delete the cdebootstrap cache so the next run has a clean dir
+       recursiveRemove SystemFS $ targetdir ++ "/var/cache/bootstrap"
     where
       targetdir = (wdir env) ++ "/target"
       mirrordir = (wdir env) ++ "/mirror"
