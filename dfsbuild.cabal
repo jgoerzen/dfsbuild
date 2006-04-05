@@ -4,7 +4,7 @@ License: GPL
 Maintainer: John Goerzen <jgoerzen@complete.org>
 Stability: Alpha
 Copyright: Copyright (c) 2006 John Goerzen
-Build-Depends: haskell-src, network, unix, parsec, MissingH>=0.13.2
+Build-Depends: haskell-src, network, unix, parsec, MissingH>=0.14.0
 
 Executable: dfsbuild
 Main-Is: dfsbuild.hs

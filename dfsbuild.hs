@@ -9,9 +9,11 @@ import MissingH.Either
 import MissingH.Str
 import Utils
 import MissingH.Logging.Logger
+import MissingH.Logging.Handler.Simple
 import Control.Monad
 import MissingH.GetOpt
 import MissingH.Maybe
+import System.IO
 import System.Posix.Directory
 import System.Console.GetOpt
 import MissingH.Path
@@ -21,7 +23,7 @@ procCmdLine :: IO (Bool, ConfigParser, String)
 procCmdLine =
     do (args, _) <- validateCmdLine RequireOrder options header validate
        let debugmode = (lookup "v" args == Just "")
-       when debugmode (setLogLevel DEBUG)
+       when debugmode (updateGlobalLogger rootLoggerName (setLevel DEBUG))
        dm "VERBOSE MODE (DEBUG) engaged."
        dm $ "Command line parsed, results: " ++ (show args)
        val <- readfile (emptyCP {accessfunc = interpolatingAccess 5})
@@ -51,9 +53,14 @@ procCmdLine =
           header = "Usage: dfsbuild [-v] -c CONFIGFILE -w WORKDIR\n"
 
 main =
-    do setLogLevel INFO 
+    do loghandler <- verboseStreamHandler stderr DEBUG
+       updateGlobalLogger (rootLoggerName)
+                          (setLevel INFO . setHandlers [loghandler])
+       traplogging "dfs" CRITICAL "Exception" runMain
+
+runMain =
+    do (debugmode, incp, workdir) <- procCmdLine 
        im "Welcome to dfsbuild."
-       (debugmode, incp, workdir) <- procCmdLine 
        changeWorkingDirectory workdir
        im $ "Using working directory " ++ workdir
        let cplibdir = forceMaybe $ absNormPath workdir (dget incp "libdir")

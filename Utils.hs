@@ -19,13 +19,9 @@ data DFSEnv = DFSEnv
      cp :: ConfigParser,
      isDebugging :: Bool}
 
-im = infoM "dfsbuild.main"
-wm = warningM "dfsbuild.main"
-dm = debugM "dfsbuild.main"
-
-setLogLevel prio =
-    mapM_ (\x -> updateGlobalLogger x (setLevel prio)) 
-          [rootLoggerName, "dfsbuild.main"]
+im = infoM "dfs"
+wm = warningM "dfs"
+dm = debugM "dfs"
 
 getUniqueCDID :: IO String
 getUniqueCDID = 
