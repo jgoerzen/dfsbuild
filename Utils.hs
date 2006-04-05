@@ -41,3 +41,4 @@ getDevices cp =
     (++ "\n") . join "\n" . splitWs $ dget cp "devices"
 
 dget cp opt = forceEither $ get cp "dfs" opt
+eget env opt = dget (cp env) opt

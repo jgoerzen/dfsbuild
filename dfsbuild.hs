@@ -16,12 +16,6 @@ import System.Posix.Directory
 import System.Console.GetOpt
 import MissingH.Path
 import qualified Actions(run)
-
-{-
-dlMirrors cp workdir = 
-    do let suites = splitWs (forceEither $ get cp "dlrepos")
-       Mirror.mirror_workdir cp suites workdir
--}
   
 procCmdLine :: IO (ConfigParser, String)
 procCmdLine =
