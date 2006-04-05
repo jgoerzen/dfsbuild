@@ -60,14 +60,18 @@ main =
 
 runMain =
     do (debugmode, incp, workdir) <- procCmdLine 
-       im "Welcome to dfsbuild."
+       da <- getDefaultArch
+       im $ "Welcome to dfsbuild.  Host architecture: " ++ show da
        changeWorkingDirectory workdir
        im $ "Using working directory " ++ workdir
-       let cplibdir = forceMaybe $ absNormPath workdir (dget incp "libdir")
+       let cplibdir = forceMaybe $ 
+                      absNormPath workdir 
+                                      (forceEither $ get incp da "libdir")
        im $ "Using library directory " ++ cplibdir
        let env = DFSEnv {wdir = workdir,
                          libdir = cplibdir,
                          imagedir = workdir ++ "/image",
                          cp = incp,
-                         isDebugging = debugmode}
+                         isDebugging = debugmode,
+                         defaultArch = da}
        Actions.run env

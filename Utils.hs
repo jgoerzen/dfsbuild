@@ -9,15 +9,19 @@ import MissingH.Logging.Logger
 import System.Time
 import Text.Printf
 import MissingH.Str
+import MissingH.List
 import MissingH.Either
 import MissingH.ConfigParser
+import MissingH.Cmd
+import System.IO.Unsafe
 
 data DFSEnv = DFSEnv 
     {wdir :: String,
      libdir :: String,
      imagedir :: String,
      cp :: ConfigParser,
-     isDebugging :: Bool}
+     isDebugging :: Bool,
+     defaultArch :: String}
 
 im = infoM "dfs"
 wm = warningM "dfs"
@@ -33,10 +37,14 @@ getUniqueCDID =
 
 {- | Take a ConfigParser and return a list of devices given, separated by
 "\n" -}
-getDevices :: ConfigParser -> String
-getDevices cp = 
-    (++ "\n") . join "\n" . splitWs $ dget cp "devices"
+getDevices env = 
+    (++ "\n") . join "\n" . splitWs $ eget env "devices"
 
-dget cp opt = forceEither $ get cp "dfs" opt
-eget env opt = dget (cp env) opt
+getDefaultArch = 
+    do (ph, iarchstr) <- pipeFrom "dpkg" ["--print-architecture"]
+       archstr <- return $! (seqList (strip iarchstr))
+       forceSuccess ph
+       return archstr
+
+eget env opt = forceEither $ get (cp env) (defaultArch env) opt
 esget env s o = forceEither $ get (cp env) s o
