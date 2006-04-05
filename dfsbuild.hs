@@ -3,8 +3,6 @@ Copyright (c) 2006 John Goerzen
 Please see COPYRIGHT for more details
 -}
 
-module Main where
-
 import Text.Printf
 import MissingH.ConfigParser
 import MissingH.Either
@@ -28,11 +26,11 @@ procCmdLine :: IO (ConfigParser, String)
 procCmdLine =
     do (args, _) <- validateCmdLine RequireOrder options header validate
        when (lookup "v" args == Just "")
-            (updateGlobalLogger "dfsbuild" (setLevel DEBUG))
+            (setLogLevel DEBUG)
        dm "VERBOSE MODE (DEBUG) engaged."
        dm $ "Command line parsed, results: " ++ (show args)
        val <- readfile (emptyCP {accessfunc = interpolatingAccess 5})
-              (forceMaybe $ lookup "c" args)
+              (forceMaybeMsg "arg c" $ lookup "c" args)
        let cp = forceEither val
        dm $ "Config file parsed: " ++ show (content cp)
        let wdir = forceMaybeMsg "working dir" $ lookup "w" args
@@ -42,19 +40,25 @@ procCmdLine =
        cwd <- getWorkingDirectory
        dm $ "Initial cwd is " ++ cwd
        return (cp, forceMaybeMsg "absNormPath" $ absNormPath cwd wdir)
-    where options = [Option "i" [] (ReqArg (stdRequired "i") "FILE")
+    where options = [Option "c" [] (ReqArg (stdRequired "c") "FILE")
                             "Configuration file (required)",
                      Option "w" [] (ReqArg (stdRequired "w") "DIR")
                             "Work directory (required) (MUST NOT EXIST)",
                      Option "v" [] (NoArg ("v", "")) "Be verbose"
                     ]
-          validate (_, []) = Nothing
+          validate (arglist, []) =
+              if (lookup "c" arglist /= Nothing &&
+                  lookup "w" arglist /= Nothing)
+                  then Nothing
+                  else Just "Required arguments missing"
           validate (_, _) = Just "Unrecognized options appended"
-          header = "Usage: dfsbuild -c CONFIGFILE -w WORKDIR\n"
+          header = "Usage: dfsbuild [-v] -c CONFIGFILE -w WORKDIR\n"
 
 main =
-    do updateGlobalLogger "dfsbuild" (setLevel INFO)
+    do setLogLevel INFO 
+       im "dfsbuild initializing."
+       infoM "dfsbuild.main" "dfsbuild2"
        (cp, workdir) <- procCmdLine 
        changeWorkingDirectory workdir
-       dm "Changed cwd to workdir"
+       im $ "Using working directory " ++ workdir
        

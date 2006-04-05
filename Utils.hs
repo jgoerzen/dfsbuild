@@ -12,9 +12,13 @@ import MissingH.Str
 import MissingH.Either
 import MissingH.ConfigParser
 
-im = infoM "dfsdbuild"
-wm = warningM "dfsbuild"
-dm = debugM "dfdsbuild"
+im = infoM "dfsbuild.main"
+wm = warningM "dfsbuild.main"
+dm = debugM "dfsbuild.main"
+
+setLogLevel prio =
+    mapM_ (\x -> updateGlobalLogger x (setLevel prio)) 
+          [rootLoggerName, "dfsbuild.main"]
 
 getUniqueCDID :: IO String
 getUniqueCDID = 
