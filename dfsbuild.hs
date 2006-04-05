@@ -56,9 +56,9 @@ procCmdLine =
 
 main =
     do setLogLevel INFO 
-       im "dfsbuild initializing."
-       infoM "dfsbuild.main" "dfsbuild2"
+       im "Welcome to dfsbuild."
        (cp, workdir) <- procCmdLine 
        changeWorkingDirectory workdir
        im $ "Using working directory " ++ workdir
-       
+       let libdir = forceMaybe $ absNormPath workdir (dget cp "libdir")
+       im $ "Using library directory " ++ libdir

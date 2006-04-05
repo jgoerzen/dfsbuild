@@ -32,5 +32,6 @@ getUniqueCDID =
 "\n" -}
 getDevices :: ConfigParser -> String
 getDevices cp = 
-    (++ "\n") . join "\n" . splitWs . forceEither $ get cp "dfs" "devices"
+    (++ "\n") . join "\n" . splitWs $ dget cp "devices"
 
+dget cp opt = forceEither $ get cp "dfs" opt
