@@ -15,6 +15,7 @@ import MissingH.Maybe
 import System.Posix.Directory
 import System.Console.GetOpt
 import MissingH.Path
+import qualified Actions(run)
 
 {-
 dlMirrors cp workdir = 
@@ -57,8 +58,13 @@ procCmdLine =
 main =
     do setLogLevel INFO 
        im "Welcome to dfsbuild."
-       (cp, workdir) <- procCmdLine 
+       (incp, workdir) <- procCmdLine 
        changeWorkingDirectory workdir
        im $ "Using working directory " ++ workdir
-       let libdir = forceMaybe $ absNormPath workdir (dget cp "libdir")
-       im $ "Using library directory " ++ libdir
+       let cplibdir = forceMaybe $ absNormPath workdir (dget incp "libdir")
+       im $ "Using library directory " ++ cplibdir
+       let env = DFSEnv {wdir = workdir,
+                         libdir = cplibdir,
+                         imagedir = workdir ++ "/image",
+                         cp = incp}
+       Actions.run env

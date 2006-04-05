@@ -12,6 +12,12 @@ import MissingH.Str
 import MissingH.Either
 import MissingH.ConfigParser
 
+data DFSEnv = DFSEnv 
+    {wdir :: String,
+     libdir :: String,
+     imagedir :: String,
+     cp :: ConfigParser}
+
 im = infoM "dfsbuild.main"
 wm = warningM "dfsbuild.main"
 dm = debugM "dfsbuild.main"
