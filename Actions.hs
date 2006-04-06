@@ -13,6 +13,8 @@ import MissingH.Cmd
 import MissingH.Path
 import MissingH.Path.FilePath
 import Control.Monad
+import Control.Exception
+import Data.List
 import MissingH.ConfigParser
 import MissingH.IO.HVFS
 import System.Directory hiding (createDirectory)
@@ -48,7 +50,10 @@ mainRunner env =
              do Actions.ConfigFiles.writeCfgFiles env
                 Actions.ConfigFiles.fixRc env
                 Actions.ConfigFiles.writeBuildInfo env
-                saveState env CfgHandled
+                finished CfgHandled
+         CfgHandled ->          -- Prepare the ramdisk
+             do preprd env
+                saveState env RDPrepped
                 return False
        if shouldContinue
           then mainRunner env
@@ -155,3 +160,27 @@ installdebs env =
     where
       chroottmpdir = "/insttmp"
       realtmpdir = (targetdir env) ++ chroottmpdir
+
+preprd env =
+    do im "Preparing directory for ramdisk..."
+       createDirectory ((targetdir env) ++ "/opt/initrd") 0o755
+       mapM_ (\x -> createDirectory ((targetdir env) ++ "/opt/initrd/" ++ x) 0o755)
+             ["bin", "lib", "sbin", "proc", "usr", "usr/sbin", "usr/bin",
+              "realroot"]
+       chr ["sh", "-c", "cp -dv /lib/ld* /opt/initrd/lib/"]
+       chr ["sh", "-c", "cp -v /lib/libc.so* /opt/initrd/lib/"]
+       chr ["cp", "-v", "/bin/busybox", "/opt/initrd/bin/"]
+       chr ["cp", "-v", "/usr/sbin/chroot", "/opt/initrd/usr/sbin/"]
+       chr ["cp", "-v", "/sbin/pivot_root", "/opt/initrd/sbin/"]
+       chr ["cp", "-r", "/dev", "/opt/initrd/"]
+       handle (\_ -> return ()) (removeLink ((targetdir env) ++ "/opt/initrd/linuxrc"))
+       safeSystem "cp" [(eget env "libdir") ++ "/linuxrc",
+                        (targetdir env) ++ "/opt/initrd/sbin/init"]
+       setFileMode ((targetdir env) ++ "/opt/initrd/sbin/init") 0o755
+       marker <- getUniqueCDID
+       writeFile ((targetdir env) ++ "/opt/dfsruntime/marker") marker
+       writeFile ((targetdir env) ++ "/opt/initrd/marker") marker
+       writeFile ((targetdir env) ++ "/opt/initrd/devices") getdevices
+    where chr args = safeSystem "chroot" $ ((targetdir env) : args)
+          getdevices = (++ "\n") . concat . intersperse "\n" . 
+                       splitWs . eget env $ "devices"
