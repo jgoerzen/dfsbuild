@@ -14,7 +14,7 @@ import MissingH.Path
 import System.IO
 import Text.Printf
 import MissingH.Path
-import MissingH.IO.HVFS(SystemFS)
+import MissingH.IO.HVFS
 
 mirrorToWorkdir env repos =
     do im "Mirroring process starting."

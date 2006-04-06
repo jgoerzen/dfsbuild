@@ -8,6 +8,8 @@ import Utils
 import qualified Actions.Mirror
 import System.Posix.Directory
 import MissingH.Str
+import MissingH.Cmd
+import System.Directory hiding (createDirectory)
 
 run env = 
     do im "Running."
@@ -29,7 +31,7 @@ dlMirrors env =
        Actions.Mirror.mirrorToWorkdir env suites
 
 cdebootstrap env =
-    do im $ "Bootstrapping into " ++ targetdir
+    do im $ "Bootstrapping into " ++ targetdir env
        safeSystem "cdebootstrap" [eget env "suite", (targetdir env),
                                   "file://" ++ (wdir env) ++ "/mirror"]
        dm $ "Saving sources.list"
@@ -60,4 +62,4 @@ installpkgs env =
 
        safeSystem "chroot" [targetdir env, "apt-get", "clean"]
 
-    where pkgs = splitWs (eget "packages")
+    where pkgs = splitWs (eget env "packages")
