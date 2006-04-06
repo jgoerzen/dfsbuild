@@ -27,8 +27,11 @@ procrepo env repo =
     do im $ "Running cdebootstrap for " ++ repo
        -- First, download the packages.
        safeSystem "cdebootstrap" $
-                  archargs ++ debugargs ++ ["-d", suite, targetdir env, mirror]
+                  archargs ++ debugargs ++ ["-d", repo, targetdir env, mirror]
        -- Next, copy them into the mirror.
+       codename <- getCodeName 
+                   (targetdir env ++ "/var/cache/bootstrap/Release")
+       dm $ "Codename for this is " ++ codename
        mapM_ (\x -> handle (\_ -> return ()) (createDirectory x 0o755))
                  [mirrordir, mirrordir ++ "/conf"]
        safeSystem "touch" [mirrordir ++ "/conf/distributions"]
@@ -36,26 +39,26 @@ procrepo env repo =
            ["Origin: Debian",
             "Label: Debian",
             "Suite: " ++ repo,
-            "Codename: " ++ repo,
             "Version: 0.dfs",
+            "Codename: " ++ codename,
             "Architectures: alpha amd64 arm hppa i386 ia64 m68k mips mipsel powerpc s390 sparc",
             "Description: Debian From Scratch cache of " ++ repo,
             "Components: main non-free contrib",
             "\n\n\n"]
-       im $ "Running reprepro for " ++ repo
+       im $ "Running reprepro for " ++ codename
        bracketCWD mirrordir $
          safeSystem "bash"
            ["-c", 
             "for INFILE in " ++ targetdir env 
             ++ "/var/cache/bootstrap/*.deb; do "
-            ++ "reprepro " ++ repdebugargs ++ " -b . includedeb " ++ suite ++
+            ++ "reprepro " ++ repdebugargs ++ " -b . includedeb " ++ codename ++
             " \"$INFILE\"; done"]
        -- Delete the cdebootstrap cache so the next run has a clean dir
        recursiveRemove SystemFS $ targetdir env ++ "/var/cache/bootstrap"
+       safeSystem "ln" ["-sf", codename, mirrordir ++ "/dists/" ++ repo]
     where
       mirrordir = (wdir env) ++ "/mirror"
       sect = "repo " ++ repo
-      suite = esget env sect "suite"
       mirror = esget env sect "mirror"
       archargs = case get (cp env) sect "arch"
                    of Left _ -> []

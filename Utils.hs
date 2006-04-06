@@ -14,6 +14,7 @@ import MissingH.Either
 import MissingH.ConfigParser
 import MissingH.Cmd
 import System.IO.Unsafe
+import Text.Regex
 
 data DFSEnv = DFSEnv 
     {wdir :: String,
@@ -61,3 +62,11 @@ getState :: DFSEnv -> IO DFSState
 getState env =
     do st <- readFile ((wdir env) ++ "/state")
        return (read st)
+
+getCodeName :: FilePath -> IO String
+getCodeName fp =
+    do c <- readFile fp
+       let cr = mkRegex "Codename: ([a-z]+)"
+       case matchRegex cr c of
+         Just [cn] -> return cn
+         x -> fail $ "Error finding Codename: " ++ show x
