@@ -1,8 +1,14 @@
 dfsbuild (0.7.0) unstable; urgency=low
 
-  * Complete rewrite in Haskell.  Many new features from this:
+  * Complete rewrite in Haskell.  Many new features from this.
+    Closes: #358944, which pertained to OCaml code.
   * New debug/verbose mode
-  * Switch from apt-move to reprepro for package caches
+  * Switch from apt-move to reprepro for package caches.
+    Closes: #320991, #314815.
+  * No longer removes existing working directory by default.
+    Closes: #307334.
+  * dfsbuild still uses bash, but since bash is Essential,
+    no longer depends upon it.  Closes: #356572, #316420.
 
  -- John Goerzen <jgoerzen@complete.org>  Wed,  5 Apr 2006 23:01:04 -0500
 
