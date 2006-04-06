@@ -27,10 +27,10 @@ dlMirrors env =
 
 cdebootstrap env =
     do im $ "Bootstrapping into " ++ targetdir
-       safeSystem "cdebootstrap" [eget env "suite", target,
+       safeSystem "cdebootstrap" [eget env "suite", (targetdir env),
                                   "file://" ++ (wdir env) ++ "/mirror"]
        dm $ "Saving sources.list"
-       writeFile (targetdir ++ "/etc/apt/sources.list") $
+       writeFile ((targetdir env) ++ "/etc/apt/sources.list") $
                  "deb " ++ (eget env "mirror") ++ " " ++ (eget env "suite")
                  ++ " main\n"
        dm $ "Moving mirror to /opt/packages on target"

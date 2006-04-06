@@ -27,7 +27,7 @@ procrepo env repo =
     do im $ "Running cdebootstrap for " ++ repo
        -- First, download the packages.
        safeSystem "cdebootstrap" $
-                  archargs ++ debugargs ++ ["-d", suite, targetdir, mirror]
+                  archargs ++ debugargs ++ ["-d", suite, targetdir env, mirror]
        -- Next, copy them into the mirror.
        mapM_ (\x -> handle (\_ -> return ()) (createDirectory x 0o755))
                  [mirrordir, mirrordir ++ "/conf"]
@@ -46,13 +46,13 @@ procrepo env repo =
        bracketCWD mirrordir $
          safeSystem "bash"
            ["-c", 
-            "for INFILE in " ++ targetdir ++ "/var/cache/bootstrap/*.deb; do "
+            "for INFILE in " ++ targetdir env 
+            ++ "/var/cache/bootstrap/*.deb; do "
             ++ "reprepro " ++ repdebugargs ++ " -b . includedeb " ++ suite ++
             " \"$INFILE\"; done"]
        -- Delete the cdebootstrap cache so the next run has a clean dir
-       recursiveRemove SystemFS $ targetdir ++ "/var/cache/bootstrap"
+       recursiveRemove SystemFS $ targetdir env ++ "/var/cache/bootstrap"
     where
-      targetdir = (wdir env) ++ "/target"
       mirrordir = (wdir env) ++ "/mirror"
       sect = "repo " ++ repo
       suite = esget env sect "suite"

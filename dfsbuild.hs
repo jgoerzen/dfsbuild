@@ -73,5 +73,6 @@ runMain =
                          imagedir = workdir ++ "/image",
                          cp = incp,
                          isDebugging = debugmode,
-                         defaultArch = da}
+                         defaultArch = da,
+                         targetdir = workdir ++ "/target"}
        Actions.run env

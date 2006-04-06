@@ -21,7 +21,8 @@ data DFSEnv = DFSEnv
      imagedir :: String,
      cp :: ConfigParser,
      isDebugging :: Bool,
-     defaultArch :: String}
+     defaultArch :: String,
+     targetdir :: String}
 
 im = infoM "dfs"
 wm = warningM "dfs"
