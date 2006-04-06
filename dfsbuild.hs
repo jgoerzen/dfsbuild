@@ -15,6 +15,7 @@ import MissingH.GetOpt
 import MissingH.Maybe
 import System.IO
 import System.Posix.Directory
+import System.Posix.User
 import System.Console.GetOpt
 import MissingH.Path
 import qualified Actions(run)
@@ -62,6 +63,7 @@ runMain =
     do (debugmode, incp, workdir) <- procCmdLine 
        da <- getDefaultArch
        im $ "Welcome to dfsbuild.  Host architecture: " ++ show da
+       checkUID
        changeWorkingDirectory workdir
        im $ "Using working directory " ++ workdir
        let cplibdir = forceMaybe $ 
@@ -76,3 +78,9 @@ runMain =
                          defaultArch = da,
                          targetdir = workdir ++ "/target"}
        Actions.run env
+
+checkUID =
+    do uid <- getEffectiveUserID
+       if uid /= 0
+          then fail $ "dfsbuild must be run as root."
+          else dm $ "dfsbuild is running as root."
