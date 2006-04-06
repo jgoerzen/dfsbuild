@@ -27,6 +27,7 @@ data DFSEnv = DFSEnv
 
 data DFSState = Fresh | Initialized | Mirrored | Bootstrapped | Installed
               | LibsInstalled | DebsInstalled | CfgHandled | RDPrepped
+              | KernelsInstalled
               deriving (Eq, Show, Read, Ord)
 
 im = infoM "dfs"

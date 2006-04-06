@@ -53,7 +53,10 @@ mainRunner env =
                 finished CfgHandled
          CfgHandled ->          -- Prepare the ramdisk
              do preprd env
-                saveState env RDPrepped
+                finished RDPrepped
+         RDPrepped ->           -- Install kernels
+             do installKernels env
+                saveState env KernelsInstalled
                 return False
        if shouldContinue
           then mainRunner env
@@ -184,3 +187,21 @@ preprd env =
     where chr args = safeSystem "chroot" $ ((targetdir env) : args)
           getdevices = (++ "\n") . concat . intersperse "\n" . 
                        splitWs . eget env $ "devices"
+
+installKernels env =
+    do dm "Installing kernels..."
+       case get (cp env) (defaultArch env) "kernels" of
+         Left _ -> return ()
+         Right k -> 
+              -- FIXME: a nicer way to do this would be nice.
+              safeSystem "bash" ["-c", "cp -v " ++
+                                 (concat . intersperse " " . splitWs $ k) ++ " " ++
+                                 ((targetdir env) ++ "/boot/")]
+       case get (cp env) (defaultArch env) "modules" of
+         Left _ -> return ()
+         Right m -> -- FIXME: this too
+            safeSystem "bash" ["-c", "cp -rv " ++
+                               (concat . intersperse " " . splitWs $ m) ++ " " ++
+                               (targetdir env) ++ "/lib/modules/"]
+            
+       
