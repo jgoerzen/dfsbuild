@@ -26,7 +26,7 @@ data DFSEnv = DFSEnv
      targetdir :: String}
 
 data DFSState = Fresh | Initialized | Mirrored | Bootstrapped | Installed
-              | LibsInstalled
+              | LibsInstalled | DebsInstalled
               deriving (Eq, Show, Read, Ord)
 
 im = infoM "dfs"

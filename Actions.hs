@@ -10,7 +10,11 @@ import System.Posix.Directory
 import System.Posix.Files
 import MissingH.Str
 import MissingH.Cmd
+import MissingH.Path
+import MissingH.Path.FilePath
 import Control.Monad
+import MissingH.ConfigParser
+import MissingH.IO.HVFS
 import System.Directory hiding (createDirectory)
 
 run env = 
@@ -24,25 +28,28 @@ mainRunner env =
          Fresh -> do mapM_ (createDirectory `flip` 0o755) 
                                [targetdir env, targetdir env ++ "/opt",
                                 targetdir env ++ "/opt/dfsruntime"]
-                     next Initialized
+                     finished Initialized
          Initialized ->         -- Now download all suites we'll be using
              do dlMirrors env
-                next Mirrored
+                finished Mirrored
          Mirrored ->            -- Bootstrap the CD image
              do cdebootstrap env
-                next Bootstrapped
+                finished Bootstrapped
          Bootstrapped ->        -- Install additional packages
              do installpkgs env
-                next Installed
+                finished Installed
          Installed ->           -- Time to install shared files
              do installlib env
-                saveState env LibsInstalled
+                finished LibsInstalled
+         LibsInstalled ->       -- Time to install debs
+             do installdebs env
+                saveState env DebsInstalled
                 return False
        if shouldContinue
           then mainRunner env
           else dm $ "mainRunner finished."
-    where next state = do saveState env state
-                          return True
+    where finished state = do saveState env state
+                              return True
              
 dlMirrors env = 
     do let suites = splitWs $ eget env "dlrepos"
@@ -113,3 +120,26 @@ installlib env =
                   
     where docdir = eget env "docdir"
           libdir = eget env "libdir"
+
+installdebs env =
+    case get (cp env) (defaultArch env) "installdebs" of
+      Left _ -> im "Not installing .debs since no installdebs option given in config file"
+      Right debs -> 
+          do let deblist = splitWs debs
+             if deblist /= []
+                then do im "Installing .debs..."
+                        createDirectory realtmpdir 0o755
+                        mapM_ (\x -> safeSystem "cp" ["-v", x, 
+                                                      realtmpdir ++ "/"])
+                              deblist
+                        let debnames = map (\x -> chroottmpdir ++ "/" ++ 
+                                       (snd . splitFileName $ x)) deblist
+                        safeSystem "chroot" $
+                            [(targetdir env), "dpkg", "--force-depends",
+                             "--force-conflicts", "--force-overwrite",
+                             "--force-architecture", "--unpack"] ++ debnames
+                        recursiveRemove SystemFS realtmpdir
+                else im "Not installing .debs since none listed in installdebs option"
+    where
+      chroottmpdir = "/insttmp"
+      realtmpdir = (targetdir env) ++ chroottmpdir
