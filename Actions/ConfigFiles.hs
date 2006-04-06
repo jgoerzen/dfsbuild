@@ -15,7 +15,7 @@ import MissingH.Path.FilePath
 import Control.Monad
 import MissingH.ConfigParser
 import MissingH.IO.HVFS
-import System.Directory hiding (createDirectory)
+import System.Time
 import Text.Printf
 
 getDate =
@@ -30,7 +30,8 @@ buildinfo env =
                 "\nPreparation Date: " ++ datestr ++ "\n"
 
 writeBuildInfo env = 
-    buildinfo >>= (writeFile ((targetdir env) ++ "/opt/dfsruntime/buildinfo"))
+    buildinfo env >>= 
+                  (writeFile ((targetdir env) ++ "/opt/dfsruntime/buildinfo"))
 
 getidstring :: DFSEnv -> IO String
 getidstring env = 
