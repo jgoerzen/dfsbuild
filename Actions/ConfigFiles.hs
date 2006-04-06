@@ -62,8 +62,9 @@ writeCfgFiles env =
     case get (cp env) (defaultArch env) "deletefiles" of
       Left _ -> return ()
       Right files ->
-          mapM_ (\fn -> do dm $ "Deleting " ++ fn
-                           removeLink fn) (splitWs files)
+          mapM_ (\fn -> 
+                 safeSystem "bash" ["-c", "rm -vf " ++ ((targetdir env) ++ fn)]
+                ) (splitWs files)
     case get (cp env) (defaultArch env) "makedirs" of
       Left _ -> return ()
       Right files ->
