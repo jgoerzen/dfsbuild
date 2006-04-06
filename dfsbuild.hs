@@ -24,9 +24,8 @@ procCmdLine :: IO (Bool, Bool, ConfigParser, String)
 procCmdLine =
     do (args, _) <- validateCmdLine RequireOrder options header validate
        let debugmode = (lookup "V" args == Just "")
-       when debugmode (updateGlobalLogger rootLoggerName (setLevel DEBUG))
-       when (lookup "v" args == Just "")
-            (updateGlobalLogger "dfs" (setLevel DEBUG))
+       when (debugmode || lookup "v" args == Just "") 
+                (updateGlobalLogger rootLoggerName (setLevel DEBUG))
        dm "VERBOSE MODE (DEBUG) engaged."
        dm $ "Command line parsed, results: " ++ (show args)
        val <- readfile (emptyCP {accessfunc = interpolatingAccess 5})
@@ -64,12 +63,12 @@ main =
 
 runMain =
     do (debugmode, resumemode, incp, workdir) <- procCmdLine 
-
-       -- If this is a fresh run, need to create that work dir.
-       unless (resumemode) (createDirectory workdir 0o755)
        da <- getDefaultArch
        im $ "Welcome to dfsbuild.  Host architecture: " ++ show da
        checkUID
+
+       -- If this is a fresh run, need to create that work dir.
+       unless (resumemode) (createDirectory workdir 0o755)
        changeWorkingDirectory workdir
        im $ "Using working directory " ++ workdir
        let cplibdir = forceMaybe $ 
