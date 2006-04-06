@@ -1,3 +1,5 @@
+* Eliminate all the separate definitions of targetdir, mirrordir
+
  * Add lftp back to the dfs.cfg list (or update dfshints to note the lack
    of it)
  
