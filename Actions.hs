@@ -9,23 +9,36 @@ import qualified Actions.Mirror
 import System.Posix.Directory
 import MissingH.Str
 import MissingH.Cmd
+import Control.Monad
 import System.Directory hiding (createDirectory)
 
 run env = 
     do im "Running."
-       mapM_ (createDirectory `flip` 0o755) 
-             [imagedir env, imagedir env ++ "/opt",
-              imagedir env ++ "/opt/dfsruntime"]
+       mainRunner env
 
-       -- Download all suites that we'll be using
-       dlMirrors env
-
-       -- Now bootstrap the CD image
-       cdebootstrap env
-
-       -- Install additional packages
-       installpkgs env
-       
+mainRunner env =
+    do state <- getState env
+       dm $ "Processing at state " ++ show state
+       shouldContinue <- case state of
+         Fresh -> do mapM_ (createDirectory `flip` 0o755) 
+                               [imagedir env, imagedir env ++ "/opt",
+                                imagedir env ++ "/opt/dfsruntime"]
+                     next Initialized
+         Initialized ->         -- Now download all suites we'll be using
+             do dlMirrors env
+                next Mirrored
+         Mirrored ->            -- Bootstrap the CD image
+             do cdebootstrap env
+                next Bootstrapped
+         Bootstrapped ->        -- Install additional packages
+             do installpkgs env
+                saveState env Installed
+                return False
+       when (shouldContinue) (mainRunner env)
+       dm $ "mainRunner finished."
+    where next state = do saveState env state
+                          return True
+             
 dlMirrors env = 
     do let suites = splitWs $ eget env "dlrepos"
        Actions.Mirror.mirrorToWorkdir env suites

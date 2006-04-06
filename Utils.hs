@@ -24,6 +24,9 @@ data DFSEnv = DFSEnv
      defaultArch :: String,
      targetdir :: String}
 
+data DFSState = Fresh | Initialized | Mirrored | Bootstrapped | Installed
+              deriving (Eq, Show, Read, Ord)
+
 im = infoM "dfs"
 wm = warningM "dfs"
 dm = debugM "dfs"
@@ -49,3 +52,12 @@ getDefaultArch =
 
 eget env opt = forceEither $ get (cp env) (defaultArch env) opt
 esget env s o = forceEither $ get (cp env) s o
+
+saveState :: DFSEnv -> DFSState -> IO ()
+saveState env state =
+    writeFile ((wdir env) ++ "/state") (show state)
+
+getState :: DFSEnv -> IO DFSState
+getState env =
+    do st <- readFile ((wdir env) ++ "/state")
+       return (read st)

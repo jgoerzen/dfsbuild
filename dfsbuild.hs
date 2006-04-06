@@ -20,11 +20,13 @@ import System.Console.GetOpt
 import MissingH.Path
 import qualified Actions(run)
   
-procCmdLine :: IO (Bool, ConfigParser, String)
+procCmdLine :: IO (Bool, Bool, ConfigParser, String)
 procCmdLine =
     do (args, _) <- validateCmdLine RequireOrder options header validate
-       let debugmode = (lookup "v" args == Just "")
+       let debugmode = (lookup "V" args == Just "")
        when debugmode (updateGlobalLogger rootLoggerName (setLevel DEBUG))
+       when (lookup "v" args == Just "")
+            (updateGlobalLogger "dfs" (setLevel DEBUG))
        dm "VERBOSE MODE (DEBUG) engaged."
        dm $ "Command line parsed, results: " ++ (show args)
        val <- readfile (emptyCP {accessfunc = interpolatingAccess 5})
@@ -33,17 +35,18 @@ procCmdLine =
        dm $ "Config file parsed: " ++ show (content cp)
        let wdir = forceMaybeMsg "working dir" $ lookup "w" args
        dm $ "Working dir is " ++ wdir
-       createDirectory wdir 0o755
        dm $ "Working dir created"
        cwd <- getWorkingDirectory
        dm $ "Initial cwd is " ++ cwd
-       return (debugmode, cp, 
+       return (debugmode, lookup "R" args == Just "", cp, 
                forceMaybeMsg "absNormPath" $ absNormPath cwd wdir)
     where options = [Option "c" [] (ReqArg (stdRequired "c") "FILE")
                             "Configuration file (required)",
                      Option "w" [] (ReqArg (stdRequired "w") "DIR")
                             "Work directory (required) (MUST NOT EXIST)",
-                     Option "v" [] (NoArg ("v", "")) "Be verbose"
+                     Option "R" [] (NoArg ("R", "")) "Resume an existing build (EXPERIMENTAL)",
+                     Option "v" [] (NoArg ("v", "")) "Show dfsbuild debugging",
+                     Option "V" [] (NoArg ("V", "")) "Show both dfsbuild AND external program debugging"
                     ]
           validate (arglist, []) =
               if (lookup "c" arglist /= Nothing &&
@@ -51,7 +54,7 @@ procCmdLine =
                   then Nothing
                   else Just "Required arguments missing"
           validate (_, _) = Just "Unrecognized options appended"
-          header = "Usage: dfsbuild [-v] -c CONFIGFILE -w WORKDIR\n"
+          header = "Usage: dfsbuild [-v | -V] [-R] -c CONFIGFILE -w WORKDIR\n"
 
 main =
     do loghandler <- verboseStreamHandler stderr DEBUG
@@ -60,7 +63,10 @@ main =
        traplogging "dfs" CRITICAL "Exception" runMain
 
 runMain =
-    do (debugmode, incp, workdir) <- procCmdLine 
+    do (debugmode, resumemode, incp, workdir) <- procCmdLine 
+
+       -- If this is a fresh run, need to create that work dir.
+       unless (resumemode) (createDirectory workdir 0o755)
        da <- getDefaultArch
        im $ "Welcome to dfsbuild.  Host architecture: " ++ show da
        checkUID
@@ -77,6 +83,9 @@ runMain =
                          isDebugging = debugmode,
                          defaultArch = da,
                          targetdir = workdir ++ "/target"}
+       -- Fresh run: initialize the state file.
+       unless (resumemode) (saveState env Fresh)
+
        Actions.run env
 
 checkUID =
