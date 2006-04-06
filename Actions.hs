@@ -7,6 +7,7 @@ module Actions where
 import Utils
 import qualified Actions.Mirror
 import System.Posix.Directory
+import System.Posix.Files
 import MissingH.Str
 import MissingH.Cmd
 import Control.Monad
@@ -57,7 +58,7 @@ cdebootstrap env =
                  "deb " ++ (eget env "mirror") ++ " " ++ (eget env "suite")
                  ++ " main\n"
        dm $ "Moving mirror to /opt/packages on target"
-       renameFile ((wdir env) ++ "/mirror") 
+       rename ((wdir env) ++ "/mirror") 
                       ((targetdir env) ++ "/opt/packages")
     where debugargs = if isDebugging env
                           then ["--debug", "-v"]
