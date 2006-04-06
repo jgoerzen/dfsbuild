@@ -16,7 +16,7 @@ import Control.Monad
 import MissingH.ConfigParser
 import MissingH.IO.HVFS
 import System.Directory hiding (createDirectory)
-
+import qualified Actions.ConfigFiles
 run env = 
     do im "Running."
        mainRunner env
@@ -43,7 +43,12 @@ mainRunner env =
                 finished LibsInstalled
          LibsInstalled ->       -- Time to install debs
              do installdebs env
-                saveState env DebsInstalled
+                finished DebsInstalled
+         DebsInstalled ->       -- Handle config files
+             do Actions.ConfigFiles.writeCfgFiles env
+                Actions.ConfigFiles.fixRc env
+                Actions.ConfigFiles.writeBuildInfo env
+                saveState env CfgHandled
                 return False
        if shouldContinue
           then mainRunner env

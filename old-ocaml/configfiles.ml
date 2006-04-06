@@ -20,7 +20,7 @@ let writebuildinfo cp target =
   Pervasives.close_out fd;;
 
 let getidstring cp =
-  Printf.sprintf "%s %s (%s)" (get cp "name") (get cp "version") datestr;;
+  Printf.sprintf "DFS image: %s %s (%s)" (get cp "name") (get cp "version") datestr;;
 
 let writecfgfiles cp basedir =
   let w fn s =
