@@ -122,12 +122,19 @@ installlib env =
           libdir = eget env "libdir"
 
 installdebs env =
-    case get (cp env) (defaultArch env) "installdebs" of
-      Left _ -> im "Not installing .debs since no installdebs option given in config file"
+ do case get (cp env) (defaultArch env) "installdebs" of
+      Left _ -> return ()
+      Right debs ->
+          do im "Installing debs..."
+             safeSystem "dpkg" $ ["--root=" ++ (targetdir env), "-i"] ++
+                     splitWs debs
+                                       
+    case get (cp env) (defaultArch env) "unpackdebs" of
+      Left _ -> return () 
       Right debs -> 
           do let deblist = splitWs debs
              if deblist /= []
-                then do im "Installing .debs..."
+                then do im "Unpacking .debs..."
                         createDirectory realtmpdir 0o755
                         mapM_ (\x -> safeSystem "cp" ["-v", x, 
                                                       realtmpdir ++ "/"])
@@ -139,7 +146,7 @@ installdebs env =
                              "--force-conflicts", "--force-overwrite",
                              "--force-architecture", "--unpack"] ++ debnames
                         recursiveRemove SystemFS realtmpdir
-                else im "Not installing .debs since none listed in installdebs option"
+                else im "Not unpacking .debs since none listed in unpackdebs option"
     where
       chroottmpdir = "/insttmp"
       realtmpdir = (targetdir env) ++ chroottmpdir
