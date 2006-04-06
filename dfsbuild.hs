@@ -20,7 +20,7 @@ import System.Console.GetOpt
 import MissingH.Path
 import qualified Actions(run)
   
-procCmdLine :: IO (Bool, Bool, ConfigParser, String)
+procCmdLine :: IO (Bool, Bool, ConfigParser, String, String)
 procCmdLine =
     do (args, _) <- validateCmdLine RequireOrder options header validate
        let debugmode = (lookup "V" args == Just "")
@@ -37,12 +37,19 @@ procCmdLine =
        dm $ "Working dir created"
        cwd <- getWorkingDirectory
        dm $ "Initial cwd is " ++ cwd
+       da <- getDefaultArch
+       let defaultArch = case lookup "a" args of
+                           Nothing -> da
+                           Just x -> x
        return (debugmode, lookup "R" args == Just "", cp, 
-               forceMaybeMsg "absNormPath" $ absNormPath cwd wdir)
+               forceMaybeMsg "absNormPath" $ absNormPath cwd wdir,
+               defaultArch)
     where options = [Option "c" [] (ReqArg (stdRequired "c") "FILE")
                             "Configuration file (required)",
                      Option "w" [] (ReqArg (stdRequired "w") "DIR")
                             "Work directory (required) (MUST NOT EXIST)",
+                     Option "a" [] (ReqArg (stdRequired "a") "ARCH")
+                            "Force architecture of target image to ARCH",
                      Option "R" [] (NoArg ("R", "")) "Resume an existing build (EXPERIMENTAL)",
                      Option "v" [] (NoArg ("v", "")) "Show dfsbuild debugging",
                      Option "V" [] (NoArg ("V", "")) "Show both dfsbuild AND external program debugging"
@@ -62,9 +69,8 @@ main =
        traplogging "dfs" CRITICAL "Exception" runMain
 
 runMain =
-    do (debugmode, resumemode, incp, workdir) <- procCmdLine 
-       da <- getDefaultArch
-       im $ "Welcome to dfsbuild.  Host architecture: " ++ show da
+    do (debugmode, resumemode, incp, workdir, da) <- procCmdLine 
+       im $ "Welcome to dfsbuild.  Image architecture: " ++ show da
        checkUID
 
        -- If this is a fresh run, need to create that work dir.
