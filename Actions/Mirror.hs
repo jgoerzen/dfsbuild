@@ -62,7 +62,7 @@ procrepo env repo =
                       Right a -> ["-a", a]
       debugargs = if isDebugging env
                      then ["--debug", "-v"]
-                     else []
+                     else ["-q"]
       repdebugargs = if isDebugging env
                         then "-V"
                         else ""

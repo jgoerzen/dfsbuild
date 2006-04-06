@@ -45,8 +45,13 @@ dlMirrors env =
 
 cdebootstrap env =
     do im $ "Bootstrapping into " ++ targetdir env
-       safeSystem "cdebootstrap" [eget env "suite", (targetdir env),
-                                  "file://" ++ (wdir env) ++ "/mirror"]
+       -- cdebootstrap has issues when Release.gpg isn't there.  Sigh.
+       safeSystem "find" [wdir env ++ "/mirror/dists", "-name", "Release",
+                          "-exec", "touch", "{}.gpg", ";"]
+                  
+       safeSystem "cdebootstrap" $ debugargs ++
+                      [eget env "suite", (targetdir env),
+                       "file://" ++ (wdir env) ++ "/mirror"]
        dm $ "Saving sources.list"
        writeFile ((targetdir env) ++ "/etc/apt/sources.list") $
                  "deb " ++ (eget env "mirror") ++ " " ++ (eget env "suite")
@@ -54,6 +59,10 @@ cdebootstrap env =
        dm $ "Moving mirror to /opt/packages on target"
        renameFile ((wdir env) ++ "/mirror") 
                       ((targetdir env) ++ "/opt/packages")
+    where debugargs = if isDebugging env
+                          then ["--debug", "-v"]
+                          else ["-q"]
+
 
 installpkgs env =
     do im "Installing additional packages."
