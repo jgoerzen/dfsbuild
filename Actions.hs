@@ -62,7 +62,7 @@ mainRunner env =
          KernelsInstalled ->    -- Make the ramdisk
              do safeSystem "mkcramfs" [(targetdir env) ++ "/opt/initrd",
                                        (targetdir env) ++ "/opt/initrd/initrd.dfs"]
-                recursiveRemove $ (targetdir env) ++ "/opt/initrd"
+                recursiveRemove SystemFS $ (targetdir env) ++ "/opt/initrd"
                 finished RamdiskBuilt
          RamdiskBuilt ->        -- Install the bootloader
              do Bootloader.install env
@@ -202,12 +202,12 @@ installKernels env =
        case get (cp env) (defaultArch env) "kernels" of
          Left _ -> return ()
          Right k -> 
-              do kernfiles <- map glob (splitWs k)
+              do kernfiles <- mapM glob (splitWs k)
                  mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/boot/"]) (concat kernfiles)
        case get (cp env) (defaultArch env) "modules" of
          Left _ -> return ()
          Right m -> -- FIXME: this too
-            do modfiles <- glob (splitWs m)
-               mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/lib/modules/"]) modfiles
+            do modfiles <- mapM glob (splitWs m)
+               mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/lib/modules/"]) (concat modfiles)
             
        
