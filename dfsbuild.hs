@@ -81,13 +81,15 @@ runMain =
                       absNormPath workdir 
                                       (forceEither $ get incp da "libdir")
        im $ "Using library directory " ++ cplibdir
+       cdmarker <- getUniqueCDID
        let env = DFSEnv {wdir = workdir,
                          libdir = cplibdir,
                          imagedir = workdir ++ "/image",
                          cp = incp,
                          isDebugging = debugmode,
                          defaultArch = da,
-                         targetdir = workdir ++ "/target"}
+                         targetdir = workdir ++ "/target",
+                         marker = cdmarker}
        -- Fresh run: initialize the state file.
        unless (resumemode) (saveState env Fresh)
 

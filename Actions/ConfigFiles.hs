@@ -11,6 +11,7 @@ import System.Posix.Files
 import MissingH.Str
 import MissingH.Cmd
 import MissingH.Path
+import MissingH.Path.Glob
 import MissingH.Path.FilePath
 import Control.Monad
 import MissingH.ConfigParser
@@ -62,7 +63,7 @@ writeCfgFiles env =
     case get (cp env) (defaultArch env) "deletefiles" of
       Left _ -> return ()
       Right files ->
-          do let delfiles <- mapM glob (splitWs files)
+          do delfiles <- mapM glob (splitWs files)
              mapM_ deleteit (map ((targetdir env) ++) $ concat delfiles)
     case get (cp env) (defaultArch env) "makedirs" of
       Left _ -> return ()
@@ -78,7 +79,7 @@ fixRc env =
        safeSystem "cp" ["-r", targetdir env ++ "/etc/rc1.d",
                         targetdir env ++ "/etc/rc2.d"]
        cpfiles <- glob $ targetdir env ++ "/etc/rc3.d/*logd*"
-       safeSystem "cp" ["-r", cpfiles, targetdir env ++ "/etc/rc2.d/"]
+       safeSystem "cp" $ ["-r"] ++  cpfiles ++ [targetdir env ++ "/etc/rc2.d/"]
        rmfiles <- glob $ targetdir env ++ "/etc/rc2.d/S*single"
        mapM_ deleteit rmfiles
 

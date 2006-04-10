@@ -8,6 +8,8 @@ import System.Random
 import MissingH.Logging.Logger
 import System.Time
 import Text.Printf
+import Control.Exception
+import System.Posix.Files
 import MissingH.Str
 import MissingH.List
 import MissingH.Either
@@ -23,7 +25,8 @@ data DFSEnv = DFSEnv
      cp :: ConfigParser,
      isDebugging :: Bool,
      defaultArch :: String,
-     targetdir :: String}
+     targetdir :: String,
+     marker :: String}
 
 data DFSState = Fresh | Initialized | Mirrored | Bootstrapped | Installed
               | LibsInstalled | DebsInstalled | CfgHandled | RDPrepped
@@ -77,4 +80,14 @@ getCodeName fp =
 deleteit fn =
     do dm $ "Deleting: " ++ fn
        handle (\e -> wm ("Delete failed: " ++ show e)) 
-              removeLink fn
+              (removeLink fn)
+
+getrdsize_kb env =
+    do st <- getFileStatus $ targetdir env ++ "/opt/dfsruntime/initrd.dfs"
+       return $ ((fileSize st) `div` 1024) + 1
+
+getrdparam env =
+    do kb <- getrdsize_kb env
+       return $ if kb < 4096
+                   then " "
+                   else " ramdisk_size=" ++ show kb ++ " "

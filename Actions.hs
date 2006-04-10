@@ -12,6 +12,7 @@ import MissingH.Str
 import MissingH.Cmd
 import MissingH.Path
 import MissingH.Path.FilePath
+import MissingH.Path.Glob
 import Control.Monad
 import Control.Exception
 import Data.List
@@ -19,7 +20,7 @@ import MissingH.ConfigParser
 import MissingH.IO.HVFS
 import System.Directory hiding (createDirectory)
 import qualified Actions.ConfigFiles
-import qualified Actions.Bootloader
+import qualified Bootloader
 run env = 
     do im "Running."
        mainRunner env
@@ -189,9 +190,8 @@ preprd env =
        safeSystem "cp" [(eget env "libdir") ++ "/linuxrc",
                         (targetdir env) ++ "/opt/initrd/sbin/init"]
        setFileMode ((targetdir env) ++ "/opt/initrd/sbin/init") 0o755
-       marker <- getUniqueCDID
-       writeFile ((targetdir env) ++ "/opt/dfsruntime/marker") marker
-       writeFile ((targetdir env) ++ "/opt/initrd/marker") marker
+       writeFile ((targetdir env) ++ "/opt/dfsruntime/marker") (marker env)
+       writeFile ((targetdir env) ++ "/opt/initrd/marker") (marker env)
        writeFile ((targetdir env) ++ "/opt/initrd/devices") getdevices
     where chr args = safeSystem "chroot" $ ((targetdir env) : args)
           getdevices = (++ "\n") . concat . intersperse "\n" . 
@@ -202,12 +202,12 @@ installKernels env =
        case get (cp env) (defaultArch env) "kernels" of
          Left _ -> return ()
          Right k -> 
-              do kernfiles <- glob (splitWs k)
-                 mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/boot/"]) kernfiles
+              do kernfiles <- map glob (splitWs k)
+                 mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/boot/"]) (concat kernfiles)
        case get (cp env) (defaultArch env) "modules" of
          Left _ -> return ()
          Right m -> -- FIXME: this too
             do modfiles <- glob (splitWs m)
-               mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir ev ++ "/lib/modules/"]) modfiles
+               mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/lib/modules/"]) modfiles
             
        

@@ -67,7 +67,7 @@ procrepo env repo =
                      then ["--debug", "-v"]
                      else ["-q"]
       repdebugargs = if isDebugging env
-                        then "-V"
-                        else ""
+                        then ["-V"]
+                        else []
       aptmovecfg = (wdir env) ++ "/apt-move.conf"
       

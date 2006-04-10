@@ -5,14 +5,15 @@ Please see COPYRIGHT for more details
 
 module Bootloader where
 import qualified Bootloader.Grub
-import qualified Bootloader.Aboot
-import qualified Bootloader.Yaboot
+import Utils
+--import qualified Bootloader.Aboot
+--import qualified Bootloader.Yaboot
 
-install :: DFSEnv -> IO (DFSEnv -> String -> IO ())
+install :: DFSEnv -> IO ([String], DFSEnv -> IO ())
 install env =
     case eget env "bootloader" of
-      "grub-no-emul" = Bootloader.Grub.grub_eltorito env
-      "grub-hd" = Bootloader.Grub.grub_hd env
-      "aboot" = Bootloader.Aboot.aboot env
-      "yaboot" = Bootloader.Yaboot.yaboot env
-      x = fail $ "Invalid bootloader: " ++ x
+      "grub-no-emul" -> Bootloader.Grub.grub_eltorito env
+      "grub-hd" -> Bootloader.Grub.grub_hd env
+--      "aboot" -> Bootloader.Aboot.aboot env
+--      "yaboot" -> Bootloader.Yaboot.yaboot env
+      x -> fail $ "Invalid bootloader: " ++ x
