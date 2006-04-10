@@ -202,15 +202,12 @@ installKernels env =
        case get (cp env) (defaultArch env) "kernels" of
          Left _ -> return ()
          Right k -> 
-              -- FIXME: a nicer way to do this would be nice.
-              safeSystem "bash" ["-c", "cp -v " ++
-                                 (concat . intersperse " " . splitWs $ k) ++ " " ++
-                                 ((targetdir env) ++ "/boot/")]
+              do kernfiles <- glob (splitWs k)
+                 mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/boot/"]) kernfiles
        case get (cp env) (defaultArch env) "modules" of
          Left _ -> return ()
          Right m -> -- FIXME: this too
-            safeSystem "bash" ["-c", "cp -rv " ++
-                               (concat . intersperse " " . splitWs $ m) ++ " " ++
-                               (targetdir env) ++ "/lib/modules/"]
+            do modfiles <- glob (splitWs m)
+               mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir ev ++ "/lib/modules/"]) modfiles
             
        

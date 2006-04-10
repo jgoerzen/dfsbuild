@@ -62,9 +62,8 @@ writeCfgFiles env =
     case get (cp env) (defaultArch env) "deletefiles" of
       Left _ -> return ()
       Right files ->
-          mapM_ (\fn -> 
-                 safeSystem "bash" ["-c", "rm -vf " ++ ((targetdir env) ++ fn)]
-                ) (splitWs files)
+          do let delfiles <- mapM glob (splitWs files)
+             mapM_ deleteit (map ((targetdir env) ++) $ concat delfiles)
     case get (cp env) (defaultArch env) "makedirs" of
       Left _ -> return ()
       Right files ->
@@ -78,8 +77,8 @@ fixRc env =
     do recursiveRemove SystemFS ((targetdir env) ++ "/etc/rc2.d")
        safeSystem "cp" ["-r", targetdir env ++ "/etc/rc1.d",
                         targetdir env ++ "/etc/rc2.d"]
-       safeSystem "bash" ["-c", "cp -r " ++ targetdir env ++ 
-                                  "/etc/rc3.d/*logd* " ++ targetdir env ++
-                                  "/etc/rc2.d/"]
-       safeSystem "bash" ["-c", "rm " ++ targetdir env ++ 
-                                  "/etc/rc2.d/S*single"]
+       cpfiles <- glob $ targetdir env ++ "/etc/rc3.d/*logd*"
+       safeSystem "cp" ["-r", cpfiles, targetdir env ++ "/etc/rc2.d/"]
+       rmfiles <- glob $ targetdir env ++ "/etc/rc2.d/S*single"
+       mapM_ deleteit rmfiles
+

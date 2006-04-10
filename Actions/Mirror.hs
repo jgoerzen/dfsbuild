@@ -11,6 +11,7 @@ import System.Posix.Directory
 import Control.Exception
 import Data.List
 import MissingH.Path
+import MissingH.Path.Glob
 import System.IO
 import Text.Printf
 import MissingH.Path
@@ -46,13 +47,12 @@ procrepo env repo =
             "Components: main non-free contrib",
             "\n\n\n"]
        im $ "Running reprepro for " ++ codename
-       bracketCWD mirrordir $
-         safeSystem "bash"
-           ["-c", 
-            "for INFILE in " ++ targetdir env 
-            ++ "/var/cache/bootstrap/*.deb; do "
-            ++ "reprepro " ++ repdebugargs ++ " -b . includedeb " ++ codename ++
-            " \"$INFILE\"; done"]
+       debs <- glob (targetdir env ++ "/var/cache/bootstrap/*.deb")
+       bracketCWD mirrordir $ 
+                  mapM_ (\x -> safeSystem "reprepro" 
+                               (repdebugargs ++ ["-b", ".", "includedeb", 
+                                                 codename, x])) debs
+
        -- Delete the cdebootstrap cache so the next run has a clean dir
        recursiveRemove SystemFS $ targetdir env ++ "/var/cache/bootstrap"
        safeSystem "ln" ["-sf", codename, mirrordir ++ "/dists/" ++ repo]
