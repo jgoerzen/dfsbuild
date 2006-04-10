@@ -19,6 +19,7 @@ import MissingH.ConfigParser
 import MissingH.IO.HVFS
 import System.Directory hiding (createDirectory)
 import qualified Actions.ConfigFiles
+import qualified Actions.Bootloader
 run env = 
     do im "Running."
        mainRunner env
@@ -56,7 +57,15 @@ mainRunner env =
                 finished RDPrepped
          RDPrepped ->           -- Install kernels
              do installKernels env
-                saveState env KernelsInstalled
+                finished KernelsInstalled
+         KernelsInstalled ->    -- Make the ramdisk
+             do safeSystem "mkcramfs" [(targetdir env) ++ "/opt/initrd",
+                                       (targetdir env) ++ "/opt/initrd/initrd.dfs"]
+                recursiveRemove $ (targetdir env) ++ "/opt/initrd"
+                finished RamdiskBuilt
+         RamdiskBuilt ->        -- Install the bootloader
+             do Bootloader.install env
+                saveState env BootloaderInstalled
                 return False
        if shouldContinue
           then mainRunner env

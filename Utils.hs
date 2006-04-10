@@ -27,7 +27,7 @@ data DFSEnv = DFSEnv
 
 data DFSState = Fresh | Initialized | Mirrored | Bootstrapped | Installed
               | LibsInstalled | DebsInstalled | CfgHandled | RDPrepped
-              | KernelsInstalled
+              | KernelsInstalled | RamdiskBuilt | BootloaderInstalled
               deriving (Eq, Show, Read, Ord)
 
 im = infoM "dfs"
@@ -73,3 +73,8 @@ getCodeName fp =
        case matchRegex cr c of
          Just [cn] -> return cn
          x -> fail $ "Error finding Codename: " ++ show x
+
+deleteit fn =
+    do dm $ "Deleting: " ++ fn
+       handle (\e -> wm ("Delete failed: " ++ show e)) 
+              removeLink fn
