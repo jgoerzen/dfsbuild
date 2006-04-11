@@ -238,14 +238,23 @@ compress env =
       False -> im "No image compression requested"
       True -> reallycompress env
 
-reallycompress env = fail "FIXME: write compress"
-{-
+reallycompress env = 
     do im "Compressing image.  This may take some time..."
        let noncom = wdir env ++ "/noncom"
        createDirectory noncom 0o755
        noncomfiles <- filterM (\x -> vDoesExist SystemFS (targetdir env ++ x))
                               (splitWs (eget env "dontcompress"))
-       -}
+       let noncommap = zip noncomfiles (map show [(0::Int)..])
+       mapM_ (preserve noncom) noncommap
+       safeSystem "mkzftree" [targetdir env, wdir env ++ "/zftree"]
+       recursiveRemove SystemFS (targetdir env)
+       rename (wdir env ++ "/zftree") (targetdir env)
+       mapM_ (restore noncom) noncommap
+    where preserve noncom (orig, tmp) =
+              do im $ "Not compressing " ++ orig
+                 rename (targetdir env ++ orig) (noncom ++ "/" ++ tmp)
+          restore noncom (orig, tmp) =
+              rename (noncom ++ "/" ++ tmp) (targetdir env ++ orig)
 
 mkiso env isoargs = 
     do im "Preparing ISO image"
