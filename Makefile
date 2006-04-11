@@ -29,37 +29,6 @@ test: utils/dfsutils.cmx utils/shellutil.cmx  test.cmx
 		-o $@ $^
 
 
-lib/dfshelp: libsrc/dfshelp
-	cp $^  $@
-
-lib/dfshints: libsrc/dfshints
-	cp $^ $@
-
-lib/home.html: libsrc/home.html
-	cp $^ $@
-
-lib/dfsbuildinfo: libsrc/dfsbuildinfo
-	cp $^ $@
-
-lib/linuxrc: utils/dfsutils.cmx utils/shellutil.cmx \
-	libsrc/linuxrc.cmx
-	ocamlfind ocamlopt -compact -cclib -static -cclib --unresolved-symbols=ignore-all \
-	$(PACKAGES) -linkpkg \
-		-o $@ $^
-	strip -s $@
-
-lib/startup: utils/dfsutils.cmx utils/shellutil.cmx \
-	libsrc/startup.cmx
-	ocamlfind ocamlopt -compact -cclib -static -cclib --unresolved-symbols=ignore-all \
-	$(PACKAGES) -linkpkg -o $@ $^
-	strip -s $@
-
-%.cmx: %.ml
-	ocamlfind ocamlopt -compact $(PACKAGES) -warn-error A -c -o $@ $<
-
-%.cmo: %.ml
-	ocamlfind ocamlc -g $(PACKAGES) -warn-error A -c -o $@ $<
-
 lib/dfs.html/index.html: doc/dfs.sgml lib
 	-rm -r lib/dfs.html
 	cd doc && scons html
