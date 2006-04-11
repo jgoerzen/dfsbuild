@@ -217,13 +217,13 @@ installKernels env =
        
 preprtrd env =
     do im "Preparing run-time ramdisk"
-       createDirectory (imagedir env ++ "/opt/dfsruntime/runtimemnt") 0o755
-       let rdpath = imagedir env ++ "/opt/dfsruntime/runtimerd"
+       createDirectory (targetdir env ++ "/opt/dfsruntime/runtimemnt") 0o755
+       let rdpath = targetdir env ++ "/opt/dfsruntime/runtimerd"
        createDirectory rdpath 0o755
        rdfiles <- mapM glob (splitWs . eget env $ "ramdisk_files")
        mapM_ (cpfile2rd rdpath) (concat rdfiles)
     where cpfile2rd rdpath f =
-              do let src = imagedir env ++ f
+              do let src = targetdir env ++ f
                  let dest = rdpath ++ f
                  let destdir = fst . splitFileName $ dest
                  dde <- doesDirectoryExist destdir
@@ -252,5 +252,5 @@ mkiso env isoargs =
        let isofile = wdir env ++ "/image.iso"
        let compressopts = if egetbool env "compress" then ["-z"] else []
        safeSystem "mkisofs" $ compressopts ++ isoargs ++
-                  ["-pad", "-R", "-o", isofile, imagedir env]
+                  ["-pad", "-R", "-o", isofile, targetdir env]
        return isofile

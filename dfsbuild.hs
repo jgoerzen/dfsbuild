@@ -84,7 +84,6 @@ runMain =
        cdmarker <- getUniqueCDID
        let env = DFSEnv {wdir = workdir,
                          libdir = cplibdir,
-                         imagedir = workdir ++ "/image",
                          cp = incp,
                          isDebugging = debugmode,
                          defaultArch = da,

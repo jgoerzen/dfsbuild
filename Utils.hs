@@ -21,7 +21,6 @@ import Text.Regex
 data DFSEnv = DFSEnv 
     {wdir :: String,
      libdir :: String,
-     imagedir :: String,
      cp :: ConfigParser,
      isDebugging :: Bool,
      defaultArch :: String,
