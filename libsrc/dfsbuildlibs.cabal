@@ -8,9 +8,9 @@ Build-Depends: unix
 
 Executable: linuxrc
 Main-Is: linuxrc.hs
-GHC-Options: -O2
+GHC-Options: -O2 -optl -static -static
 
 Executable: startup
 Main-Is: startup.hs
-GHC-Options: -O2
+GHC-Options: -O2 -optl -static -static 
 

@@ -23,6 +23,8 @@ main =
        im "\n *** Welcome to Debian From Scratch (DFS) ***"
        im "Initial RAM disk (format 2) booting."
        cddev <- getcddev
+
+       changeWorkingDirectory mountloc
        rawSystem "pivot_root" [".", "initrd"]
        changeWorkingDirectory"."
        im "Passing control to DFS CD..."
