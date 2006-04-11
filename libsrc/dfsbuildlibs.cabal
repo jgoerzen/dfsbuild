@@ -1,0 +1,20 @@
+Name: dfsbuildlibs
+Version: 0.7.0
+License: GPL
+Maintainer: John Goerzen <jgoerzen@complete.org>
+Stability: Alpha
+Copyright: Copyright (c) 2006 John Goerzen
+Build-Depends: haskell-src, unix, MissingH>=0.14.0
+
+Executable: linuxrc
+Main-Is: linuxrc.hs
+GHC-Options: -O2
+Extensions: ExistentialQuantification, AllowOverlappingInstances,
+    AllowUndecidableInstances
+
+Executable: startup
+Main-Is: startup.hs
+GHC-Options: -O2
+Extensions: ExistentialQuantification, AllowOverlappingInstances,
+    AllowUndecidableInstances
+
