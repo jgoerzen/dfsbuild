@@ -1,3 +1,9 @@
+* use /sys/block/*/device for autoprobe
+
+* fixup grub display
+
+* support debian initrd kernels
+
 * Eliminate all the separate definitions of targetdir, mirrordir
 
  * Add lftp back to the dfs.cfg list (or update dfshints to note the lack
