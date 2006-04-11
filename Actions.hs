@@ -61,7 +61,7 @@ mainRunner env =
                 finished KernelsInstalled
          KernelsInstalled ->    -- Make the ramdisk
              do safeSystem "mkcramfs" [(targetdir env) ++ "/opt/initrd",
-                                       (targetdir env) ++ "/opt/initrd/initrd.dfs"]
+                                       (targetdir env) ++ "/opt/dfsruntime/initrd.dfs"]
                 recursiveRemove SystemFS $ (targetdir env) ++ "/opt/initrd"
                 finished RamdiskBuilt
          RamdiskBuilt ->        -- Install the bootloader
