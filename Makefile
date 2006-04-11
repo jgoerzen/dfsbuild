@@ -17,7 +17,8 @@ setup: Setup.lhs dfsbuild.cabal
 
 clean:
 	-./setup clean
-	-rm -rf dist *.ho *.hi *.o *.a setup *~
+	-cd libsrc && ../setup clean
+	-rm -rf dist libsrc/dist *.ho *.hi *.o *.a setup *~
 	-cd doc && scons -c && scons -c html pdf text ps
 	-rm -rf dfsbuild lib doc/.sconsign .depend test dfsbuild.bc
 	-rm -f `find . -name "*.cm*"` doc/manpage* doc/*.1

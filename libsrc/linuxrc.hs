@@ -21,7 +21,7 @@ fm msg = do putStr msg
 main = 
     do setEnv "PATH" "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" True
        im "\n *** Welcome to Debian From Scratch (DFS) ***"
-       im "Initial RAM disk booting."
+       im "Initial RAM disk (format 2) booting."
        cddev <- getcddev
        rawSystem "pivot_root" [".", "initrd"]
        changeWorkingDirectory"."
