@@ -68,7 +68,9 @@ mainRunner env =
              do (isoargs, blfunc) <- Bootloader.install env
                 preprtrd env
                 compress env
-                saveState env BootloaderInstalled
+                isoname <- mkiso env isoargs
+                blfunc isoname
+                -- FINISHED!
                 return False
        if shouldContinue
           then mainRunner env
@@ -244,3 +246,11 @@ reallycompress env = fail "FIXME: write compress"
        noncomfiles <- filterM (\x -> vDoesExist SystemFS (targetdir env ++ x))
                               (splitWs (eget env "dontcompress"))
        -}
+
+mkiso env isoargs = 
+    do im "Preparing ISO image"
+       let isofile = wdir env ++ "/image.iso"
+       let compressopts = if egetbool env "compress" then ["-z"] else []
+       safeSystem "mkisofs" $ compressopts ++ isoargs ++
+                  ["-pad", "-R", "-o", isofile, imagedir env]
+       return isofile
