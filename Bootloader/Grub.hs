@@ -57,7 +57,7 @@ grubMenu env entryline =
             Left _ -> ""
             Right line -> line ++ "\n"
           ++ "color cyan/blue blue/light-gray\n"
-          ++ (concat . map (kern rd) $ (reverse newkerns))
+          ++ (concat . map (kern rd) $ (sort newkerns))
           ++ fake "."
           ++ fake (marker env)
     where fake s = "title " ++ s ++ "\ncolor cyan/blue blue/light-gray\n"
