@@ -8,6 +8,8 @@ all: setup			# GHC build
 	cd libsrc && ../setup configure
 	cd libsrc && ../setup build
 
+doc: lib/dfs.html/index.html lib/dfs.pdf lib/dfs.ps lib/dfs.txt
+
 hugsbuild: setup
 	./setup configure --hugs
 	./setup build
@@ -20,7 +22,7 @@ clean:
 	-cd libsrc && ../setup clean
 	-rm -rf dist libsrc/dist *.ho *.hi *.o *.a setup *~
 	-cd doc && scons -c && scons -c html pdf text ps
-	-rm -rf dfsbuild lib doc/.sconsign .depend test dfsbuild.bc
+	-rm -rf dfsbuild lib/dfs.html lib/dfs.pdf lib/dfs.ps lib/dfs.txt doc/.sconsign .depend test dfsbuild.bc
 	-rm -f `find . -name "*.cm*"` doc/manpage* doc/*.1
 	-rm -f `find . -name "*~"` `find . -name "*.o"`
 
