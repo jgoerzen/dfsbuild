@@ -12,6 +12,7 @@ import System.Posix.Directory
 import MissingH.Path.Glob
 import MissingH.ConfigParser
 import MissingH.Path.FilePath
+import Data.List
 
 grub_eltorito env =
     do im "Installing bootloader: Grub raw eltorito (no HD emulation)"
@@ -57,7 +58,7 @@ grubMenu env entryline =
             Left _ -> ""
             Right line -> line ++ "\n"
           ++ "color cyan/blue blue/light-gray\n"
-          ++ (concat . map (kern rd) $ (sort newkerns))
+          ++ (concat . map (kern rd) $ (reverse . sort $ newkerns))
           ++ fake "."
           ++ fake (marker env)
     where fake s = "title " ++ s ++ "\ncolor cyan/blue blue/light-gray\n"

@@ -38,6 +38,7 @@ build-stamp: configure-stamp
 
 	# Add here commands to compile the package.
 	$(MAKE)
+	$(MAKE) doc
 	cd doc && scons manpages
 	#/usr/bin/docbook-to-man debian/dfsbuild.sgml > dfsbuild.1
 
@@ -64,7 +65,7 @@ install: build
 	cp -r libsrc/dist/build/linuxrc libsrc/dist/build/startup $(LIBDIR)
 	cp -r lib/* $(LIBDIR)
 	ln -s /usr/lib/dfsbuild/dfs.html $(DOCDIR)/html
-	cp dfsbuild $(RDIR)/usr/bin/
+	cp dist/build/dfsbuild $(RDIR)/usr/bin/
 	cp dfs.cfg $(SHAREDIR)
 	cp COPYRIGHT $(DOCDIR)/copyright
 	chmod a-x $(LIBDIR)/linuxrc $(LIBDIR)/startup
@@ -79,7 +80,7 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs ChangeLog
+	dh_installchangelogs 
 	dh_installdocs doc/*.ps doc/*.pdf doc/*.txt
 	dh_installexamples
 #	dh_instal

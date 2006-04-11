@@ -116,7 +116,7 @@ installpkgs env =
        -- Now do apt-get
        safeSystem "chroot" [targetdir env, "apt-get", "update"]
        safeSystem "chroot" $ 
-                      [targetdir env, "apt-get", "-y", "install"] ++ pkgs
+                      [targetdir env, "apt-get", "-y", "--allow-unauthenticated", "install"] ++ pkgs
 
        -- And remove the resolv.conf again
        removeFile (targetdir env ++ "/etc/resolv.conf")
@@ -184,7 +184,7 @@ preprd env =
        mapM_ (\x -> createDirectory ((targetdir env) ++ "/opt/initrd/" ++ x) 0o755)
              ["bin", "lib", "sbin", "proc", "usr", "usr/sbin", "usr/bin",
               "realroot"]
-       chr ["sh", "-c", "cp -dv /lib/ld* /opt/initrd/lib/"]
+       chr ["sh", "-c", "cp -dv /lib/ld-* /opt/initrd/lib/"]
        chr ["sh", "-c", "cp -v /lib/libc.so* /opt/initrd/lib/"]
        chr ["cp", "-v", "/bin/busybox", "/opt/initrd/bin/"]
        chr ["cp", "-v", "/usr/sbin/chroot", "/opt/initrd/usr/sbin/"]
