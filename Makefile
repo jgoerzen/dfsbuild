@@ -5,6 +5,8 @@
 all: setup			# GHC build
 	./setup configure
 	./setup build
+	cd libsrc && ../setup configure
+	cd libsrc && ../setup build
 
 hugsbuild: setup
 	./setup configure --hugs
