@@ -60,6 +60,9 @@ eget :: DFSEnv -> String -> String
 eget env opt = forceEither $ get (cp env) (defaultArch env) opt
 esget env s o = forceEither $ get (cp env) s o
 
+egetbool :: DFSEnv -> String -> Bool
+egetbool env opt = forceEither $ get (cp env) (defaultArch env) opt
+
 saveState :: DFSEnv -> DFSState -> IO ()
 saveState env state =
     writeFile ((wdir env) ++ "/state") (show state)

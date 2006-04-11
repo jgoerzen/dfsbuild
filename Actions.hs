@@ -65,7 +65,9 @@ mainRunner env =
                 recursiveRemove SystemFS $ (targetdir env) ++ "/opt/initrd"
                 finished RamdiskBuilt
          RamdiskBuilt ->        -- Install the bootloader
-             do Bootloader.install env
+             do (isoargs, blfunc) <- Bootloader.install env
+                preprtrd env
+                compress env
                 saveState env BootloaderInstalled
                 return False
        if shouldContinue
@@ -211,3 +213,34 @@ installKernels env =
                mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/lib/modules/"]) (concat modfiles)
             
        
+preprtrd env =
+    do im "Preparing run-time ramdisk"
+       createDirectory (imagedir env ++ "/opt/dfsruntime/runtimemnt") 0o755
+       let rdpath = imagedir env ++ "/opt/dfsruntime/runtimerd"
+       createDirectory rdpath 0o755
+       rdfiles <- mapM glob (splitWs . eget env $ "ramdisk_files")
+       mapM_ (cpfile2rd rdpath) (concat rdfiles)
+    where cpfile2rd rdpath f =
+              do let src = imagedir env ++ f
+                 let dest = rdpath ++ f
+                 let destdir = fst . splitFileName $ dest
+                 dde <- doesDirectoryExist destdir
+                 unless (dde)
+                            (safeSystem "mkdir" ["-p", destdir])
+                 handle (\_ -> return ())
+                            (rename src dest)
+                 createSymbolicLink ("/opt/dfsruntime/runtimemnt" ++ f) src
+
+compress env =
+    case egetbool env "compress" of
+      False -> im "No image compression requested"
+      True -> reallycompress env
+
+reallycompress env = fail "FIXME: write compress"
+{-
+    do im "Compressing image.  This may take some time..."
+       let noncom = wdir env ++ "/noncom"
+       createDirectory noncom 0o755
+       noncomfiles <- filterM (\x -> vDoesExist SystemFS (targetdir env ++ x))
+                              (splitWs (eget env "dontcompress"))
+       -}
