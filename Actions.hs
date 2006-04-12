@@ -4,6 +4,7 @@ Please see COPYRIGHT for more details
 -}
 
 module Actions where
+import Actions.ConfigFiles
 import Utils
 import qualified Actions.Mirror
 import System.Posix.Directory

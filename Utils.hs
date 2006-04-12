@@ -17,6 +17,8 @@ import MissingH.ConfigParser
 import MissingH.Cmd
 import System.IO.Unsafe
 import Text.Regex
+import MissingH.Path.FilePath
+import System.Directory(doesFileExist)
 
 data DFSEnv = DFSEnv 
     {wdir :: String,

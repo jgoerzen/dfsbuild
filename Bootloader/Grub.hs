@@ -24,7 +24,7 @@ grub_eltorito env =
 
 grub_hd env =
     do im "Installing bootloader: Grub with eltorito HD emulation"
-       grub_generic env "initrd /boot/initrd.dfs"
+       grub_generic env
        safeSystem "cp" ["-r", (targetdir env) ++ "/boot", workbootdir]
        safeSystem "rm" ["-f", workbootdir ++ "/grub/stage2_eltorito"]
        bracketCWD (wdir env) $
@@ -51,20 +51,22 @@ grub_generic env =
 
 grubMenu env  =
     do newkerns <- glob $ targetdir env ++ "/boot/vmlinu*"
-       initrd <- getinitrdname
+       kerntext <- mapM kern (reverse . sort $ newkerns)
        return $ 
           case get (cp env) (defaultArch env) "grubconfig" of
             Left _ -> ""
             Right line -> line ++ "\n"
           ++ "color cyan/blue blue/light-gray\n"
-          ++ (concat . map (kern initrd) $ (reverse . sort $ newkerns))
+          ++ (concat kerntext)
           ++ fake "."
           ++ fake (getidstring env)
     where fake s = "title " ++ s ++ "\ncolor cyan/blue blue/light-gray\n"
-          kern initrd x = "title  Boot " ++ (snd . splitFileName $ x) ++ "\n"
-                   ++ "kernel /boot/" ++ (snd . splitFileName $ x) ++ "\n"
-                   ++ "initrd /boot/" ++ initrd ++ "\n"
-                   ++ "boot\n"
+          kern x = do initrd <- getinitrdname env x
+                      return $ 
+                        "title  Boot " ++ (snd . splitFileName $ x) ++ "\n"
+                        ++ "kernel /boot/" ++ (snd . splitFileName $ x) ++ "\n"
+                        ++ "initrd /boot/" ++ initrd ++ "\n"
+                        ++ "boot\n"
 
 helpText = "pager on\n\
 \title Basic Booting Info\n\
