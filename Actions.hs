@@ -183,7 +183,7 @@ preprd env =
        createDirectory ((targetdir env) ++ "/opt/initrd") 0o755
        mapM_ (\x -> createDirectory ((targetdir env) ++ "/opt/initrd/" ++ x) 0o755)
              ["bin", "lib", "sbin", "proc", "usr", "usr/sbin", "usr/bin",
-              "realroot"]
+              "realroot", "sys"]
        chr ["sh", "-c", "cp -dv /lib/ld-* /opt/initrd/lib/"]
        chr ["sh", "-c", "cp -v /lib/libc.so* /opt/initrd/lib/"]
        chr ["cp", "-v", "/bin/busybox", "/opt/initrd/bin/"]
@@ -196,10 +196,7 @@ preprd env =
        setFileMode ((targetdir env) ++ "/opt/initrd/sbin/init") 0o755
        writeFile ((targetdir env) ++ "/opt/dfsruntime/marker") (marker env)
        writeFile ((targetdir env) ++ "/opt/initrd/marker") (marker env)
-       writeFile ((targetdir env) ++ "/opt/initrd/devices") getdevices
     where chr args = safeSystem "chroot" $ ((targetdir env) : args)
-          getdevices = (++ "\n") . concat . intersperse "\n" . 
-                       splitWs . eget env $ "devices"
 
 installKernels env =
     do dm "Installing kernels..."

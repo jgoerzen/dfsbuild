@@ -11,6 +11,9 @@ dfsbuild (0.7.0) unstable; urgency=low
     no longer depends upon it.  Closes: #356572, #316420.
   -- the below have not yet been set to pending --
   * Dies quickly if not running as root.  Closes: #288637.
+  * Automatically detects CD devices from sysfs.
+    So DFS now requires a 2.6 kernel.
+    The devices option in the config file is now obsolete.
 
  -- John Goerzen <jgoerzen@complete.org>  Wed,  5 Apr 2006 23:01:04 -0500
 

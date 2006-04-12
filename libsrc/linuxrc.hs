@@ -12,6 +12,7 @@ import System.Posix.Directory
 import System.Environment
 import System.Posix.Process
 import Control.Monad
+import System.Directory(getDirectoryContents)
 
 mountloc = "/realroot"
 im msg = putStrLn msg
@@ -22,7 +23,9 @@ main =
     do setEnv "PATH" "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" True
        im "\n *** Welcome to Debian From Scratch (DFS) ***"
        im "Initial RAM disk (format 2) booting."
+       rawSystem "busybox" ["mount", "-n", "-t", "sysfs", "none", "/sys"]
        cddev <- getcddev
+       rawSystem "busybox" ["umount", "/sys"]
 
        changeWorkingDirectory mountloc
        rawSystem "pivot_root" [".", "initrd"]
@@ -33,15 +36,17 @@ main =
        
 getcddev  =
     do marker <- readFile "/marker"
-       im "Locaing DFS CD..."
+       im "Locating DFS CD..."
        cmdl <- getcmdline marker
        case cmdl of
                 Just x -> return x
                 Nothing -> do im "Scanning for DFS CD.  The dfscd kernel"
                               im "parameter can override this scan if there"
                               im "is trouble.  Scanning..."
-                              devicefile <- readFile "/devices"
-                              finddev marker (lines devicefile)
+                              devices <- getDirectoryContents "/sys/block"
+                              finddev marker 
+                                  (filter (not . (flip elem) [".", ".."]) 
+                                   devices)
 
 iscd shouldbe = 
               do testmarker <- readFile (mountloc ++ "/opt/dfsruntime/marker")
@@ -86,7 +91,12 @@ getcmdline shouldbe =
 
 finddev _ [] = fail "Could not find a CD.  Terminating."
 finddev shouldbe (x:xs) = 
-    do sd <- scandev shouldbe ("/dev/" ++ x)
-       if sd
-          then return $ "/dev/" ++ x
-          else finddev shouldbe xs
+    do removable <- readFile $ "/sys/block/" ++ x ++ "/removable"
+       let dev = "/sys/block/" ++ x ++ "/device"
+       if (head removable) == '0'
+          then do im $ "Skipping " ++ dev ++ "; it is not a removable device."
+                  finddev shouldbe xs
+          else do sd <- scandev shouldbe dev
+                  if sd
+                      then return dev
+                      else finddev shouldbe xs

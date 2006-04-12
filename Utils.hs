@@ -45,11 +45,6 @@ getUniqueCDID =
        return $ printf "DFS CD IMAGE, format 2, ID: %d,%d,%d\n"
                 ((\(TOD x _) -> x) t) (random1::Int) (random2::Int)
 
-{- | Take a ConfigParser and return a list of devices given, separated by
-"\n" -}
-getDevices env = 
-    (++ "\n") . join "\n" . splitWs $ eget env "devices"
-
 getDefaultArch = 
     do (ph, iarchstr) <- pipeFrom "dpkg" ["--print-architecture"]
        let archstr = (seqList (strip iarchstr))
