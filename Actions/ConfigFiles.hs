@@ -82,3 +82,11 @@ fixRc env =
        rmfiles <- glob $ targetdir env ++ "/etc/rc2.d/S*single"
        mapM_ deleteit rmfiles
 
+
+kernelimgconf =
+    "do_symlinks = no\n\
+\do_bootloader = no\n\
+\do_bootfloppy = no\n\
+\do_initrd = yes\n\
+\warn_initrd = yes\n\
+\ramdisk = mkinitramfs\n"

@@ -89,3 +89,11 @@ getrdparam env =
        return $ if kb < 4096
                    then " "
                    else " ramdisk_size=" ++ show kb ++ " "
+
+getinitrdname env kernpath =
+    do dfe <- doesFileExist (targetdir env ++ "/boot/" ++ rdname)
+       if dfe
+          then return rdname
+          else return "initrd.dfs"
+    where kname = snd . splitFileName $ kernpath
+          rdname = subRegex (mkRegex "vmlinu?") kname "initrd.img"

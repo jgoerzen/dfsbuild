@@ -17,7 +17,7 @@ import Actions.ConfigFiles
 
 grub_eltorito env =
     do im "Installing bootloader: Grub raw eltorito (no HD emulation)"
-       grub_generic env "initrd /boot/initrd.dfs"
+       grub_generic env
        return (["-b", "boot/grub/stage2_eltorito", "-no-emul-boot",
                 "-boot-load-size", "1", "-boot-info-table"],
                (\_ -> return ()))
@@ -38,33 +38,32 @@ grub_hd env =
     where workbootdir = (wdir env) ++ "/boot"
           workboottar = (wdir env) ++ "/boot.tar.gz"
 
-grub_generic env entryline =
+grub_generic env =
     do createDirectory (targetdir env ++ "/boot/grub") 0o755
        grubfiles <- glob "/lib/grub/*/*"
        safeSystem "cp" $ ["-rv"] ++ grubfiles ++ [targetdir env ++ "/boot/grub/"]
-       menuText <- grubMenu env entryline
+       menuText <- grubMenu env
        writeFile (targetdir env ++ "/boot/grub/menu.lst") menuText
 
        -- Help text not presently references
        writeFile (targetdir env ++ "/boot/grub/help.lst") helpText
        
 
-grubMenu env entryline =
+grubMenu env  =
     do newkerns <- glob $ targetdir env ++ "/boot/vmlinu*"
-       rd <- getrdparam env
+       initrd <- getinitrdname
        return $ 
           case get (cp env) (defaultArch env) "grubconfig" of
             Left _ -> ""
             Right line -> line ++ "\n"
           ++ "color cyan/blue blue/light-gray\n"
-          ++ (concat . map (kern rd) $ (reverse . sort $ newkerns))
+          ++ (concat . map (kern initrd) $ (reverse . sort $ newkerns))
           ++ fake "."
           ++ fake (getidstring env)
     where fake s = "title " ++ s ++ "\ncolor cyan/blue blue/light-gray\n"
-          kern rd x = "title  Boot " ++ (snd . splitFileName $ x) ++ "\n"
-                   ++ "kernel /boot/" ++ (snd . splitFileName $ x) ++ " root=/dev/ram0 " ++
-                   rd ++ "\n"
-                   ++ entryline ++ "\n"
+          kern initrd x = "title  Boot " ++ (snd . splitFileName $ x) ++ "\n"
+                   ++ "kernel /boot/" ++ (snd . splitFileName $ x) ++ "\n"
+                   ++ "initrd /boot/" ++ initrd ++ "\n"
                    ++ "boot\n"
 
 helpText = "pager on\n\

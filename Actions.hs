@@ -32,6 +32,7 @@ mainRunner env =
          Fresh -> do mapM_ (createDirectory `flip` 0o755) 
                                [targetdir env, targetdir env ++ "/opt",
                                 targetdir env ++ "/opt/dfsruntime"]
+                     writeFile ((targetdir env) ++ "/opt/dfsruntime/marker") (marker env)
                      finished Initialized
          Initialized ->         -- Now download all suites we'll be using
              do dlMirrors env
@@ -112,6 +113,18 @@ installpkgs env =
     
        -- Copy resolv.conf so apt-get update/install works
        safeSystem "cp" ["/etc/resolv.conf", targetdir env ++ "/etc"]
+
+       -- Prepare for kernel images
+       writeFile (targetdir env ++ "/etc/kernel-img.conf") kernelimgconf
+       -- Install the requisite initramfs tools
+       safeSystem "chroot" [targetdir env, "apt-get", "-y",
+                            "--allow-unauthenticated", "install",
+                            "initramfs-tools"]
+       -- And the ramfs support
+       safeSystem "cp" [libdir env ++ "/dfs-initramfs-hook",
+                        targetdir env ++ "/usr/share/initramfs-tools/hooks/"]
+       safeSystem "cp" [libdir env ++ "/dfs-initramfs-script",
+                        targetdir env ++ "/usr/share/initramfs-tools/scripts/local-top/"]
 
        -- Now do apt-get
        safeSystem "chroot" [targetdir env, "apt-get", "update"]
@@ -194,7 +207,6 @@ preprd env =
        safeSystem "cp" [(eget env "libdir") ++ "/linuxrc",
                         (targetdir env) ++ "/opt/initrd/sbin/init"]
        setFileMode ((targetdir env) ++ "/opt/initrd/sbin/init") 0o755
-       writeFile ((targetdir env) ++ "/opt/dfsruntime/marker") (marker env)
        writeFile ((targetdir env) ++ "/opt/initrd/marker") (marker env)
     where chr args = safeSystem "chroot" $ ((targetdir env) : args)
 
