@@ -115,6 +115,9 @@ installpkgs env =
        -- Copy resolv.conf so apt-get update/install works
        safeSystem "cp" ["/etc/resolv.conf", targetdir env ++ "/etc"]
 
+       -- Update the cache
+       safeSystem "chroot" [targetdir env, "apt-get", "update"]
+
        -- Prepare for kernel images
        writeFile (targetdir env ++ "/etc/kernel-img.conf") kernelimgconf
        -- Install the requisite initramfs tools
@@ -123,12 +126,14 @@ installpkgs env =
                             "initramfs-tools"]
        -- And the ramfs support
        safeSystem "cp" [libdir env ++ "/dfs-initramfs-hook",
-                        targetdir env ++ "/usr/share/initramfs-tools/hooks/"]
+                        targetdir env ++ "/usr/share/initramfs-tools/hooks/dfs"]
        safeSystem "cp" [libdir env ++ "/dfs-initramfs-script",
-                        targetdir env ++ "/usr/share/initramfs-tools/scripts/local-top/"]
+                        targetdir env ++ "/usr/share/initramfs-tools/scripts/local-top/dfs"]
+       mapM_ (\x -> setFileMode ((targetdir env) ++ x) 0o755)
+             ["/usr/share/initramfs-tools/hooks/dfs",
+              "/usr/share/initramfs-tools/scripts/local-top/dfs"]
 
        -- Now do apt-get
-       safeSystem "chroot" [targetdir env, "apt-get", "update"]
        safeSystem "chroot" $ 
                       [targetdir env, "apt-get", "-y", "--allow-unauthenticated", "install"] ++ pkgs
 

@@ -64,7 +64,8 @@ grubMenu env  =
           kern x = do initrd <- getinitrdname env x
                       return $ 
                         "title  Boot " ++ (snd . splitFileName $ x) ++ "\n"
-                        ++ "kernel /boot/" ++ (snd . splitFileName $ x) ++ "\n"
+                        ++ "kernel /boot/" ++ (snd . splitFileName $ x) ++ 
+                               " root=/dev/ram0\n"
                         ++ "initrd /boot/" ++ initrd ++ "\n"
                         ++ "boot\n"
 

@@ -98,4 +98,4 @@ getinitrdname env kernpath =
           then return rdname
           else return "initrd.dfs"
     where kname = snd . splitFileName $ kernpath
-          rdname = subRegex (mkRegex "vmlinu?") kname "initrd.img"
+          rdname = subRegex (mkRegex "vmlinu.") kname "initrd.img"

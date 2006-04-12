@@ -88,5 +88,4 @@ kernelimgconf =
 \do_bootloader = no\n\
 \do_bootfloppy = no\n\
 \do_initrd = yes\n\
-\warn_initrd = yes\n\
-\ramdisk = mkinitramfs\n"
+\warn_initrd = yes\n"
