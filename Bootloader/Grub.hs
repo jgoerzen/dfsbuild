@@ -17,7 +17,7 @@ import Actions.ConfigFiles
 
 grub_eltorito env =
     do im "Installing bootloader: Grub raw eltorito (no HD emulation)"
-       grub_generic env "initrd /opt/dfsruntime/initrd.dfs"
+       grub_generic env "initrd /boot/initrd.dfs"
        return (["-b", "boot/grub/stage2_eltorito", "-no-emul-boot",
                 "-boot-load-size", "1", "-boot-info-table"],
                (\_ -> return ()))
@@ -27,8 +27,6 @@ grub_hd env =
        grub_generic env "initrd /boot/initrd.dfs"
        safeSystem "cp" ["-r", (targetdir env) ++ "/boot", workbootdir]
        safeSystem "rm" ["-f", workbootdir ++ "/grub/stage2_eltorito"]
-       safeSystem "cp" [targetdir env ++ "/opt/dfsruntime/initrd.dfs",
-                        workbootdir]
        bracketCWD (wdir env) $
           safeSystem "tar" ["-zcpf", "boot.tar.gz", "boot"]
        safeSystem "mkbimage" ["-f", workboottar, "-t", "hd", "-s", "ext2",

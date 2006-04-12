@@ -37,15 +37,15 @@ yaboot env =
           yabootitem rdsize rdparam kern =
               "image=/boot/" ++ kern ++ "\n" ++
               " label=" ++ kern ++ "\n" ++
-              " initrd=/opt/dfsruntime/initrd.dfs\n" ++
+              " initrd=/boot/initrd.dfs\n" ++
               " initrd-size=" ++ show rdsize ++ "\n" ++
-              " append=\"initrd=/opt/dfsruntime/initrd.dfs root=/dev/ram0 " ++ rdparam ++ "\"\n" ++
+              " append=\"initrd=/boot/initrd.dfs root=/dev/ram0 " ++ rdparam ++ "\"\n" ++
               " read-only\n\n" ++
               "# wonky fb\nimage=/boot/" ++ kern ++ "\n" ++ 
               " label=" ++ kern ++ "-safe\n" ++
-              " initrd=/opt/dfsruntime/initrd.dfs\n" ++
+              " initrd=/boot/initrd.dfs\n" ++
               " initrd-size=" ++ show rdsize ++ "\n" ++
-              " append=\"video=ofonly initrd=/opt/dfsruntime/initrd.dfs root=/dev/ram0 " ++ rdparam ++ "\"\n" ++
+              " append=\"video=ofonly initrd=/boot/initrd.dfs root=/dev/ram0 " ++ rdparam ++ "\"\n" ++
               " read-only\n\n"
               
 

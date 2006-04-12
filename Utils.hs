@@ -81,7 +81,7 @@ deleteit fn =
               (removeLink fn)
 
 getrdsize_kb env =
-    do st <- getFileStatus $ targetdir env ++ "/opt/dfsruntime/initrd.dfs"
+    do st <- getFileStatus $ targetdir env ++ "/boot/initrd.dfs"
        return $ ((fileSize st) `div` 1024) + 1
 
 getrdparam env =

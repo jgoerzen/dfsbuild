@@ -22,9 +22,9 @@ aboot env =
                  (concat . map (kline rdparam) $ zip newkerns [(0::Int)..])
        return ([],
                \isoname -> safeSystem "isomarkboot" 
-                             [isoname, "/boot/bootlx", "/opt/dfsruntime/initrd.dfs"]
+                             [isoname, "/boot/bootlx", "/boot/initrd.dfs"]
               )
     where kline rdparam (kname, count) =
-              printf "%d:boot/%s initrd=opt/dfsruntime/initrd.dfs root=/dev/ram0 ide=nodma %s\n" count (fst . splitFileName $ kname) rdparam
+              printf "%d:boot/%s initrd=boot/initrd.dfs root=/dev/ram0 ide=nodma %s\n" count (fst . splitFileName $ kname) rdparam
 
                                                      
