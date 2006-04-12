@@ -137,10 +137,18 @@ installpkgs env =
        safeSystem "chroot" $ 
                       [targetdir env, "apt-get", "-y", "--allow-unauthenticated", "install"] ++ pkgs
 
+       safeSystem "chroot" [targetdir env, "apt-get", "clean"]
+
+       -- preprtrd will require busybox-static, but earlier
+       -- packages need just busybox.  So we download the .deb
+       -- and unpack it manually later.  Sigh.
+       safeSystem "chroot" [targetdir env, "apt-get", "-d", "-y",
+                            "--allow-unauthenticated", "install",
+                            "busybox-static"]
+
+
        -- And remove the resolv.conf again
        removeFile (targetdir env ++ "/etc/resolv.conf")
-
-       safeSystem "chroot" [targetdir env, "apt-get", "clean"]
 
     where pkgs = splitWs (eget env "packages")
 
@@ -199,13 +207,16 @@ installdebs env =
 
 preprd env =
     do im "Preparing directory for ramdisk..."
+       createDirectory ((targetdir env) ++ "/tmp/busybox") 0o755
+       chr ["sh", "-c", "dpkg -x /var/cache/apt/archives/busybox-static*.deb /tmp/busybox"]
        createDirectory ((targetdir env) ++ "/opt/initrd") 0o755
        mapM_ (\x -> createDirectory ((targetdir env) ++ "/opt/initrd/" ++ x) 0o755)
              ["bin", "lib", "sbin", "proc", "usr", "usr/sbin", "usr/bin",
               "realroot", "sys"]
        chr ["sh", "-c", "cp -dv /lib/ld-* /opt/initrd/lib/"]
        chr ["sh", "-c", "cp -v /lib/libc.so* /opt/initrd/lib/"]
-       chr ["cp", "-v", "/bin/busybox", "/opt/initrd/bin/"]
+       chr ["cp", "-v", "/tmp/busybox/bin/busybox", "/opt/initrd/bin/"]
+       chr ["sh", "-c", "rm -r /tmp/busybox /var/cache/apt/archives/busybox-static*.deb"]
        chr ["cp", "-v", "/usr/sbin/chroot", "/opt/initrd/usr/sbin/"]
        chr ["cp", "-v", "/sbin/pivot_root", "/opt/initrd/sbin/"]
        chr ["cp", "-r", "/dev", "/opt/initrd/"]

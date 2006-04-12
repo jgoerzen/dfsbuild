@@ -65,7 +65,7 @@ grubMenu env  =
                       return $ 
                         "title  Boot " ++ (snd . splitFileName $ x) ++ "\n"
                         ++ "kernel /boot/" ++ (snd . splitFileName $ x) ++ 
-                               " root=/dev/ram0\n"
+                               " root=/dev/root\n"
                         ++ "initrd /boot/" ++ initrd ++ "\n"
                         ++ "boot\n"
 

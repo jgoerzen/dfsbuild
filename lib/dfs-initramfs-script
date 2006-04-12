@@ -5,7 +5,6 @@
 # must be run before this one can be.
 #
 PREREQ="udev_helper"
-MOUNTLOC=/dfs-roottest
 
 prereqs()
 {
@@ -22,19 +21,19 @@ esac
 
 canmount()
 {
-    mount -n -t iso9660 -o ro $1 $MOUNTLOC
+    mount -n -t iso9660 -o ro $1 $rootmnt
 }
 
 checkvalidity()
 {
     echo -n "Scanning $1: "
     if canmount $1; then
-        if cmp /marker $MOUNTLOC/opt/dfsruntime/marker; then
-            umount $MOUNTLOC
+        if cmp /marker $rootmnt/opt/dfsruntime/marker; then
+            # LEAVE IT MOUNTED; later mount attempts will be weird.
             echo "Found DFS CD."
             return 0
         else
-            umount $MOUNTLOC
+            umount $rootmnt
             echo "Found a CD, but not the correct DFS one."
             return 1
         fi
@@ -44,19 +43,15 @@ checkvalidity()
     fi
 }
 
-echo ""
+echo "------------------------------------------------------------"
 echo " *** Welcome to Debian From Scratch (DFS) ***"
 echo "Initial RAM disk (format 2, with initramfs-tools) booting."
-echo ""
-ls -l /dev/root
-if checkvalidity /dev/root
-    then echo "/dev/root is the correct CD; using it."
-    exit 0
-fi
+echo "------------------------------------------------------------"
 
 cat <<EOF
-Scanning for DFS CD.  The root= kernel parameter can override this scan
-if there is trouble.
+
+Scanning for DFS CD....
+
 EOF
 
 OLDCWD=`pwd`

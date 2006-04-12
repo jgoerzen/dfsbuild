@@ -26,4 +26,3 @@ esac
 MARKERFILE=/opt/dfsruntime/marker
 
 cp $MARKERFILE $DESTDIR/marker
-mkdir $DESTDIR/dfs-roottest
