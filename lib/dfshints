@@ -11,7 +11,7 @@ reboot                      Reboot the system
 elinks, lftp                Web browser / FTP client
 invoke-rc.d lvm start       Initialize LVM subsystem
 invoke-rc.d discover start  Autodetect hardware, method 1
-invoke-rc.d hotplug start   Initialize support for USB devices, 
+invoke-rc.d udev start      Initialize support for USB devices, 
                             autodetect hardware method 2
 invoke-rc.d pcmcia start    Initialize PCMCIA subsystem
 nano, vim, joe, or emacs    Text editors

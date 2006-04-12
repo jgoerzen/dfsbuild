@@ -42,7 +42,8 @@ getcddev  =
                 Just x -> return x
                 Nothing -> do im "Scanning for DFS CD.  The dfscd kernel"
                               im "parameter can override this scan if there"
-                              im "is trouble.  Scanning..."
+                              im "is trouble."
+                              fm "Scanning: "
                               devices <- getDirectoryContents "/sys/block"
                               finddev marker 
                                   (filter (not . (flip elem) [".", ".."]) 
@@ -58,19 +59,18 @@ canmount loc =
                  return $ ec == ExitSuccess
 
 scandev shouldbe dev =
-              do fm $ "Scanning " ++ dev ++ ": "
-                 cm <- canmount dev
+              do cm <- canmount dev
                  if cm
                     then do ic <- iscd shouldbe
                             if ic
-                               then do im "Found DFS CD."
+                               then do im " (FOUND DFS)"
                                        return True
-                               else do im "Found a CD, but not proper DFS CD."
+                               else do fm " (wrong CD) "
                                        ec <- rawSystem "busybox" ["umount", mountloc]
                                        when (ec /= ExitSuccess)
                                                 (im (show ec))
                                        return False
-                    else do im "Invalid device, no media, or not a CD."
+                    else do fm " (can't mount) "
                             return False
 
 getcmdline shouldbe =
@@ -89,12 +89,13 @@ getcmdline shouldbe =
                            then return (Just x)
                            else return Nothing
 
-finddev _ [] = fail "Could not find a CD.  Terminating."
+finddev _ [] = fail "\nCould not find a CD.  Terminating."
 finddev shouldbe (x:xs) = 
-    do removable <- readFile $ "/sys/block/" ++ x ++ "/removable"
-       let dev = "/sys/block/" ++ x ++ "/device"
+    do fm x
+       removable <- readFile $ "/sys/block/" ++ x ++ "/removable"
+       let dev = "/dev/" ++ x
        if (head removable) == '0'
-          then do im $ "Skipping " ++ dev ++ "; it is not a removable device."
+          then do fm " (non-removable) "
                   finddev shouldbe xs
           else do sd <- scandev shouldbe dev
                   if sd

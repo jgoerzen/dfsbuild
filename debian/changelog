@@ -9,6 +9,7 @@ dfsbuild (0.7.0) unstable; urgency=low
     Closes: #307334.
   * dfsbuild still uses bash, but since bash is Essential,
     no longer depends upon it.  Closes: #356572, #316420.
+  * Generated images now support udev instead of hotplug.
   -- the below have not yet been set to pending --
   * Dies quickly if not running as root.  Closes: #288637.
   * Automatically detects CD devices from sysfs.
