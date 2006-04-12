@@ -117,6 +117,22 @@
 	</listitem>
       </itemizedlist>
     </sect1>
+    <sect1 id="getting">
+      <title>Getting DFS</title>
+      <para>
+        You may download ISO images for DFS from John Goerzen's
+        <ulink url="http://people.debian.org/~jgoerzen/dfs/">DFS
+        site</ulink>.  The &dfsbuild; program is available from within
+        Debian itself, or you may find it on the
+        <ulink url="http://packages.debian.org/dfsbuild">Debian
+        package page</ulink>.
+      </para>
+      <para>
+        For more resources, please visit <xref
+        linkend="dfsbuild.links"/>.
+      </para>
+    </sect1>
+          
   </chapter>
 
   <chapter id="booting">
@@ -438,6 +454,27 @@ grub> quit
   <appendix id="dfsbuild.reference">
     <title>Command Reference</title>
     &man.dfsbuild;
+  </appendix>
+
+  <appendix id="dfsbuild.links">
+    <title>Links to Related Resources</title>
+    <para>
+      Here are some links to websites where you may find DFS-related
+      resources:
+    </para>
+    <itemizedlist>
+      <listitem><para><ulink
+      url="http://people.debian.org/~jgoerzen/dfs">DFS pre-built ISO
+      images</ulink></para>
+      </listitem>
+      <listitem><para>NewsForge article: <ulink
+      url="http://www.newsforge.com/article.pl?sid=05/01/10/1727246">Installing
+      Debian From Scratch</ulink></para></listitem>
+      <listitem><para>Article by Suramya Tomar: <ulink
+      url="http://linux.suramya.com/tutorials/Install_DFS/">How to
+      Install Debian From Scratch</ulink></para>
+      </listitem>
+    </itemizedlist>
   </appendix>
 
 </book>
