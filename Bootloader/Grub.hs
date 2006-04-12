@@ -62,10 +62,11 @@ grubMenu env  =
           ++ fake (getidstring env)
     where fake s = "title " ++ s ++ "\ncolor cyan/blue blue/light-gray\n"
           kern x = do initrd <- getinitrdname env x
+                      rootdev <- getrootdevname env x
                       return $ 
                         "title  Boot " ++ (snd . splitFileName $ x) ++ "\n"
                         ++ "kernel /boot/" ++ (snd . splitFileName $ x) ++ 
-                               " root=/dev/root\n"
+                               " root=" ++ rootdev ++ "\n"
                         ++ "initrd /boot/" ++ initrd ++ "\n"
                         ++ "boot\n"
 

@@ -99,3 +99,9 @@ getinitrdname env kernpath =
           else return "initrd.dfs"
     where kname = snd . splitFileName $ kernpath
           rdname = subRegex (mkRegex "vmlinu.") kname "initrd.img"
+
+getrootdevname env kernpath =
+    do initrd <- getinitrdname env kernpath
+       if initrd == "initrd.dfs"
+          then return "/dev/ram0"
+          else return "/dev/root"
