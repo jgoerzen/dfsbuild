@@ -25,7 +25,8 @@ data DFSEnv = DFSEnv
      isDebugging :: Bool,
      defaultArch :: String,
      targetdir :: String,
-     marker :: String}
+     marker :: String,
+     datestr :: String}
 
 data DFSState = Fresh | Initialized | Mirrored | Bootstrapped | Installed
               | LibsInstalled | DebsInstalled | CfgHandled | RDPrepped

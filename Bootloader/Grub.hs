@@ -13,6 +13,7 @@ import MissingH.Path.Glob
 import MissingH.ConfigParser
 import MissingH.Path.FilePath
 import Data.List
+import Actions.ConfigFiles
 
 grub_eltorito env =
     do im "Installing bootloader: Grub raw eltorito (no HD emulation)"
@@ -60,7 +61,7 @@ grubMenu env entryline =
           ++ "color cyan/blue blue/light-gray\n"
           ++ (concat . map (kern rd) $ (reverse . sort $ newkerns))
           ++ fake "."
-          ++ fake (marker env)
+          ++ fake (getidstring env)
     where fake s = "title " ++ s ++ "\ncolor cyan/blue blue/light-gray\n"
           kern rd x = "title  Boot " ++ (snd . splitFileName $ x) ++ "\n"
                    ++ "kernel /boot/" ++ (snd . splitFileName $ x) ++ " root=/dev/ram0 " ++

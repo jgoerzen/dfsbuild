@@ -23,21 +23,20 @@ getDate =
     getClockTime >>= toCalendarTime >>= (return . calendarTimeToString)
 
 buildinfo env =
-    do datestr <- getDate
-       return $ "Item: Debian From Scratch (DFS) live CD made by dfsbuild" ++
-                "\nName: " ++ eget env "name" ++
+    do return $ "This is a Debian From Scratch (DFS) live CD made by dfsbuild" ++
+                "\n\nName: " ++ eget env "name" ++
                 "\nVersion: " ++ eget env "version" ++
                 "\nBuilder: " ++ eget env "builder" ++
-                "\nPreparation Date: " ++ datestr ++ "\n"
+                "\nPreparation Date: " ++ datestr env ++ "\n"
 
 writeBuildInfo env = 
     buildinfo env >>= 
                   (writeFile ((targetdir env) ++ "/opt/dfsruntime/buildinfo"))
 
-getidstring :: DFSEnv -> IO String
+getidstring :: DFSEnv -> String
 getidstring env = 
-    getDate >>= 
-    (printf "DFS image: %s %s (%s)" (eget env "name") (eget env "version"))
+    printf "DFS image: %s %s (%s)" (eget env "name") (eget env "version")
+           (datestr env)
     
                      
 writeCfgFiles env =

@@ -18,6 +18,7 @@ import System.Posix.Directory
 import System.Posix.User
 import System.Console.GetOpt
 import MissingH.Path
+import Actions.ConfigFiles
 import qualified Actions(run)
   
 procCmdLine :: IO (Bool, Bool, ConfigParser, String, String)
@@ -82,13 +83,15 @@ runMain =
                                       (forceEither $ get incp da "libdir")
        im $ "Using library directory " ++ cplibdir
        cdmarker <- getUniqueCDID
+       date <- getDate
        let env = DFSEnv {wdir = workdir,
                          libdir = cplibdir,
                          cp = incp,
                          isDebugging = debugmode,
                          defaultArch = da,
                          targetdir = workdir ++ "/target",
-                         marker = cdmarker}
+                         marker = cdmarker,
+                         datestr = date}
        -- Fresh run: initialize the state file.
        unless (resumemode) (saveState env Fresh)
 
