@@ -13,6 +13,7 @@ import System.Environment
 import System.Posix.Process
 import Control.Monad
 import System.Directory(getDirectoryContents)
+import Control.Exception
 
 mountloc = "/realroot"
 im msg = putStrLn msg
@@ -50,6 +51,7 @@ getcddev  =
                                    devices)
 
 iscd shouldbe = 
+    do handle (\_ -> return False) $
               do testmarker <- readFile (mountloc ++ "/opt/dfsruntime/marker")
                  return (shouldbe == testmarker)
 
@@ -77,9 +79,9 @@ getcmdline shouldbe =
     do im "Sleeping for 5 seconds to wait for any USB devices."
        rawSystem "busybox" ["sleep", "5"]
        rawSystem "busybox" ["mount", "-n", "-t", "proc", "none", "/proc"]
-       clineraw <- readFile "/proc/cmdline"
-       let cline = head . lines $ clineraw
-       return $ seq cline cline
+       cf <- openFile "/proc/cmdline" ReadMode
+       cline <- hGetLine cf
+       hClose cf
        rawSystem "busybox" ["umount", "/proc"]
        case matchRegex (mkRegex "dfscd=([^ ]+)") cline of
          Nothing -> return Nothing
@@ -90,9 +92,11 @@ getcmdline shouldbe =
                            else return Nothing
 
 finddev _ [] = fail "\nCould not find a CD.  Terminating."
-finddev shouldbe (x:xs) = 
+finddev shouldbe (x:xs) =  
     do fm x
-       removable <- readFile $ "/sys/block/" ++ x ++ "/removable"
+       rf <- openFile ("/sys/block/" ++ x ++ "/removable") ReadMode
+       removable <- hGetLine rf
+       hClose rf
        let dev = "/dev/" ++ x
        if (head removable) == '0'
           then do fm " (non-removable) "
