@@ -41,13 +41,13 @@ mainRunner env =
          Mirrored ->            -- Bootstrap the CD image
              do cdebootstrap env
                 finished Bootstrapped
-         Bootstrapped ->        -- Install additional packages
-             do installpkgs env
-                finished Installed
-         Installed ->           -- Time to install shared files
+         Bootstrapped ->           -- Time to install shared files
              do installlib env
                 finished LibsInstalled
-         LibsInstalled ->       -- Time to install debs
+         LibsInstalled ->        -- Install additional packages
+             do installpkgs env
+                finished Installed
+         Installed ->       -- Time to install debs
              do installdebs env
                 finished DebsInstalled
          DebsInstalled ->       -- Handle config files
