@@ -22,6 +22,9 @@
         <command>dfsbuild</command>
         <arg choice="plain">-c <replaceable>config_file</replaceable></arg>
         <arg choice="plain">-w <replaceable>working_dir</replaceable></arg>
+        <arg choice="opt">-a <replaceable>arch</replaceable></arg>
+        <arg choice="opt">-R</arg>
+        <arg choice="opt">-v | -V</arg>
       </cmdsynopsis>
     </refsynopsisdiv>
 
