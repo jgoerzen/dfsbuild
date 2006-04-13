@@ -202,8 +202,7 @@ installdebs env =
                              "--force-architecture", "--unpack"] ++ debnames
                         recursiveRemove SystemFS realtmpdir
                 else im "Not unpacking .debs since none listed in unpackdebs option"
-                safeSystem "sh" ["-c",
-                        "chroot " ++ (targetdir env) ++ " dpkg -l > " ++
+    safeSystem "sh" ["-c", "chroot " ++ (targetdir env) ++ " dpkg -l > " ++
                         (wdir env) ++ "/pkglist.txt"]
 
 
