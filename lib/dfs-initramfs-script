@@ -28,7 +28,7 @@ echo "------------------------------------------------------------"
 
 
 if scandevices; then 
-    ln -sf /dev/$DFSDEVICE /dev/root
+    ln -sf $DFSDEVICE /dev/root
     createrd
 else
     echo ""

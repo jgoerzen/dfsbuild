@@ -21,7 +21,7 @@ if scandevices; then
     pivot_root . initrd
     cd .
     cd /
-    echo " *** Now booting system ***"
+    echo " *** Now booting system from $DFSDEVICE ***"
     exec /sbin/init "$@"
 else
     umount /sys
