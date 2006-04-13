@@ -51,7 +51,7 @@ grub_generic env =
 
 grubMenu env  =
     do newkerns <- glob $ targetdir env ++ "/boot/vmlinu*"
-       kerntext <- mapM kern (reverse . sort $ newkerns)
+       kerntext <- mapM kern (sort $ newkerns)
        return $ 
           case get (cp env) (defaultArch env) "grubconfig" of
             Left _ -> ""

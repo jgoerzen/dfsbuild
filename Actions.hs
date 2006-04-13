@@ -146,6 +146,8 @@ installpkgs env =
                             "--allow-unauthenticated", "install",
                             "busybox-static"]
 
+       safeSystem "chroot" [targetdir env, "sh", "-c",
+                            "for FILE in /etc/pam.d/*; do grep -v securetty $FILE > $FILE.tmp; mv $FILE.tmp $FILE; done"]
 
        -- And remove the resolv.conf again
        removeFile (targetdir env ++ "/etc/resolv.conf")
@@ -200,6 +202,11 @@ installdebs env =
                              "--force-architecture", "--unpack"] ++ debnames
                         recursiveRemove SystemFS realtmpdir
                 else im "Not unpacking .debs since none listed in unpackdebs option"
+                safeSystem "sh" ["-c",
+                        "chroot " ++ (targetdir env) ++ " dpkg -l > " ++
+                        (wdir env) ++ "/pkglist.txt"]
+
+
     where
       chroottmpdir = "/insttmp"
       realtmpdir = (targetdir env) ++ chroottmpdir
