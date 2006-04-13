@@ -62,7 +62,6 @@ install: build
 
 	# Add here commands to install the package into debian/dfsbuild.
 	#$(MAKE) install DESTDIR=$(CURDIR)/debian/dfsbuild
-	cp -r libsrc/dist/build/linuxrc libsrc/dist/build/startup $(LIBDIR)
 	cp -r lib/* $(LIBDIR)
 	ln -s /usr/lib/dfsbuild/dfs.html $(DOCDIR)/html
 	cp dist/build/dfsbuild $(RDIR)/usr/bin/

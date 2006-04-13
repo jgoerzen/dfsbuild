@@ -158,9 +158,8 @@ installlib env =
        mapM_ (\x ->
               safeSystem "cp" ["-rL", libdir ++ "/" ++ x, 
                                (targetdir env) ++ "/opt/dfsruntime/"])
-         ["startup", "home.html"]
+         ["home.html", "dfs_startup_funcs"]
        -- Set modes
-       setFileMode ((targetdir env) ++ "/opt/dfsruntime/startup") 0o755
        createDirectory ((targetdir env) ++ "/opt/dfsruntime/doc") 0o755
        mapM_ (\x ->
               safeSystem "cp" ["-r", docdir ++ "/" ++ x,
@@ -224,7 +223,10 @@ preprd env =
        safeSystem "cp" [(eget env "libdir") ++ "/linuxrc",
                         (targetdir env) ++ "/opt/initrd/sbin/init"]
        setFileMode ((targetdir env) ++ "/opt/initrd/sbin/init") 0o755
+       safeSystem "cp" [eget env "libdir" ++ "/dfs_startup_funcs",
+                        targetdir env ++ "/opt/initrd"]
        writeFile ((targetdir env) ++ "/opt/initrd/marker") (marker env)
+       createSymbolicLink "busybox" (targetdir env ++ "/opt/initrd/bin/sh")
     where chr args = safeSystem "chroot" $ ((targetdir env) : args)
 
 installKernels env =

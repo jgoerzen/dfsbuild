@@ -26,3 +26,4 @@ esac
 MARKERFILE=/opt/dfsruntime/marker
 
 cp $MARKERFILE $DESTDIR/marker
+cp /opt/dfsruntime/dfs_startup_funcs $DESTDIR/

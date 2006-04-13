@@ -19,76 +19,22 @@ prereqs)
 	;;
 esac
 
-canmount()
-{
-    mount -n -t iso9660 -o ro $1 $rootmnt
-}
-
-checkvalidity()
-{
-    echo -n "Scanning $1: "
-    if canmount $1; then
-        if cmp /marker $rootmnt/opt/dfsruntime/marker; then
-            # LEAVE IT MOUNTED; later mount attempts will be weird.
-            echo "Found DFS CD."
-            return 0
-        else
-            umount $rootmnt
-            echo "Found a CD, but not the correct DFS one."
-            return 1
-        fi
-    else
-        echo "$1: Not mountable (empty drive, not a CD-ROM, or wrong device)"
-        return 1
-    fi
-}
+source /dfs_startup_funcs
 
 echo "------------------------------------------------------------"
 echo " *** Welcome to Debian From Scratch (DFS) ***"
 echo "Initial RAM disk (format 2, with initramfs-tools) booting."
 echo "------------------------------------------------------------"
 
-cat <<EOF
 
-Scanning for DFS CD....
-
-EOF
-
-OLDCWD=`pwd`
-newrdloc=$rootmnt/opt/dfsruntime/runtimemnt
-newrdfiles=$rootmnt/opt/dfsruntime/runtimerd
-
-cd /sys/block
-for DEVICE in *; do
-    if [ `cat $DEVICE/removable` = 1 ]; then
-        if checkvalidity /dev/$DEVICE; then
-            cd $OLDCWD
-
-            ln -sf /dev/$DEVICE /dev/root
-            
-            echo -n "Creating new runtime ramdisk: "
-            mount -n -t tmpfs none $newrdloc
-            echo $newrdloc
-
-            echo -n "Populating runtime ramdisk: "
-            cp -a $newrdfiles/* $newrdloc/
-            echo "done."
-            
-            echo -n "Initializing configuration files: /etc/fstab"
-            echo "proc /proc proc defaults 0 0" > $rootmnt/etc/fstab
-            echo "."
-
-            echo ""
-            echo " *** Now booting system *** "
-            
-            exit 0
-        fi
-    fi
-done
-
-cd $OLDCWD
-echo ""
-echo "Could not find a DFS CD.  Terminating."
+if scandevices; then 
+    ln -sf /dev/$DFSDEVICE /dev/root
+    createrd
+else
+    echo ""
+    echo "Could not find a DFS CD.  Terminating."
+fi
 
 exit 0
+
 

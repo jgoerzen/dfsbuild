@@ -1,0 +1,82 @@
+# Args:
+# $1: device to mount
+# $rootmnt: where to try mounting it
+# Returns 0 if able to mount, nonzero otherwise
+canmount()
+{
+    mount -n -t iso9660 -o ro $1 $rootmnt
+}
+
+# Args:
+# $1: device to check
+# $2: $rootmnt: where to try mounting
+# Returns 0 if device mountable and DFS, nonzero otherwise
+checkvalidity()
+{
+    echo -n "Scanning $1: "
+    if canmount $1; then
+        if cmp /marker $rootmnt/opt/dfsruntime/marker; then
+            # LEAVE IT MOUNTED; later mount attempts will be weird.
+            echo "Found DFS CD."
+            return 0
+        else
+            umount $rootmnt
+            echo "Found a CD, but not the correct DFS one."
+            return 1
+        fi
+    else
+        echo "$1: Not mountable (empty drive, not a CD-ROM, or wrong device)"
+        return 1
+    fi
+}
+
+# Args: $rootmnt: where to mount the new item
+# Returns 0 if a valid device was found, nonzero otherwise
+# If a valid device was found, sets DFSDEVICE to that device and exports
+# DFSDEVICE
+scandevices()
+{
+    OLDCWD=`pwd`
+
+    cat <<EOF
+
+Scanning for DFS CD....
+
+EOF
+
+    cd /sys/block
+    for DEVICE in *; do
+        if [ `cat $DEVICE/removable` = 1 ]; then
+            if checkvalidity /dev/$DEVICE; then
+                DFSDEVICE=/dev/$DEVICE
+                export DFSDEVICE
+                cd $OLDCWD
+                return 0
+            fi
+        fi
+    done
+    cd $OLDCWD
+    return 1
+}
+
+# Args: $rootmnt: where the ISO9660 FS is mounted
+createrdrd ()
+{
+    newrdloc=$rootmnt/opt/dfsruntime/runtimemnt
+    newrdfiles=$rootmnt/opt/dfsruntime/runtimerd
+    
+    echo -n "Creating new runtime ramdisk: "
+    mount -n -t tmpfs none $newrdloc
+    echo $newrdloc
+    
+    echo -n "Populating runtime ramdisk: "
+    cp -a $newrdfiles/* $newrdloc/
+    echo "done."
+    
+    echo -n "Initializing configuration files: /etc/fstab"
+    echo "proc /proc proc defaults 0 0" > $newrdloc/etc/fstab
+    echo "."
+    
+    echo ""
+    echo " *** Now booting system *** "
+}

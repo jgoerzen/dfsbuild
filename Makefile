@@ -5,8 +5,6 @@
 all: setup			# GHC build
 	./setup configure
 	./setup build
-	cd libsrc && ../setup configure
-	cd libsrc && ../setup build
 
 doc: lib/dfs.html/index.html lib/dfs.pdf lib/dfs.ps lib/dfs.txt
 
