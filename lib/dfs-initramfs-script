@@ -19,7 +19,7 @@ prereqs)
 	;;
 esac
 
-source /dfs_startup_funcs
+. /dfs_startup_funcs
 
 echo "------------------------------------------------------------"
 echo " *** Welcome to Debian From Scratch (DFS) ***"

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source /dfs_startup_funcs
+. /dfs_startup_funcs
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 export PATH
 rootmnt=/realroot
@@ -22,7 +22,7 @@ if scandevices; then
     echo " *** Now booting system ***"
     exec /sbin/init "$@"
 else
-    umouns /sys
+    umount /sys
     echo ""
     echo "Could not find a DFS CD.  Terminating."
     exit 1
