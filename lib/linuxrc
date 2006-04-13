@@ -10,10 +10,12 @@ echo " *** Welcome to Debian From Scratch (DFS) ***"
 echo "Initial RAM disk (format 2, without initramfs-tools) booting."
 echo "------------------------------------------------------------"
 
+mount -n -t proc none /proc
 mount -n -t sysfs none /sys
 
 if scandevices; then 
     umount /sys
+    umount /proc
     createrd
     cd $rootmnt
     pivot_root . initrd
@@ -23,6 +25,7 @@ if scandevices; then
     exec /sbin/init "$@"
 else
     umount /sys
+    umount /proc
     echo ""
     echo "Could not find a DFS CD.  Terminating."
     exit 1

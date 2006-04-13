@@ -60,7 +60,7 @@ EOF
 }
 
 # Args: $rootmnt: where the ISO9660 FS is mounted
-createrdrd ()
+createrd ()
 {
     newrdloc=$rootmnt/opt/dfsruntime/runtimemnt
     newrdfiles=$rootmnt/opt/dfsruntime/runtimerd
