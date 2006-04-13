@@ -240,7 +240,7 @@ installKernels env =
          Left _ -> return ()
          Right m ->
             do modfiles <- mapM glob (splitWs m)
-               mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/lib/modules/"]) (concat modfiles)
+               mapM_ (\x -> safeSystem "cp" ["-vr", x, targetdir env ++ "/lib/modules/"]) (concat modfiles)
             
        
 preprtrd env =
