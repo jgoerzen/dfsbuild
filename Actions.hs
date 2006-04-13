@@ -236,7 +236,7 @@ installKernels env =
                  mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/boot/"]) (concat kernfiles)
        case get (cp env) (defaultArch env) "modules" of
          Left _ -> return ()
-         Right m -> -- FIXME: this too
+         Right m ->
             do modfiles <- mapM glob (splitWs m)
                mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/lib/modules/"]) (concat modfiles)
             

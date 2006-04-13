@@ -94,17 +94,24 @@
           </itemizedlist>
 	</listitem>
 	<listitem><para>Base systems for multiple versions of Debian
-	    installable directly from CD, including: woody (i386),
-	    sarge (i386), sid (i386), and sid (amd64).  Alpha CD can
-            install woody, sarge, or sid for Alpha.
+	    installable directly from CD, including: sarge, etch, and
+	    sid (stable, testing, and unstable).
 	  </para>
 	</listitem>
-        <listitem><para>amd64 support: Enough to install or fix an
+        <listitem><para>
+            Hybrid amd64 support: A single i386/amd64 hybrid CD
+            provides
+            enough to install or fix either an i386 or an
             AMD64 system.  Includes 64-bit kernel with 32-bit
             emulation (to run the 32-bit userland on the CD).   Also
-            includes 64-bit package for bootstrapping a new AMD64
+            includes 64-bit packages for bootstrapping a new AMD64
             support.  In short, you can boot a 64-bit kernel and be
             treated as a first-class citizen in almost all respects.
+          </para>
+        </listitem>
+        <listitem><para>
+            Easy porting to other architectures.  Existing ports to
+            Alpha and PowerPC.
           </para>
         </listitem>
 	<listitem><para>i386 or x86_64 (amd64) kernels bootable
@@ -132,6 +139,15 @@
         linkend="dfsbuild.links"/>.
       </para>
     </sect1>
+    <sect1 id="history">
+      <title>History of DFS</title>
+      <para>
+        DFS begain as the first installer for the amd64 port of
+        Debian.  I also wanted to have a handy rescue disk for systems
+        that use LVM, Reiser4, etc.  At the time, the Debian
+        installers didn't support any of this.
+      </para>
+    </sect1>
           
   </chapter>
 
@@ -149,7 +165,7 @@
         systems,
         you may need to access your BIOS to enable booting from CD.
         When you have successfully booted DFS the CD, you'll see a blue
-        selection screen.
+        Grub selection screen.
       </para>
     </sect1>
     <sect1 id="booting.alpha">

@@ -1,10 +1,10 @@
 Name: dfsbuild
-Version: 0.7.0
+Version: 0.99.0
 License: GPL
 Maintainer: John Goerzen <jgoerzen@complete.org>
 Stability: Alpha
 Copyright: Copyright (c) 2006 John Goerzen
-Build-Depends: haskell-src, network, unix, parsec, MissingH>=0.14.0
+Build-Depends: haskell-src, network, unix, parsec, MissingH>=0.14.2
 
 Executable: dfsbuild
 Main-Is: dfsbuild.hs

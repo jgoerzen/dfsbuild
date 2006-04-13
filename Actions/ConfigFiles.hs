@@ -35,7 +35,7 @@ writeBuildInfo env =
 
 getidstring :: DFSEnv -> String
 getidstring env = 
-    printf "DFS image: %s %s (%s)" (eget env "name") (eget env "version")
+    printf "DFS: %s %s (%s)" (eget env "name") (eget env "version")
            (datestr env)
     
                      
