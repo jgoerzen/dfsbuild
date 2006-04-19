@@ -82,7 +82,9 @@ runMain =
                       absNormPath workdir 
                                       (forceEither $ get incp da "libdir")
        im $ "Using library directory " ++ cplibdir
-       cdmarker <- getUniqueCDID
+       cdmarker <- if resumemode
+                      then readFile (workdir ++ "/target/opt/dfsruntime/markst")
+                      else getUniqueCDID
        date <- getDate
        let env = DFSEnv {wdir = workdir,
                          libdir = cplibdir,
