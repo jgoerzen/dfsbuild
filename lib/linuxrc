@@ -21,7 +21,6 @@ if scandevices; then
     sleep 5
     umount /sys
     umount /proc
-    createrd
     cd $rootmnt
     pivot_root . initrd
     echo " *** Now booting system from $DFSDEVICE ***"

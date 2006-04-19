@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# Installed as /sbin/init on DFS CD
+
+initrdloc=/initrd
+newrdloc=/opt/dfsruntime/runtimemnt
+newrdfiles=/opt/dfsruntime/runtimerd
+
+if [ -f $newrdloc/etc/fstab ] ; then
+    echo " *** DFS startup: system already running, calling real init"
+    exec /sbin/init.real "$@"
+    return 1
+fi
+
+echo ""
+echo " *** Debian From Scratch CD initializing ***"
+echo "PID: $$"
+cd /
+
+echo -n "Creating new runtime ramdisk: "
+mount -n -t tmpfs none $newrdloc
+echo $newrdloc
+
+echo -n "Populating runtime ramdisk: "
+cp -a $newrdfiles/* $newrdloc/
+echo "done."
+
+echo -n "Initializing configuration files: /etc/fstab"
+echp "proc  /proc   proc    defaults        0 0" > /etc/fstab
+echo "."
+
+echo ""
+echo " *** Now booting system ***"
+exec /sbin/init.real "$@"
+

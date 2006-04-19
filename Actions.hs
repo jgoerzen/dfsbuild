@@ -55,7 +55,10 @@ mainRunner env =
                 Actions.ConfigFiles.fixRc env
                 Actions.ConfigFiles.writeBuildInfo env
                 finished CfgHandled
-         CfgHandled ->          -- Prepare the ramdisk
+         CfgHandled ->          -- Prepare init
+             do prepinit env
+                finished InitPrepped
+         InitPrepped ->          -- Prepare the ramdisk
              do preprd env
                 finished RDPrepped
          RDPrepped ->           -- Install kernels
@@ -209,6 +212,14 @@ installdebs env =
     where
       chroottmpdir = "/insttmp"
       realtmpdir = (targetdir env) ++ chroottmpdir
+
+prepinit env =
+    do im "Configuring init..."
+       rename (targetdir env ++ "/sbin/init")
+              (targetdir env ++ "/sbin/init.real")
+       safeSystem "cp" ["-v", libdir env ++ "/startup",
+                        targetdir env ++ "/sbin/init"]
+       setFileMode (targetdir env ++ "/sbin/init") 0o755
 
 preprd env =
     do im "Preparing directory for ramdisk..."

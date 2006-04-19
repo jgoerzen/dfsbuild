@@ -31,7 +31,8 @@ data DFSEnv = DFSEnv
      datestr :: String}
 
 data DFSState = Fresh | Initialized | Mirrored | Bootstrapped | Installed
-              | LibsInstalled | DebsInstalled | CfgHandled | RDPrepped
+              | LibsInstalled | DebsInstalled | CfgHandled | InitPrepped 
+              | RDPrepped
               | KernelsInstalled | RamdiskBuilt | BootloaderInstalled
               deriving (Eq, Show, Read, Ord)
 

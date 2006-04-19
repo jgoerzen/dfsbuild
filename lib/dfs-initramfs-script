@@ -29,7 +29,6 @@ echo "------------------------------------------------------------"
 
 if scandevices; then 
     ln -sf $DFSDEVICE /dev/root
-    createrd
 else
     echo ""
     echo "Could not find a DFS CD.  Terminating."

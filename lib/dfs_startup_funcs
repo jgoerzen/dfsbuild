@@ -59,25 +59,3 @@ EOF
     return 1
 }
 
-# Args: $rootmnt: where the ISO9660 FS is mounted
-createrd ()
-{
-    newrdloc=$rootmnt/opt/dfsruntime/runtimemnt
-    newrdfiles=$rootmnt/opt/dfsruntime/runtimerd
-    
-    echo -n "Creating new runtime ramdisk: "
-    mount -n -t tmpfs none $newrdloc
-    echo $newrdloc
-    
-    echo -n "Populating runtime ramdisk: "
-    cp -a $newrdfiles/* $newrdloc/
-    echo "done."
-    
-    echo -n "Initializing configuration files: /etc/fstab"
-    echo "proc /proc proc defaults 0 0" > $newrdloc/etc/fstab
-    echo "$DFSDEVICE / iso9660 ro 0 0" >> $newrdloc/etc/fstab
-    echo "."
-    
-    echo ""
-    echo " *** Now booting system *** "
-}
