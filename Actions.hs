@@ -235,6 +235,7 @@ preprd env =
        chr ["sh", "-c", "rm -r /tmp/busybox /var/cache/apt/archives/busybox-static*.deb"]
        chr ["cp", "-v", "/usr/sbin/chroot", "/opt/initrd/usr/sbin/"]
        chr ["cp", "-v", "/sbin/pivot_root", "/opt/initrd/sbin/"]
+       chr ["cp", "-r", "/dev", "/opt/initrd/"]
        handle (\_ -> return ()) (removeLink ((targetdir env) ++ "/opt/initrd/linuxrc"))
        safeSystem "cp" [(eget env "libdir") ++ "/linuxrc",
                         (targetdir env) ++ "/opt/initrd/sbin/init"]
