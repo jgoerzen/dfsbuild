@@ -26,7 +26,7 @@ cp -a $newrdfiles/* $newrdloc/
 echo "done."
 
 echo -n "Initializing configuration files: /etc/fstab"
-echp "proc  /proc   proc    defaults        0 0" > /etc/fstab
+echo "proc  /proc   proc    defaults        0 0" > /etc/fstab
 echo "."
 
 echo ""
