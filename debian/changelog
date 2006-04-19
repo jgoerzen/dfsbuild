@@ -17,7 +17,7 @@ dfsbuild (0.99.0) unstable; urgency=low
   * dfsbuild now saves state, so if it dies partway through,
     the problem can be fixed and the build continued.
 
- -- John Goerzen <jgoerzen@complete.org>  Wed,  5 Apr 2006 23:01:04 -0500
+ -- John Goerzen <jgoerzen@complete.org>  Wed, 19 Apr 2006 23:01:04 -0500
 
 dfsbuild (0.6.21) unstable; urgency=low
 
