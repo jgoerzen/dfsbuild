@@ -9,6 +9,8 @@ dfshelp                     Access primary DFS documentation.
 dfshints                    Display this information
 reboot                      Reboot the system
 elinks, lftp                Web browser / FTP client
+invoke-rc.d sysklogd start  Start logging subsystem -- use keys below
+                            to view log messages
 invoke-rc.d lvm start       Initialize LVM subsystem
 invoke-rc.d discover start  Autodetect hardware, method 1
 invoke-rc.d udev start      Initialize support for USB devices, 
