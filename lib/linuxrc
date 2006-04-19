@@ -24,10 +24,8 @@ if scandevices; then
     createrd
     cd $rootmnt
     pivot_root . initrd
-    cd .
-    cd /
     echo " *** Now booting system from $DFSDEVICE ***"
-    exec /sbin/init "$@"
+    exec chroot . /sbin/init "$@"
 else
     sleep 5
     umount /sys

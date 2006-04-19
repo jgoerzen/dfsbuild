@@ -75,6 +75,7 @@ createrd ()
     
     echo -n "Initializing configuration files: /etc/fstab"
     echo "proc /proc proc defaults 0 0" > $newrdloc/etc/fstab
+    echo "$DFSDEVICE / iso9660 ro 0 0" >> $newrdloc/etc/fstab
     echo "."
     
     echo ""
