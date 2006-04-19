@@ -235,7 +235,6 @@ preprd env =
        chr ["sh", "-c", "rm -r /tmp/busybox /var/cache/apt/archives/busybox-static*.deb"]
        chr ["cp", "-v", "/usr/sbin/chroot", "/opt/initrd/usr/sbin/"]
        chr ["cp", "-v", "/sbin/pivot_root", "/opt/initrd/sbin/"]
-       chr ["cp", "-r", "/dev", "/opt/initrd/"]
        handle (\_ -> return ()) (removeLink ((targetdir env) ++ "/opt/initrd/linuxrc"))
        safeSystem "cp" [(eget env "libdir") ++ "/linuxrc",
                         (targetdir env) ++ "/opt/initrd/sbin/init"]
@@ -267,12 +266,6 @@ preprtrd env =
        createDirectory rdpath 0o755
        rdfiles <- mapM glob (splitWs . eget env $ "ramdisk_files")
        mapM_ (cpfile2rd rdpath) (concat rdfiles)
-
-       -- Special hack for /dev: this is needed by the initrd system,
-       -- and the absolute symlinks break it.
-       removeLink (targetdir env ++ "/dev")
-       createSymbolicLink "opt/dfsruntime/runtimemnt/dev" 
-                              (targetdir env ++ "/dev")
     where cpfile2rd rdpath f =
               do let src = targetdir env ++ f
                  let dest = rdpath ++ f
