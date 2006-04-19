@@ -1,0 +1,41 @@
+Subject: ANN: Debian From Scratch 0.99.0
+
+Debian From Scratch (DFS) is a single, full rescue CD capable of
+working with all major filesystems, LVM, software RAID, and even
+compiling a new kernel.  The DFS ISO images also contain a small
+Debian mirror subset that lets you use cdebootstrap, along with the
+other utilities on the CD, to perform a manual, "Gentoo-like"
+installation.
+
+DFS also refers to dfsbuild, the tool that generates DFS images.
+dfsbuild is available as a Debian package.
+
+Today I am announcing the availability of DFS 0.99.0 images for
+i386/amd64 and dfsbuild 0.99.0.  These are the major changes since the
+previous incarnation of DFS:
+
+ * Entire program rewritten from scratch.  Ported from OCaml to
+   Haskell, with some Busybox shell scripts.
+
+ * DFS now supports Debian initramfs kernels out of the box.  It
+   continues to support kernels with enough drivers statically
+   compiled to load the CD.
+
+ * Switched from apt-move to reprepro for the generation of the
+   on-CD mini Debian mirror, saving space on the generated image.
+
+ * DFS images now use (and require) udev.
+
+ * My DFS images are now built with testing (etch).
+
+ * My DFS images now come with multiple versions of GCC, plus development 
+   environments for C, Java, Perl, Haskell, Pyton, OCaml, shell, and
+   tcl.
+
+ * My DFS images now come with various version-control programs: CVS,
+   darcs, bzr, subversion, git, cogito, arch2darcs, tailor, etc.
+
+ * Numerous additions of other packages to the DFS images; full list
+   at [2]
+
+ * 
