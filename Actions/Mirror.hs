@@ -8,9 +8,11 @@ import Utils
 import MissingH.Cmd
 import MissingH.ConfigParser
 import System.Posix.Directory
+import Control.Monad
 import Control.Exception
 import Data.List
 import MissingH.Path
+import MissingH.Str
 import MissingH.Path.Glob
 import System.IO
 import Text.Printf
@@ -20,15 +22,15 @@ import MissingH.IO.HVFS
 mirrorToWorkdir env repos =
     do im "Mirroring process starting."
        createDirectory mirrordir 0o755
-       mapM_ (procrepo env) repos
+       foldM_ (procrepo env) [] repos
     where
       mirrordir = (wdir env) ++ "/mirror"
 
-procrepo env repo =
+procrepo env priorcodenames repo =
     do im $ "Running cdebootstrap for " ++ repo
        -- First, download the packages.
        safeSystem "cdebootstrap" $
-                  archargs ++ debugargs ++ ["-d", repo, targetdir env, mirror]
+                  archargs ++ debugargs ++ ["-d", suite, targetdir env, mirror]
        -- Next, copy them into the mirror.
        codename <- getCodeName 
                    (targetdir env ++ "/var/cache/bootstrap/Release")
@@ -36,14 +38,15 @@ procrepo env repo =
        mapM_ (\x -> handle (\_ -> return ()) (createDirectory x 0o755))
                  [mirrordir, mirrordir ++ "/conf"]
        safeSystem "touch" [mirrordir ++ "/conf/distributions"]
-       appendFile (mirrordir ++ "/conf/distributions") $ concat $ intersperse "\n" $
+       unless (codename `elem` priorcodenames) $
+         appendFile (mirrordir ++ "/conf/distributions") $ concat $ intersperse "\n" $
            ["Origin: Debian",
             "Label: Debian",
-            "Suite: " ++ repo,
+            "Suite: " ++ suite,
             "Version: 0.dfs",
             "Codename: " ++ codename,
             "Architectures: alpha amd64 arm hppa i386 ia64 m68k mips mipsel powerpc s390 sparc",
-            "Description: Debian From Scratch cache of " ++ repo,
+            "Description: Debian From Scratch cache of " ++ suite,
             "Components: main non-free contrib",
             "\n\n\n"]
        im $ "Running reprepro for " ++ codename
@@ -55,10 +58,14 @@ procrepo env repo =
 
        -- Delete the cdebootstrap cache so the next run has a clean dir
        recursiveRemove SystemFS $ targetdir env ++ "/var/cache/bootstrap"
-       safeSystem "ln" ["-sf", codename, mirrordir ++ "/dists/" ++ repo]
+       safeSystem "ln" ["-sf", codename, mirrordir ++ "/dists/" ++ suite]
+       return $ priorcodenames ++ [codename]
     where
       mirrordir = (wdir env) ++ "/mirror"
       sect = "repo " ++ repo
+      suite = case get (cp env) sect "dlsuite" of
+                Left _ -> repo
+                Right x -> strip x
       mirror = esget env sect "mirror"
       archargs = case get (cp env) sect "arch"
                    of Left _ -> []
