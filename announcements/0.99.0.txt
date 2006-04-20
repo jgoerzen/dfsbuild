@@ -21,7 +21,11 @@ Today I am announcing the availability of DFS 0.99.0 images for
 i386/amd64 and dfsbuild 0.99.0.
 
 dfsbuild is available in sid and (hopefully shortly) testing.  My DFS
-ISOs are available from http://people.debian.org/~jgoerzen/dfs/.
+ISOs are available from http://people.debian.org/~jgoerzen/dfs/
+
+DFS is not a separate distribution.  DFS images *are* Debian.  What
+you get when you boot a DFS CD is etch (or whatever you built your own
+images with), with a few minor tweaks to make it run from CD-ROM.
 
 These are the major changes since the previous incarnation of DFS:
 
@@ -35,7 +39,8 @@ These are the major changes since the previous incarnation of DFS:
  * Switched from apt-move to reprepro for the generation of the
    on-CD mini Debian mirror, saving space on the generated image.
 
- * DFS images now use (and require) udev.
+ * DFS images now use (and require) udev.  2.4.x kernels are no longer
+   supported.
 
  * CD-ROM autodetection via /sys.
 
@@ -49,7 +54,7 @@ These are the major changes since the previous incarnation of DFS:
    darcs, bzr, subversion, git, cogito, arch2darcs, tailor, etc.
 
  * Numerous additions of other packages to the DFS images; full list
-   at [2].  My DFS images now contain FIXME packages.
+   at [1].  My DFS images now contain 575 packages.
 
  * My DFS images now built with etch, and come with enough .debs to
    cdebootstrap sarge, etch, or sid (assuming sid is stable enough at
@@ -58,8 +63,7 @@ These are the major changes since the previous incarnation of DFS:
  * My DFS images continue to be able to cdebootstrap either an i386
    or amd64 system.
 
-Other long-time features of DFS include:
- 
- * DFS CDs boot with Grub on i386/amd64, so you get all the features of
-   Grub on your rescue environment.
+A more comprehensive list of DFS features is available at [2].
 
+[1] http://people.debian.org/~jgoerzen/dfs/pkglist-0.99.0_i386.txt
+[2] http://people.debian.org/~jgoerzen/dfs/html/intro.html#FEATURES
