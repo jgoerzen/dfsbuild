@@ -445,9 +445,9 @@ iface eth0 inet static
       <listitem><para>Installing Kernel</para>
 	<para>If you like the kernel on the DFS CD, you can do this:
 	  <command>cd /mnt/root; dpkg-repack
-	    kernel-image-2.6.6</command>.  Then, <command>chroot
+	    linunx-image-2.6.16.4</command>.  Then, <command>chroot
 	    /mnt</command> and <command>dpkg -i
-	    /root/kernel-image-*</command>.
+	    /root/linux-image-*</command>.
 	</para>
       </listitem>
       <listitem><para>Installing Grub</para>
