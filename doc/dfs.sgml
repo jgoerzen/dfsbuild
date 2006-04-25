@@ -59,7 +59,7 @@
 	    including:
 	  </para>
 	  <itemizedlist>
-	    <listitem><para>Filesystem utilities for all mazjor filesystems, including undeletion tools for ext2</para>
+	    <listitem><para>Filesystem utilities for all major filesystems, including undeletion tools for ext2</para>
 	    </listitem>
 	    <listitem><para>Partition editors (fdisk, cfdisk, parted)</para>
 	    </listitem>
