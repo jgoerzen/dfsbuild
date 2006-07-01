@@ -1,3 +1,9 @@
+dfsbuild (0.99.1) unstable; urgency=low
+
+  * Update for GHC 6.4.2.  Closes: #376288.
+
+ -- John Goerzen <jgoerzen@complete.org>  Sat,  1 Jul 2006 18:46:54 -0500
+
 dfsbuild (0.99.0) unstable; urgency=low
 
   * Complete rewrite in Haskell.  Many new features from this.

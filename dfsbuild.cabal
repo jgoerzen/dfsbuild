@@ -9,5 +9,5 @@ Build-Depends: haskell-src, network, unix, parsec, MissingH>=0.14.2
 Executable: dfsbuild
 Main-Is: dfsbuild.hs
 GHC-Options: -O2
-Extensions: ExistentialQuantification, AllowOverlappingInstances,
-    AllowUndecidableInstances
+Extensions: ExistentialQuantification, OverlappingInstances,
+    UndecidableInstances
