@@ -64,7 +64,7 @@ install: build
 	#$(MAKE) install DESTDIR=$(CURDIR)/debian/dfsbuild
 	cp -r lib/* $(LIBDIR)
 	ln -s /usr/lib/dfsbuild/dfs.html $(DOCDIR)/html
-	cp dist/build/dfsbuild $(RDIR)/usr/bin/
+	cp dist/build/dfsbuild/dfsbuild $(RDIR)/usr/bin/
 	cp dfs.cfg $(SHAREDIR)
 	cp COPYRIGHT $(DOCDIR)/copyright
 	chmod a-x $(LIBDIR)/linuxrc
