@@ -1,3 +1,9 @@
+dfsbuild (0.99.2) unstable; urgency=low
+
+  * Update for GHC 6.6.
+
+ -- John Goerzen <jgoerzen@complete.org>  Fri, 20 Oct 2006 05:47:28 -0500
+
 dfsbuild (0.99.1) unstable; urgency=low
 
   * Update for GHC 6.4.2.  Closes: #376288.
