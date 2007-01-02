@@ -16,6 +16,7 @@ import MissingH.Either
 import MissingH.ConfigParser
 import MissingH.Cmd
 import System.IO.Unsafe
+import System.IO.Error
 import Text.Regex
 import MissingH.Path.FilePath
 import System.Directory(doesFileExist)
@@ -72,7 +73,11 @@ getState env =
 
 getCodeName :: FilePath -> IO String
 getCodeName fp =
-    do c <- readFile fp
+    do c_old <- System.IO.Error.catch (readFile (fp ++ "Release"))
+	       (\e -> if System.IO.Error.isDoesNotExistError e then return "" else ioError e)
+       c_new <- System.IO.Error.catch (readFile (fp ++ "_dists_._Release"))
+	       (\e -> if System.IO.Error.isDoesNotExistError e then return "" else ioError e)
+       c <- if length(c_old) > 0 then return c_old else return c_new   
        let cr = mkRegex "Codename: ([a-z]+)"
        case matchRegex cr c of
          Just [cn] -> return cn

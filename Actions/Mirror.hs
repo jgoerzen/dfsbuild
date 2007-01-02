@@ -33,7 +33,7 @@ procrepo env priorcodenames repo =
                   archargs ++ debugargs ++ ["-d", suite, targetdir env, mirror]
        -- Next, copy them into the mirror.
        codename <- getCodeName 
-                   (targetdir env ++ "/var/cache/bootstrap/Release")
+                   (targetdir env ++ "/var/cache/bootstrap/")
        dm $ "Codename for this is " ++ codename
        mapM_ (\x -> handle (\_ -> return ()) (createDirectory x 0o755))
                  [mirrordir, mirrordir ++ "/conf"]
