@@ -40,8 +40,11 @@ grub_hd env =
 
 grub_generic env =
     do createDirectory (targetdir env ++ "/boot/grub") 0o755
-       grubfiles <- glob "/lib/grub/*/*"
-       safeSystem "cp" $ ["-rv"] ++ grubfiles ++ [targetdir env ++ "/boot/grub/"]
+	   -- since etch (Debian 4.0) grub files are located in /usr/lib instead of /lib
+       grubfiles_pre_etch <- glob "/lib/grub/*/*"
+       grubfiles_since_etch <- glob "/usr/lib/grub/*/*"
+       safeSystem "cp" $ ["-rv"] ++ grubfiles_pre_etch ++ grubfiles_since_etch ++
+         [targetdir env ++ "/boot/grub/"]
        menuText <- grubMenu env
        writeFile (targetdir env ++ "/boot/grub/menu.lst") menuText
 
