@@ -1,3 +1,12 @@
+dfsbuild (0.99.3) unstable; urgency=high
+
+  * Scan both /usr/lib/grub and /lib/grub for grub bootloader
+    files.  Patch from Lars Kruse.  Closes: #404563, #390801.
+  * Guess name of Release file.  Patch from Lars Kruse.
+    Closes: #404555, #399861.
+
+ -- John Goerzen <jgoerzen@complete.org>  Mon,  8 Jan 2007 06:17:20 -0600
+
 dfsbuild (0.99.2) unstable; urgency=low
 
   * Update for GHC 6.6.
