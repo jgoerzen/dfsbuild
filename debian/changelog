@@ -1,4 +1,4 @@
-dfsbuild (0.99.3) unstable; urgency=high
+dfsbuild (0.99.3) testing; urgency=high
 
   * Scan both /usr/lib/grub and /lib/grub for grub bootloader
     files.  Patch from Lars Kruse.  Closes: #404563, #390801.
