@@ -1,6 +1,8 @@
 dfsbuild (0.99.4) unstable; urgency=low
 
   * Updates for MissingH transition.
+  * Now supports preparescripts and cleanupscripts.
+    Thanks to Lars Kruse for patch.  Closes: #383260.
 
  -- John Goerzen <jgoerzen@complete.org>  Thu, 18 Jan 2007 05:46:58 -0600
 
