@@ -43,6 +43,11 @@ mainRunner env =
                 finished Bootstrapped
          Bootstrapped ->           -- Time to install shared files
              do installlib env
+                finished EnvironmentPrepared
+         EnvironmentPrepared ->        -- execute configurable hook scripts
+             do im $ "Executing preparation scripts"
+                mapM_ (safeSystem `flip` [ targetdir env ])
+                    (splitWs $ eget env "preparescripts")
                 finished LibsInstalled
          LibsInstalled ->        -- Install additional packages
              do installpkgs env
@@ -68,6 +73,11 @@ mainRunner env =
              do safeSystem "mkcramfs" [(targetdir env) ++ "/opt/initrd",
                                        (targetdir env) ++ "/boot/initrd.dfs"]
                 recursiveRemove SystemFS $ (targetdir env) ++ "/opt/initrd"
+                finished EnvironmentCleaned
+         EnvironmentCleaned ->        -- execute configurable hook scripts
+             do im $ "Executing preparation scripts"
+                mapM_ (safeSystem `flip` [ targetdir env ])
+                    (splitWs $ eget env "cleanupscripts")
                 finished RamdiskBuilt
          RamdiskBuilt ->        -- Install the bootloader
              do (isoargs, blfunc) <- Bootloader.install env

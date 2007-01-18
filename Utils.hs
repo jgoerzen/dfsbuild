@@ -31,10 +31,10 @@ data DFSEnv = DFSEnv
      marker :: String,
      datestr :: String}
 
-data DFSState = Fresh | Initialized | Mirrored | Bootstrapped | Installed
-              | LibsInstalled | DebsInstalled | CfgHandled | InitPrepped 
+data DFSState = Fresh | Initialized | Mirrored | Bootstrapped | EnvironmentPrepared
+              | Installed | LibsInstalled | DebsInstalled | CfgHandled | InitPrepped 
               | RDPrepped
-              | KernelsInstalled | RamdiskBuilt | BootloaderInstalled
+              | KernelsInstalled | EnvironmentCleaned | RamdiskBuilt | BootloaderInstalled
               deriving (Eq, Show, Read, Ord)
 
 im = infoM "dfs"
