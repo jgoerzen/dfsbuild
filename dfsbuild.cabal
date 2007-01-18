@@ -4,7 +4,7 @@ License: GPL
 Maintainer: John Goerzen <jgoerzen@complete.org>
 Stability: Alpha
 Copyright: Copyright (c) 2006 John Goerzen
-Build-Depends: base, network, unix, parsec, MissingH>=0.14.2, regex-compat
+Build-Depends: base, network, unix, parsec, MissingH>=0.18.0, regex-compat, hslogger
 
 Executable: dfsbuild
 Main-Is: dfsbuild.hs
