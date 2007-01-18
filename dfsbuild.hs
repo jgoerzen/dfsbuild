@@ -11,8 +11,8 @@ import Utils
 import System.Log.Logger
 import System.Log.Handler.Simple
 import Control.Monad
-import MissingH.GetOpt
-import MissingH.Maybe
+import System.Console.GetOpt.Utils
+import Data.Maybe.Utils
 import System.IO
 import System.Posix.Directory
 import System.Posix.User
