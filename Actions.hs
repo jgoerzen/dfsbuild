@@ -9,16 +9,16 @@ import Utils
 import qualified Actions.Mirror
 import System.Posix.Directory
 import System.Posix.Files
-import MissingH.Str
-import MissingH.Cmd
-import MissingH.Path
-import MissingH.Path.FilePath
-import MissingH.Path.Glob
+import Data.String
+import System.Cmd.Utils
+import System.Path
+import System.FilePath
+import System.Path.Glob
 import Control.Monad
 import Control.Exception
 import Data.List
-import MissingH.ConfigParser
-import MissingH.IO.HVFS
+import Data.ConfigFile
+import System.IO.HVFS
 import System.Directory hiding (createDirectory)
 import qualified Actions.ConfigFiles
 import qualified Bootloader

@@ -5,20 +5,20 @@ Please see COPYRIGHT for more details
 
 module Utils where
 import System.Random
-import MissingH.Logging.Logger
+import System.Log.Logger
 import System.Time
 import Text.Printf
 import Control.Exception
 import System.Posix.Files
-import MissingH.Str
-import MissingH.List
-import MissingH.Either
-import MissingH.ConfigParser
-import MissingH.Cmd
+import Data.String
+import Data.List.Utils
+import Data.Either.Utils
+import Data.ConfigFile
+import System.Cmd.Utils
 import System.IO.Unsafe
 import System.IO.Error
 import Text.Regex
-import MissingH.Path.FilePath
+import System.FilePath
 import System.Directory(doesFileExist)
 
 data DFSEnv = DFSEnv 

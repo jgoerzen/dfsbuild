@@ -5,19 +5,19 @@ Please see COPYRIGHT for more details
 
 module Actions.Mirror where
 import Utils
-import MissingH.Cmd
-import MissingH.ConfigParser
+import System.Cmd.Utils
+import Data.ConfigFile
 import System.Posix.Directory
 import Control.Monad
 import Control.Exception
 import Data.List
-import MissingH.Path
-import MissingH.Str
-import MissingH.Path.Glob
+import System.Path
+import Data.String
+import System.Path.Glob
 import System.IO
 import Text.Printf
-import MissingH.Path
-import MissingH.IO.HVFS
+import System.Path
+import System.IO.HVFS
 
 mirrorToWorkdir env repos =
     do im "Mirroring process starting."

@@ -4,12 +4,12 @@ Please see COPYRIGHT for more details
 -}
 
 import Text.Printf
-import MissingH.ConfigParser
-import MissingH.Either
-import MissingH.Str
+import Data.ConfigFile
+import Data.Either.Utils
+import Data.String
 import Utils
-import MissingH.Logging.Logger
-import MissingH.Logging.Handler.Simple
+import System.Log.Logger
+import System.Log.Handler.Simple
 import Control.Monad
 import MissingH.GetOpt
 import MissingH.Maybe
@@ -17,7 +17,7 @@ import System.IO
 import System.Posix.Directory
 import System.Posix.User
 import System.Console.GetOpt
-import MissingH.Path
+import System.Path
 import Actions.ConfigFiles
 import qualified Actions(run)
   

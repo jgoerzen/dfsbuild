@@ -8,14 +8,14 @@ import Utils
 import qualified Actions.Mirror
 import System.Posix.Directory
 import System.Posix.Files
-import MissingH.Str
-import MissingH.Cmd
-import MissingH.Path
-import MissingH.Path.Glob
-import MissingH.Path.FilePath
+import Data.String
+import System.Cmd.Utils
+import System.Path
+import System.Path.Glob
+import System.FilePath
 import Control.Monad
-import MissingH.ConfigParser
-import MissingH.IO.HVFS
+import Data.ConfigFile
+import System.IO.HVFS
 import System.Time
 import Text.Printf
 

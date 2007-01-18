@@ -5,13 +5,13 @@ Please see COPYRIGHT for more details
 
 module Bootloader.Grub where
 import Utils
-import MissingH.Cmd
-import MissingH.Path
+import System.Cmd.Utils
+import System.Path
 import System.Posix.Files
 import System.Posix.Directory
-import MissingH.Path.Glob
-import MissingH.ConfigParser
-import MissingH.Path.FilePath
+import System.Path.Glob
+import Data.ConfigFile
+import System.FilePath
 import Data.List
 import Actions.ConfigFiles
 
