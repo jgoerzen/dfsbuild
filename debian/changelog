@@ -1,3 +1,10 @@
+dfsbuild (0.99.5) unstable; urgency=low
+
+  * Fixed wildcard matching in MissingH and adjust build-deps to 
+    require newer version.  Closes: #408471.
+
+ -- John Goerzen <jgoerzen@complete.org>  Thu,  8 Mar 2007 12:52:56 -0600
+
 dfsbuild (0.99.4) unstable; urgency=low
 
   * Updates for MissingH transition.
