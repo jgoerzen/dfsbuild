@@ -17,22 +17,18 @@ mount -n -t sysfs none /sys
 
 sleep 5
 
-if scandevices; then 
-    sleep 5
-    umount /sys
-    umount /proc
-    cd $rootmnt
-    pivot_root . initrd
-    echo " *** Now booting system from $DFSDEVICE ***"
-    exec chroot . /sbin/init "$@"
-else
-    sleep 5
-    umount /sys
-    umount /proc
-    echo ""
-    echo "Could not find a DFS CD.  Terminating."
-    sleep 60
-    exit 1
-fi
-
-
+while true; do
+        if scandevices; then 
+            sleep 5
+            umount /sys
+            umount /proc
+            cd $rootmnt
+            pivot_root . initrd
+            echo " *** Now booting system from $DFSDEVICE ***"
+            exec chroot . /sbin/init "$@"
+        else
+            echo "Could not find DFS CD.  Sleeping 10 seconds to let"
+            echo "devices settle, then will try again."
+            sleep 10
+        fi
+done

@@ -26,13 +26,17 @@ echo " *** Welcome to Debian From Scratch (DFS) ***"
 echo "Initial RAM disk (format 2, with initramfs-tools) booting."
 echo "------------------------------------------------------------"
 
-
-if scandevices; then 
-    ln -sf $DFSDEVICE /dev/root
-else
-    echo ""
-    echo "Could not find a DFS CD.  Terminating."
-fi
+while true; do
+    if scandevices; then 
+        ln -sf $DFSDEVICE /dev/root
+        exit 0
+    else
+        echo ""
+        echo "Could not find a DFS CD.  Sleeping 10 seconds to let devices"
+        echo "settle, then will try again."
+        sleep 10
+    fi
+done
 
 exit 0
 
