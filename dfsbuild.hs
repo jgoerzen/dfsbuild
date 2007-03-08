@@ -19,7 +19,7 @@ import System.Posix.User
 import System.Console.GetOpt
 import System.Path
 import Actions.ConfigFiles
-import qualified Actions(run)
+import qualified Actions(runIt)
 import HSH.ShellEquivs
   
 procCmdLine :: IO (Bool, Bool, ConfigParser, String, String)
@@ -96,7 +96,7 @@ runMain =
        -- Fresh run: initialize the state file.
        unless (resumemode) (saveState env Fresh)
 
-       Actions.run env
+       Actions.runIt env
 
 checkUID =
     do uid <- getEffectiveUserID

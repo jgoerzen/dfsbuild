@@ -18,8 +18,7 @@ import System.IO
 import Text.Printf
 import System.Path
 import System.IO.HVFS
-import HSH
-import HSH.ShellEquivs
+import HSH hiding (glob)
 
 mirrorToWorkdir env repos =
     do im "Mirroring process starting."
@@ -31,8 +30,8 @@ mirrorToWorkdir env repos =
 procrepo env priorcodenames repo =
     do im $ "Running cdebootstrap for " ++ repo
        -- First, download the packages.
-       run ("cdebootstrap",
-            archargs ++ debugargs ++ ["-d", suite, targetdir env, mirror])
+       runIO ("cdebootstrap",
+              archargs ++ debugargs ++ ["-d", suite, targetdir env, mirror])
 
        -- Next, copy them into the mirror.
        codename <- getCodeName 
@@ -41,7 +40,7 @@ procrepo env priorcodenames repo =
        mapM_ (\x -> handle (\_ -> return ()) (createDirectory x 0o755))
                  [mirrordir, mirrordir ++ "/conf"]
        
-       run ("touch", [mirrordir ++ "/conf/distributions"])
+       runIO ("touch", [mirrordir ++ "/conf/distributions"])
 
        unless (codename `elem` priorcodenames) $
          appendFile (mirrordir ++ "/conf/distributions") $ concat $ intersperse "\n" $
@@ -58,13 +57,13 @@ procrepo env priorcodenames repo =
        im $ "Running reprepro for " ++ codename
        debs <- glob (targetdir env ++ "/var/cache/bootstrap/*.deb")
        bracketCWD mirrordir $ 
-                  mapM_ (\x -> run ("reprepro",
+                  mapM_ (\x -> runIO ("reprepro",
                                repdebugargs ++ ["-b", ".", "includedeb", 
                                                  codename, x])) debs
 
        -- Delete the cdebootstrap cache so the next run has a clean dir
        recursiveRemove SystemFS $ targetdir env ++ "/var/cache/bootstrap"
-       run "ln" ["-sf", codename, mirrordir ++ "/dists/" ++ suite]
+       runIO ("ln", ["-sf", codename, mirrordir ++ "/dists/" ++ suite])
        return $ priorcodenames ++ [codename]
     where
       mirrordir = (wdir env) ++ "/mirror"
