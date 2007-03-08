@@ -18,10 +18,12 @@ import System.IO
 import Text.Printf
 import System.Path
 import System.IO.HVFS
+import HSH
+import HSH.ShellEquivs
 
 mirrorToWorkdir env repos =
     do im "Mirroring process starting."
-       createDirectory mirrordir 0o755
+       mkdir mirrordir 0o755
        foldM_ (procrepo env) [] repos
     where
       mirrordir = (wdir env) ++ "/mirror"
@@ -29,15 +31,18 @@ mirrorToWorkdir env repos =
 procrepo env priorcodenames repo =
     do im $ "Running cdebootstrap for " ++ repo
        -- First, download the packages.
-       safeSystem "cdebootstrap" $
-                  archargs ++ debugargs ++ ["-d", suite, targetdir env, mirror]
+       run ("cdebootstrap",
+            archargs ++ debugargs ++ ["-d", suite, targetdir env, mirror])
+
        -- Next, copy them into the mirror.
        codename <- getCodeName 
                    (targetdir env ++ "/var/cache/bootstrap/")
        dm $ "Codename for this is " ++ codename
        mapM_ (\x -> handle (\_ -> return ()) (createDirectory x 0o755))
                  [mirrordir, mirrordir ++ "/conf"]
-       safeSystem "touch" [mirrordir ++ "/conf/distributions"]
+       
+       run ("touch", [mirrordir ++ "/conf/distributions"])
+
        unless (codename `elem` priorcodenames) $
          appendFile (mirrordir ++ "/conf/distributions") $ concat $ intersperse "\n" $
            ["Origin: Debian",
@@ -49,16 +54,17 @@ procrepo env priorcodenames repo =
             "Description: Debian From Scratch cache of " ++ suite,
             "Components: main non-free contrib",
             "\n\n\n"]
+
        im $ "Running reprepro for " ++ codename
        debs <- glob (targetdir env ++ "/var/cache/bootstrap/*.deb")
        bracketCWD mirrordir $ 
-                  mapM_ (\x -> safeSystem "reprepro" 
-                               (repdebugargs ++ ["-b", ".", "includedeb", 
+                  mapM_ (\x -> run ("reprepro",
+                               repdebugargs ++ ["-b", ".", "includedeb", 
                                                  codename, x])) debs
 
        -- Delete the cdebootstrap cache so the next run has a clean dir
        recursiveRemove SystemFS $ targetdir env ++ "/var/cache/bootstrap"
-       safeSystem "ln" ["-sf", codename, mirrordir ++ "/dists/" ++ suite]
+       run "ln" ["-sf", codename, mirrordir ++ "/dists/" ++ suite]
        return $ priorcodenames ++ [codename]
     where
       mirrordir = (wdir env) ++ "/mirror"

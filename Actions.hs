@@ -20,6 +20,9 @@ import Data.List
 import Data.ConfigFile
 import System.IO.HVFS
 import System.Directory hiding (createDirectory)
+import HSH
+import HSH.ShellEquivs
+
 import qualified Actions.ConfigFiles
 import qualified Bootloader
 run env = 
@@ -30,7 +33,7 @@ mainRunner env =
     do state <- getState env
        dm $ "Processing at state " ++ show state
        shouldContinue <- case state of
-         Fresh -> do mapM_ (createDirectory `flip` 0o755) 
+         Fresh -> do mapM_ (mkdir `flip` 0o755) 
                                [targetdir env, targetdir env ++ "/opt",
                                 targetdir env ++ "/opt/dfsruntime"]
                      writeFile ((targetdir env) ++ "/opt/dfsruntime/marker") (marker env)
@@ -100,12 +103,12 @@ dlMirrors env =
 cdebootstrap env =
     do im $ "Bootstrapping into " ++ targetdir env
        -- cdebootstrap has issues when Release.gpg isn't there.  Sigh.
-       safeSystem "find" [wdir env ++ "/mirror/dists", "-name", "Release",
-                          "-exec", "touch", "{}.gpg", ";"]
+       run ("find", [wdir env ++ "/mirror/dists", "-name", "Release",
+                     "-exec", "touch", "{}.gpg", ";"])
                   
-       safeSystem "cdebootstrap" $ debugargs ++
+       run ("cdebootstrap" $ debugargs ++
                       [eget env "suite", (targetdir env),
-                       "file://" ++ (wdir env) ++ "/mirror"]
+                       "file://" ++ (wdir env) ++ "/mirror"])
        dm $ "Saving sources.list"
        writeFile ((targetdir env) ++ "/etc/apt/sources.list") $
                  "deb " ++ (eget env "mirror") ++ " " ++ (eget env "suite")
@@ -122,45 +125,47 @@ installpkgs env =
     do im "Installing additional packages."
 
        -- Set debconf priority to critical so that user doesn't get prompted
-       safeSystem "chroot" [targetdir env, "/bin/bash", "-c",
-         "echo \"debconf\tdebconf/priority\tselect\tcritical\" | debconf-set-selections"]
+       run $ catFromS "debconf\tdebconf/priority\tselect\tcritical" -|-
+           ("chroot", [targetdir env, "debconf-set-selections"])
     
        -- Copy resolv.conf so apt-get update/install works
-       safeSystem "cp" ["/etc/resolv.conf", targetdir env ++ "/etc"]
+       run ("cp", ["/etc/resolv.conf", targetdir env ++ "/etc"])
 
        -- Update the cache
-       safeSystem "chroot" [targetdir env, "apt-get", "update"]
+       run ("chroot", [targetdir env, "apt-get", "update"])
 
        -- Prepare for kernel images
        writeFile (targetdir env ++ "/etc/kernel-img.conf") kernelimgconf
        -- Install the requisite initramfs tools
-       safeSystem "chroot" [targetdir env, "apt-get", "-y",
-                            "--allow-unauthenticated", "install",
-                            "initramfs-tools"]
+       run ("chroot", [targetdir env, "apt-get", "-y",
+                       "--allow-unauthenticated", "install", 
+                       "initramfs-tools"])
+
        -- And the ramfs support
-       safeSystem "cp" [libdir env ++ "/dfs-initramfs-hook",
-                        targetdir env ++ "/usr/share/initramfs-tools/hooks/dfs"]
-       safeSystem "cp" [libdir env ++ "/dfs-initramfs-script",
-                        targetdir env ++ "/usr/share/initramfs-tools/scripts/local-top/dfs"]
+       run ("cp", [libdir env ++ "/dfs-initramfs-hook",
+                   targetdir env ++ "/usr/share/initramfs-tools/hooks/dfs"])
+       run ("cp", [libdir env ++ "/dfs-initramfs-script",
+                   targetdir env ++ "/usr/share/initramfs-tools/scripts/local-top/dfs"])
+
        mapM_ (\x -> setFileMode ((targetdir env) ++ x) 0o755)
              ["/usr/share/initramfs-tools/hooks/dfs",
               "/usr/share/initramfs-tools/scripts/local-top/dfs"]
 
        -- Now do apt-get
-       safeSystem "chroot" $ 
-                      [targetdir env, "apt-get", "-y", "--allow-unauthenticated", "install"] ++ pkgs
+       run ("chroot", [targetdir env, "apt-get", "-y", 
+                       "--allow-unauthenticated", "install"] ++ pkgs)
 
-       safeSystem "chroot" [targetdir env, "apt-get", "clean"]
+       run ("chroot", [targetdir env, "apt-get", "clean"])
 
        -- preprtrd will require busybox-static, but earlier
        -- packages need just busybox.  So we download the .deb
        -- and unpack it manually later.  Sigh.
-       safeSystem "chroot" [targetdir env, "apt-get", "-d", "-y",
+       run ("chroot", [targetdir env, "apt-get", "-d", "-y",
                             "--allow-unauthenticated", "install",
-                            "busybox-static"]
+                            "busybox-static"])
 
-       safeSystem "chroot" [targetdir env, "sh", "-c",
-                            "for FILE in /etc/pam.d/*; do grep -v securetty $FILE > $FILE.tmp; mv $FILE.tmp $FILE; done"]
+       run ("chroot", [targetdir env, "sh", "-c",
+                            "for FILE in /etc/pam.d/*; do grep -v securetty $FILE > $FILE.tmp; mv $FILE.tmp $FILE; done"])
 
        -- And remove the resolv.conf again
        removeFile (targetdir env ++ "/etc/resolv.conf")
@@ -171,17 +176,18 @@ installlib env =
     do im "Installing runtime library files."
        -- Copy the runtime boot files
        mapM_ (\x ->
-              safeSystem "cp" ["-rL", libdir ++ "/" ++ x, 
-                               (targetdir env) ++ "/opt/dfsruntime/"])
+              run ("cp", ["-rL", libdir ++ "/" ++ x, 
+                               (targetdir env) ++ "/opt/dfsruntime/"]))
          ["home.html", "dfs_startup_funcs"]
+
        -- Set modes
-       createDirectory ((targetdir env) ++ "/opt/dfsruntime/doc") 0o755
+       mkdir ((targetdir env) ++ "/opt/dfsruntime/doc") 0o755
        mapM_ (\x ->
-              safeSystem "cp" ["-r", docdir ++ "/" ++ x,
-                               (targetdir env) ++ "/opt/dfsruntime/doc/"])
+              run ("cp", ["-r", docdir ++ "/" ++ x,
+                               (targetdir env) ++ "/opt/dfsruntime/doc/"]))
              ["dfs.txt.gz", "html/"]
-       mapM_ (\x -> do safeSystem "cp" ["-r", libdir ++ "/" ++ x,
-                                        (targetdir env) ++ "/usr/local/bin/"]
+       mapM_ (\x -> do run ("cp", ["-r", libdir ++ "/" ++ x,
+                                        (targetdir env) ++ "/usr/local/bin/"])
                        setFileMode ((targetdir env) ++ "/usr/local/bin/" ++ x)
                                    0o755
              ) ["dfshelp", "dfshints", "dfsbuildinfo"]
@@ -194,8 +200,8 @@ installdebs env =
       Left _ -> return ()
       Right debs ->
           do im "Installing debs..."
-             safeSystem "dpkg" $ ["--root=" ++ (targetdir env), "-i"] ++
-                     splitWs debs
+             run ("dpkg", $ ["--root=" ++ (targetdir env), "-i"] ++
+                        splitWs debs)
                                        
     case get (cp env) (defaultArch env) "unpackdebs" of
       Left _ -> return () 
@@ -209,14 +215,14 @@ installdebs env =
                               deblist
                         let debnames = map (\x -> chroottmpdir ++ "/" ++ 
                                        (snd . splitFileName $ x)) deblist
-                        safeSystem "chroot" $
+                        run ("chroot",
                             [(targetdir env), "dpkg", "--force-depends",
                              "--force-conflicts", "--force-overwrite",
-                             "--force-architecture", "--unpack"] ++ debnames
+                             "--force-architecture", "--unpack"] ++ debnames)
                         recursiveRemove SystemFS realtmpdir
                 else im "Not unpacking .debs since none listed in unpackdebs option"
-    safeSystem "sh" ["-c", "chroot " ++ (targetdir env) ++ " dpkg -l > " ++
-                        (wdir env) ++ "/pkglist.txt"]
+    run ("sh", ["-c", "chroot " ++ (targetdir env) ++ " dpkg -l > " ++
+                        (wdir env) ++ "/pkglist.txt"])
 
 
     where
@@ -227,8 +233,8 @@ prepinit env =
     do im "Configuring init..."
        rename (targetdir env ++ "/sbin/init")
               (targetdir env ++ "/sbin/init.real")
-       safeSystem "cp" ["-v", libdir env ++ "/startup",
-                        targetdir env ++ "/sbin/init"]
+       run ("cp", ["-v", libdir env ++ "/startup",
+                        targetdir env ++ "/sbin/init"])
        setFileMode (targetdir env ++ "/sbin/init") 0o755
 
 preprd env =
@@ -247,14 +253,14 @@ preprd env =
        chr ["cp", "-v", "/sbin/pivot_root", "/opt/initrd/sbin/"]
        chr ["cp", "-r", "/dev", "/opt/initrd/"]
        handle (\_ -> return ()) (removeLink ((targetdir env) ++ "/opt/initrd/linuxrc"))
-       safeSystem "cp" [(eget env "libdir") ++ "/linuxrc",
-                        (targetdir env) ++ "/opt/initrd/sbin/init"]
+       run ("cp", [(eget env "libdir") ++ "/linuxrc",
+                        (targetdir env) ++ "/opt/initrd/sbin/init"])
        setFileMode ((targetdir env) ++ "/opt/initrd/sbin/init") 0o755
-       safeSystem "cp" [eget env "libdir" ++ "/dfs_startup_funcs",
-                        targetdir env ++ "/opt/initrd"]
+       run ("cp", [eget env "libdir" ++ "/dfs_startup_funcs",
+                        targetdir env ++ "/opt/initrd"])
        writeFile ((targetdir env) ++ "/opt/initrd/marker") (marker env)
        createSymbolicLink "busybox" (targetdir env ++ "/opt/initrd/bin/sh")
-    where chr args = safeSystem "chroot" $ ((targetdir env) : args)
+    where chr args = run ("chroot", ((targetdir env) : args))
 
 installKernels env =
     do dm "Installing kernels..."
@@ -262,12 +268,12 @@ installKernels env =
          Left _ -> return ()
          Right k -> 
               do kernfiles <- mapM glob (splitWs k)
-                 mapM_ (\x -> safeSystem "cp" ["-v", x, targetdir env ++ "/boot/"]) (concat kernfiles)
+                 mapM_ (\x -> run ("cp", ["-v", x, targetdir env ++ "/boot/"]) (concat kernfiles))
        case get (cp env) (defaultArch env) "modules" of
          Left _ -> return ()
          Right m ->
             do modfiles <- mapM glob (splitWs m)
-               mapM_ (\x -> safeSystem "cp" ["-vr", x, targetdir env ++ "/lib/modules/"]) (concat modfiles)
+               mapM_ (\x -> run ("cp", ["-vr", x, targetdir env ++ "/lib/modules/"]) (concat modfiles))
             
        
 preprtrd env =

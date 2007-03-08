@@ -1,5 +1,5 @@
 Name: dfsbuild
-Version: 0.99.4
+Version: 1.0.0
 license-file: COPYRIGHT
 extra-source-files: COPYING, CREDITS
 License: GPL
@@ -31,8 +31,9 @@ Description: Debian From Scratch (DFS) is a live bootable CD that is designed to
  .
  On PowerPC, dfsbuild supports the yaboot bootloader.
 Stability: Alpha
-Copyright: Copyright (c) 2006 John Goerzen
-Build-Depends: base, network, unix, parsec, MissingH>=0.18.0, regex-compat, hslogger, FilePath, ConfigFile
+Copyright: Copyright (c) 2006-2007 John Goerzen
+Build-Depends: base, network, unix, parsec, MissingH>=0.18.0,
+ regex-compat, hslogger, FilePath, ConfigFile, HSH>=1.2.1
 
 Executable: dfsbuild
 Main-Is: dfsbuild.hs

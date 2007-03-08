@@ -1,5 +1,5 @@
 {- dfsbuild: CD image builder
-Copyright (c) 2006 John Goerzen
+Copyright (c) 2006-2007 John Goerzen
 Please see COPYRIGHT for more details
 -}
 
@@ -20,6 +20,7 @@ import System.Console.GetOpt
 import System.Path
 import Actions.ConfigFiles
 import qualified Actions(run)
+import HSH.ShellEquivs
   
 procCmdLine :: IO (Bool, Bool, ConfigParser, String, String)
 procCmdLine =
@@ -36,7 +37,7 @@ procCmdLine =
        let wdir = forceMaybeMsg "working dir" $ lookup "w" args
        dm $ "Working dir is " ++ wdir
        dm $ "Working dir created"
-       cwd <- getWorkingDirectory
+       cwd <- pwd
        dm $ "Initial cwd is " ++ cwd
        da <- getDefaultArch
        let defaultArch = case lookup "a" args of
@@ -75,12 +76,10 @@ runMain =
        checkUID
 
        -- If this is a fresh run, need to create that work dir.
-       unless (resumemode) (createDirectory workdir 0o755)
-       changeWorkingDirectory workdir
+       unless (resumemode) (mkdir workdir 0o755)
+       cd workdir
        im $ "Using working directory " ++ workdir
-       let cplibdir = forceMaybe $ 
-                      absNormPath workdir 
-                                      (forceEither $ get incp da "libdir")
+       cplibdir <- abspath (forceEither $ get incp da "libdir")
        im $ "Using library directory " ++ cplibdir
        cdmarker <- if resumemode
                       then readFile (workdir ++ "/target/opt/dfsruntime/marker")

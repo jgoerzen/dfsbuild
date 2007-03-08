@@ -23,7 +23,7 @@ getDate =
     getClockTime >>= toCalendarTime >>= (return . calendarTimeToString)
 
 buildinfo env =
-    do return $ "This is a Debian From Scratch (DFS) live CD made by dfsbuild" ++
+    return $ "This is a Debian From Scratch (DFS) live CD made by dfsbuild" ++
                 "\n\nName: " ++ eget env "name" ++
                 "\nVersion: " ++ eget env "version" ++
                 "\nBuilder: " ++ eget env "builder" ++
