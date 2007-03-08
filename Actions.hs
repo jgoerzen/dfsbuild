@@ -47,10 +47,12 @@ mainRunner env =
              do installlib env
                 finished EnvironmentPrepared
          EnvironmentPrepared ->        -- execute configurable hook scripts
-             do im $ "Executing preparation scripts"
-                mapM_ (safeSystem `flip` [ targetdir env ])
-                    (splitWs $ eget env "preparescripts")
-                finished LibsInstalled
+             case get (cp env) (defaultArch env) "preparescripts" of
+               Left _ -> finished LibsInstalled
+               Right ps -> 
+                   do im $ "Executing preparation scripts"
+                      mapM_ (safeSystem `flip` [ targetdir env ]) (splitWs ps)
+                      finished LibsInstalled
          LibsInstalled ->        -- Install additional packages
              do installpkgs env
                 finished Installed
@@ -77,10 +79,13 @@ mainRunner env =
                 recursiveRemove SystemFS $ (targetdir env) ++ "/opt/initrd"
                 finished EnvironmentCleaned
          EnvironmentCleaned ->        -- execute configurable hook scripts
-             do im $ "Executing preparation scripts"
-                mapM_ (safeSystem `flip` [ targetdir env ])
-                    (splitWs $ eget env "cleanupscripts")
-                finished RamdiskBuilt
+             case get (cp env) (defaultArch env) "cleanupscripts" of
+               Left _ -> finished RamdiskBuilt
+               Right ps -> 
+                   do im $ "Executing preparation scripts"
+                      mapM_ (safeSystem `flip` [ targetdir env ])
+                            (splitWs ps)
+                      finished RamdiskBuilt
          RamdiskBuilt ->        -- Install the bootloader
              do (isoargs, blfunc) <- Bootloader.install env
                 preprtrd env
