@@ -52,6 +52,11 @@ writeCfgFiles env =
       Right files ->
           mapM_ (\fn -> writeit writeFile fn (esget env "createfiles" fn))
                 files
+    case get (cp env) (defaultArch env) "deletefiles" of
+      Left _ -> return ()
+      Right files ->
+          do delfiles <- mapM glob (splitWs files)
+             mapM_ deleteit (map ((targetdir env) ++) $ concat delfiles)
     case options (cp env) "symlinks" of
       Left _ -> return ()
       Right files ->
@@ -59,11 +64,6 @@ writeCfgFiles env =
                              createSymbolicLink (esget env "symlinks" from)
                                                 ((targetdir env) ++ from)
                 ) files
-    case get (cp env) (defaultArch env) "deletefiles" of
-      Left _ -> return ()
-      Right files ->
-          do delfiles <- mapM glob (splitWs files)
-             mapM_ deleteit (map ((targetdir env) ++) $ concat delfiles)
     case get (cp env) (defaultArch env) "makedirs" of
       Left _ -> return ()
       Right files ->
