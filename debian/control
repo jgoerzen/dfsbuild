@@ -2,9 +2,9 @@ Source: dfsbuild
 Section: utils
 Priority: optional
 Maintainer: John Goerzen <jgoerzen@complete.org>
-Build-Depends: debhelper (>= 4.0.0), gtk-doc-tools, sgml2x, docbook-utils, jade, lynx, scons, xpdf-utils, ghc6 (>= 6.4.2), haskell-devscripts (>= 0.5.6), cpphs, libghc6-missingh-dev (>= 0.18.3), libghc6-network-dev, libghc6-unix-dev,
- libghc6-hslogger-dev, libghc6-filepath-dev, libghc6-configfile-dev (>= 1.0.1),
- libghc6-hsh-dev (>= 1.2.1)
+Build-Depends: debhelper (>= 4.0.0), gtk-doc-tools, sgml2x, docbook-utils, jade, lynx, scons, xpdf-utils, ghc6 (>= 6.8.2), haskell-devscripts (>= 0.6.6), cpphs, libghc6-missingh-dev (>= 1.0.0), libghc6-network-dev, libghc6-unix-dev,
+ libghc6-hslogger-dev, libghc6-filepath-dev, libghc6-configfile-dev (>= 1.0.4),
+ libghc6-hsh-dev (>= 1.2.5)
 Standards-Version: 3.6.0
 
 Package: dfsbuild
