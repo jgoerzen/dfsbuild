@@ -9,7 +9,7 @@ import Utils
 import qualified Actions.Mirror
 import System.Posix.Directory
 import System.Posix.Files
-import Data.String
+import Data.String.Utils
 import System.Cmd.Utils
 import System.Path
 import System.FilePath

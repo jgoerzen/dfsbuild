@@ -33,7 +33,8 @@ Description: Debian From Scratch (DFS) is a live bootable CD that is designed to
 Stability: Alpha
 Copyright: Copyright (c) 2006-2007 John Goerzen
 Build-Depends: base, network, unix, parsec, MissingH>=1.0.0,
- regex-compat, hslogger, filepath, ConfigFile, HSH>=1.2.5
+ regex-compat, hslogger, filepath, ConfigFile, HSH>=1.2.5, directory,
+ old-time, random
 
 Executable: dfsbuild
 Main-Is: dfsbuild.hs

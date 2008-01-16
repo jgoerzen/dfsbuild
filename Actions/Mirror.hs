@@ -12,7 +12,7 @@ import Control.Monad
 import Control.Exception
 import Data.List
 import System.Path
-import Data.String
+import Data.String.Utils
 import System.Path.Glob
 import System.IO
 import Text.Printf

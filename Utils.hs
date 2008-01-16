@@ -10,7 +10,7 @@ import System.Time
 import Text.Printf
 import Control.Exception
 import System.Posix.Files
-import Data.String
+import Data.String.Utils
 import Data.List.Utils
 import Data.Either.Utils
 import Data.ConfigFile

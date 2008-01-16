@@ -1,4 +1,4 @@
-dfsbuild (1.0.2) unstable; urgency=low
+dfsbuild (1.0.2.0) unstable; urgency=low
 
   * Update for GHC 6.8.x
 
