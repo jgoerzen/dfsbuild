@@ -106,12 +106,10 @@ dlMirrors env =
 
 cdebootstrap env =
     do im $ "Bootstrapping into " ++ targetdir env
-       -- cdebootstrap has issues when Release.gpg isn't there.  Sigh.
-       runIO ("find", [wdir env ++ "/mirror/dists", "-name", "Release",
-                     "-exec", "touch", "{}.gpg", ";"])
                   
        runIO ("cdebootstrap", debugargs ++
-                      [eget env "suite", (targetdir env),
+                      ["--allow-unauthenticated",
+                       eget env "suite", (targetdir env),
                        "file://" ++ (wdir env) ++ "/mirror"])
        dm $ "Saving sources.list"
        writeFile ((targetdir env) ++ "/etc/apt/sources.list") $
