@@ -153,6 +153,12 @@ installpkgs env =
              ["/usr/share/initramfs-tools/hooks/dfs",
               "/usr/share/initramfs-tools/scripts/local-top/dfs"]
 
+       -- Mount proc
+       runIO ("mount", ["proc", "-t", "proc", "-o", "ro", (targetdir env)++"/proc"])
+
+       writeFile (targetdir env++"/usr/sbin/policy-rc.d") "#!/bin/sh\nexit 101\n"
+       setFileMode (targetdir env ++ "/usr/sbin/policy-rc.d") 0o755
+
        -- Now do apt-get
        runIO ("chroot", [targetdir env, "apt-get", "-y", 
                        "--allow-unauthenticated", "install"] ++ pkgs)
@@ -168,6 +174,8 @@ installpkgs env =
 
        runIO ("chroot", [targetdir env, "sh", "-c",
                             "for FILE in /etc/pam.d/*; do grep -v securetty $FILE > $FILE.tmp; mv $FILE.tmp $FILE; done"])
+
+       runIO ("umount", [(targetdir env)++"/proc"])
 
        -- And remove the resolv.conf again
        removeFile (targetdir env ++ "/etc/resolv.conf")
@@ -198,14 +206,17 @@ installlib env =
           libdir = eget env "libdir"
 
 installdebs env =
- do case get (cp env) (defaultArch env) "installdebs" of
+ do
+   runIO ("mount", ["proc", "-t", "proc", "-o", "ro", (targetdir env)++"/proc"])
+ 
+   case get (cp env) (defaultArch env) "installdebs" of
       Left _ -> return ()
       Right debs ->
           do im "Installing debs..."
              runIO ("dpkg", ["--root=" ++ (targetdir env), "-i"] ++
                         splitWs debs)
                                        
-    case get (cp env) (defaultArch env) "unpackdebs" of
+   case get (cp env) (defaultArch env) "unpackdebs" of
       Left _ -> return () 
       Right debs -> 
           do let deblist = splitWs debs
@@ -223,11 +234,13 @@ installdebs env =
                              "--force-architecture", "--unpack"] ++ debnames)
                         recursiveRemove SystemFS realtmpdir
                 else im "Not unpacking .debs since none listed in unpackdebs option"
-    runIO ("sh", ["-c", "chroot " ++ (targetdir env) ++ " dpkg -l > " ++
+   runIO ("sh", ["-c", "chroot " ++ (targetdir env) ++ " dpkg -l > " ++
                         (wdir env) ++ "/pkglist.txt"])
 
+   runIO ("umount", [(targetdir env)++"/proc"])
 
-    where
+   runIO ("rm", [(targetdir env)++"/usr/sbin/policy-rc.d"])
+ where
       chroottmpdir = "/insttmp"
       realtmpdir = (targetdir env) ++ chroottmpdir
 
