@@ -154,7 +154,8 @@ installpkgs env =
               "/usr/share/initramfs-tools/scripts/local-top/dfs"]
 
        -- Mount proc
-       runIO ("mount", ["proc", "-t", "proc", "-o", "ro", (targetdir env)++"/proc"])
+       runIO("chroot", [targetdir env, "invoke-rc.d", "mountkernfs.sh", "start"])
+       runIO("chroot", [targetdir env, "invoke-rc.d", "mountdevsubfs.sh", "start"])
 
        writeFile (targetdir env++"/usr/sbin/policy-rc.d") "#!/bin/sh\nexit 101\n"
        setFileMode (targetdir env ++ "/usr/sbin/policy-rc.d") 0o755
@@ -174,8 +175,6 @@ installpkgs env =
 
        runIO ("chroot", [targetdir env, "sh", "-c",
                             "for FILE in /etc/pam.d/*; do grep -v securetty $FILE > $FILE.tmp; mv $FILE.tmp $FILE; done"])
-
-       runIO ("umount", [(targetdir env)++"/proc"])
 
        -- And remove the resolv.conf again
        removeFile (targetdir env ++ "/etc/resolv.conf")
@@ -207,7 +206,6 @@ installlib env =
 
 installdebs env =
  do
-   runIO ("mount", ["proc", "-t", "proc", "-o", "ro", (targetdir env)++"/proc"])
  
    case get (cp env) (defaultArch env) "installdebs" of
       Left _ -> return ()
@@ -237,9 +235,13 @@ installdebs env =
    runIO ("sh", ["-c", "chroot " ++ (targetdir env) ++ " dpkg -l > " ++
                         (wdir env) ++ "/pkglist.txt"])
 
-   runIO ("umount", [(targetdir env)++"/proc"])
-
    runIO ("rm", [(targetdir env)++"/usr/sbin/policy-rc.d"])
+
+   handle (\_->return ()) (runIO("chroot", [targetdir env, "umount", "-a"]))
+   runIO("chroot", [targetdir env, "umount", "/proc"])
+   runIO("chroot", [targetdir env, "umount", "/sys"])
+   runIO("chroot", [targetdir env, "umount", "/dev/pts"])
+
  where
       chroottmpdir = "/insttmp"
       realtmpdir = (targetdir env) ++ chroottmpdir
