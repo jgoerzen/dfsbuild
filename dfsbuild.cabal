@@ -34,7 +34,7 @@ Stability: Alpha
 Copyright: Copyright (c) 2006-2007 John Goerzen
 Build-Depends: base, network, unix, parsec, MissingH>=1.0.0,
  regex-compat, hslogger, filepath, ConfigFile, HSH>=1.2.5, directory,
- old-time, random
+ old-time, random, regex-posix
 
 Executable: dfsbuild
 Main-Is: dfsbuild.hs

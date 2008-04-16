@@ -7,6 +7,8 @@ module Utils where
 import System.Random
 import System.Log.Logger
 import System.Time
+import System.Directory
+import Control.Monad
 import Text.Printf
 import Control.Exception
 import System.Posix.Files
@@ -103,6 +105,25 @@ deleteit fn =
       doDelete _ fp = deleteit (fn ++ "/" ++ fp)
 
 
+enumfiles :: FilePath -> IO [FilePath]
+enumfiles fn =
+    do
+      children <- getDirectoryContents fn
+      erest children
+  where erest ch =
+            do
+              stat <- mapM (\x -> System.IO.Error.try (getSymbolicLinkStatus x)) children2
+              let directories = filter directoryAndNotSymlink (zip children2 stat)
+              (liftM (++ children2)) ((liftM (foldr (++) [])) (mapM enumfiles 
+                                                (fst (unzip directories))))
+                  where
+                    children2 = [fn ++ "/" ++ x | x <- ch, not (x == ".." || x==".")]
+                    directoryAndNotSymlink (_, Right stat) = 
+                        (isDirectory stat && not (isSymbolicLink stat))
+                    directoryAndNotSymlink (_, _) = False
+                    bot = bot
+      
+      
 getrdsize_kb env =
     do st <- getFileStatus $ targetdir env ++ "/boot/initrd.dfs"
        return $ ((fileSize st) `div` 1024) + 1

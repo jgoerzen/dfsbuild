@@ -21,6 +21,7 @@ import Data.ConfigFile
 import System.IO.HVFS
 import System.Directory hiding (createDirectory)
 import HSH hiding (glob)
+import Text.Regex.Posix
 
 import qualified Actions.ConfigFiles
 import qualified Bootloader
@@ -320,19 +321,25 @@ reallycompress env =
     do im "Compressing image.  This may take some time..."
        let noncom = wdir env ++ "/noncom"
        createDirectory noncom 0o755
-       noncomfiles <- filterM (\x -> vDoesExist SystemFS (targetdir env ++ x))
-                              (splitWs (eget env "dontcompress"))
+       noncomfilesM <- (liftM (filterM my_filter)) (enumfiles (targetdir env))
+       noncomfiles <- noncomfilesM
+--       noncomfiles <- filterM (\x -> vDoesExist SystemFS (targetdir env ++ x))
+--                              (splitWs (eget env "dontcompress"))
        let noncommap = zip noncomfiles (map show [(0::Int)..])
        mapM_ (preserve noncom) noncommap
        safeSystem "mkzftree" [targetdir env, wdir env ++ "/zftree"]
        recursiveRemove SystemFS (targetdir env)
        rename (wdir env ++ "/zftree") (targetdir env)
-       mapM_ (restore noncom) noncommap
+       mapM_ (restore noncom) (reverse noncommap)
     where preserve noncom (orig, tmp) =
               do im $ "Not compressing " ++ orig
-                 rename (targetdir env ++ orig) (noncom ++ "/" ++ tmp)
+                 handle (\_->return ()) (rename orig (noncom ++ "/" ++ tmp))
           restore noncom (orig, tmp) =
-              rename (noncom ++ "/" ++ tmp) (targetdir env ++ orig)
+              handle (\_->return ()) (rename (noncom ++ "/" ++ tmp) orig)
+          my_filter fn = liftM ((||) ((foldl (\x y -> x || fn =~ y) False nocompats )
+                                     || (fn =~ "(.*\\.gz)|(.*\\.Z)|(.*\\.zip)|(.*\\.bz2)|(.*\\.tgz)|(.*\\.jar)|(.*\\.png)|(.*\\.jpg)|(.*\\.gif)"::Bool)))
+                         (handle (\_ -> return False) ((liftM (1024 >)) ((liftM fileSize) (getSymbolicLinkStatus fn))))
+          nocompats = splitWs (eget env "dontcompress")
 
 mkiso env isoargs = 
     do im "Preparing ISO image"
