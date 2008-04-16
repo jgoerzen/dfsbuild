@@ -83,10 +83,25 @@ getCodeName fp =
          Just [cn] -> return cn
          x -> fail $ "Error finding Codename: " ++ show x
 
+deleteit :: FilePath -> IO ()
 deleteit fn =
     do dm $ "Deleting: " ++ fn
-       handle (\e -> wm ("Delete failed: " ++ show e)) 
+       handle delfile
               (removeLink fn)
+    where 
+      delfile ex =
+       handle deldirrec
+              (removeFile fn)
+      deldirrec ex =
+       handle (\e -> wm ("Delete failed: " ++ show e)) 
+        (do
+         files <- getDirectoryContents fn
+         (foldM doDelete () files)
+         removeDirectory fn)
+      doDelete _ "." = return ()
+      doDelete _ ".." = return ()
+      doDelete _ fp = deleteit (fn ++ "/" ++ fp)
+
 
 getrdsize_kb env =
     do st <- getFileStatus $ targetdir env ++ "/boot/initrd.dfs"

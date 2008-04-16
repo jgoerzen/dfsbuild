@@ -55,8 +55,8 @@ writeCfgFiles env =
     case get (cp env) (defaultArch env) "deletefiles" of
       Left _ -> return ()
       Right files ->
-          do delfiles <- mapM glob (splitWs files)
-             mapM_ deleteit (map ((targetdir env) ++) $ concat delfiles)
+          do delfiles <- mapM glob (map ((targetdir env) ++) (splitWs files))
+             mapM_ deleteit $ concat delfiles
     case options (cp env) "symlinks" of
       Left _ -> return ()
       Right files ->
