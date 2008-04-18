@@ -117,8 +117,11 @@ cdebootstrap env =
                  foldr (\repo rest-> "deb " ++ (esget env ("repo "++repo) "mirror") ++ " " ++ repo2suite repo
                  ++ " main contrib non-free\n" ++ rest) "" (splitWs (eget env "installrepos"))
        dm $ "Moving mirror to /opt/packages on target"
-       rename ((wdir env) ++ "/mirror") 
+       haveMirror <- doesDirectoryExist ((wdir env) ++ "/mirror")
+       if haveMirror
+          then rename ((wdir env) ++ "/mirror") 
                       ((targetdir env) ++ "/opt/packages")
+          else return ()
     where debugargs = if isDebugging env
                           then ["--debug", "-v"]
                           else ["-q"]
