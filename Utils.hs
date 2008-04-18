@@ -59,6 +59,8 @@ getDefaultArch =
 
 eget :: DFSEnv -> String -> String
 eget env opt = forceEither $ get (cp env) (defaultArch env) opt
+
+esget :: DFSEnv -> String -> String -> String
 esget env s o = forceEither $ get (cp env) s o
 
 egetbool :: DFSEnv -> String -> Bool

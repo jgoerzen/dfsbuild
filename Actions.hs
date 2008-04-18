@@ -110,18 +110,23 @@ cdebootstrap env =
                   
        runIO ("cdebootstrap", debugargs ++
                       ["--allow-unauthenticated",
-                       eget env "suite", (targetdir env),
-                       "file://" ++ (wdir env) ++ "/mirror"])
+                       repo2suite bsuite, (targetdir env),
+                       (esget env bsuite "mirror")])
        dm $ "Saving sources.list"
        writeFile ((targetdir env) ++ "/etc/apt/sources.list") $
-                 "deb " ++ (eget env "mirror") ++ " " ++ (eget env "suite")
-                 ++ " main\n"
+                 foldr (\repo rest-> "deb " ++ (esget env ("repo "++repo) "mirror") ++ " " ++ repo2suite repo
+                 ++ " main contrib non-free\n" ++ rest) "" (splitWs (eget env "installrepos"))
        dm $ "Moving mirror to /opt/packages on target"
        rename ((wdir env) ++ "/mirror") 
                       ((targetdir env) ++ "/opt/packages")
     where debugargs = if isDebugging env
                           then ["--debug", "-v"]
                           else ["-q"]
+          repo2suite repo = case get (cp env) ("repo "++repo) "dlsuite" of
+                              Left _ -> repo
+                              Right x -> strip x -- copied from Mirrors.hs
+          bsuite = eget env "bootstraprepo"
+
 
 
 installpkgs env =
