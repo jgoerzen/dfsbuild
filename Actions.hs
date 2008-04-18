@@ -173,14 +173,9 @@ installpkgs env =
        runIO ("chroot", [targetdir env, "apt-get", "-y", 
                        "--allow-unauthenticated", "install"] ++ pkgs)
 
+       createDirectory ((targetdir env) ++ "/tmp/partial") 0o755
+       runIO ("chroot", [targetdir env, "apt-get", "-d", "-y", "-o", "Dir::Cache::archives=/tmp", "install", "busybox-static" ])
        runIO ("chroot", [targetdir env, "apt-get", "clean"])
-
-       -- preprtrd will require busybox-static, but earlier
-       -- packages need just busybox.  So we download the .deb
-       -- and unpack it manually later.  Sigh.
-       runIO ("chroot", [targetdir env, "apt-get", "-d", "-y",
-                            "--allow-unauthenticated", "install",
-                            "busybox-static"])
 
        runIO ("chroot", [targetdir env, "sh", "-c",
                             "for FILE in /etc/pam.d/*; do grep -v securetty $FILE > $FILE.tmp; mv $FILE.tmp $FILE; done"])
@@ -266,7 +261,7 @@ prepinit env =
 preprd env =
     do im "Preparing directory for ramdisk..."
        createDirectory ((targetdir env) ++ "/tmp/busybox") 0o755
-       chr ["sh", "-c", "dpkg -x /var/cache/apt/archives/busybox-static*.deb /tmp/busybox"]
+       chr ["sh", "-c", "dpkg -x /tmp/busybox-static*.deb /tmp/busybox"]
        createDirectory ((targetdir env) ++ "/opt/initrd") 0o755
        mapM_ (\x -> createDirectory ((targetdir env) ++ "/opt/initrd/" ++ x) 0o755)
              ["bin", "lib", "sbin", "proc", "usr", "usr/sbin", "usr/bin",
@@ -274,7 +269,7 @@ preprd env =
        chr ["sh", "-c", "cp -dv /lib/ld-* /opt/initrd/lib/"]
        chr ["sh", "-c", "cp -v /lib/libc.so* /opt/initrd/lib/"]
        chr ["cp", "-v", "/tmp/busybox/bin/busybox", "/opt/initrd/bin/"]
-       chr ["sh", "-c", "rm -r /tmp/busybox /var/cache/apt/archives/busybox-static*.deb"]
+       chr ["sh", "-c", "rm -rf /tmp/busybox /tmp/busybox-static*.deb /tmp/partial"]
        chr ["cp", "-v", "/usr/sbin/chroot", "/opt/initrd/usr/sbin/"]
        chr ["cp", "-v", "/sbin/pivot_root", "/opt/initrd/sbin/"]
        chr ["cp", "-r", "/dev", "/opt/initrd/"]
