@@ -101,7 +101,7 @@ deleteit fn =
         (do
          files <- getDirectoryContents fn
          (foldM doDelete () files)
-         removeDirectory fn)
+         )
       doDelete _ "." = return ()
       doDelete _ ".." = return ()
       doDelete _ fp = deleteit (fn ++ "/" ++ fp)
@@ -123,7 +123,6 @@ enumfiles fn =
                     directoryAndNotSymlink (_, Right stat) = 
                         (isDirectory stat && not (isSymbolicLink stat))
                     directoryAndNotSymlink (_, _) = False
-                    bot = bot
       
       
 getrdsize_kb env =
