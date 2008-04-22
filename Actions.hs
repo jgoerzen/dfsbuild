@@ -340,7 +340,7 @@ reallycompress env =
           restore noncom (orig, tmp) =
               handle (\_->return ()) (rename (noncom ++ "/" ++ tmp) orig)
           my_filter fn = liftM ((||) ((foldl (\x y -> x || fn =~ y) False nocompats )
-                                     || (fn =~ "(.*\\.gz)|(.*\\.Z)|(.*\\.zip)|(.*\\.bz2)|(.*\\.tgz)|(.*\\.jar)|(.*\\.png)|(.*\\.jpg)|(.*\\.gif)"::Bool)))
+                                     || (fn =~ "(.*\\.gz$)|(.*\\.Z$)|(.*\\.zip$)|(.*\\.7z$)|(.*\\.bz2$)|(.*\\.tgz$)|(.*\\.jar$)|(.*\\.png$)|(.*\\.jpg$)|(.*\\.gif$)"::Bool)))
                          (handle (\_ -> return False) ((liftM (1024 >)) ((liftM fileSize) (getSymbolicLinkStatus fn))))
           nocompats = splitWs (eget env "dontcompress")
 
