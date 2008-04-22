@@ -348,6 +348,6 @@ mkiso env isoargs =
     do im "Preparing ISO image"
        let isofile = wdir env ++ "/image.iso"
        let compressopts = if egetbool env "compress" then ["-z"] else []
-       safeSystem "mkisofs" $ compressopts ++ isoargs ++
+       safeSystem "genisoimage" $ compressopts ++ isoargs ++
                   ["-pad", "-R", "-o", isofile, targetdir env]
        return isofile
