@@ -6,6 +6,14 @@ initrdloc=/initrd
 newrdloc=/opt/dfsruntime/runtimemnt
 newrdfiles=/opt/dfsruntime/runtimerd
 
+do_ramdisk_copy()
+{
+    while read to; do
+        cp -a "$to" "$newrdloc"/
+        mount -n --bind "$newrdloc"/"$to" "$to"
+    done < /opt/dfsruntime/binds
+}
+
 if [ -f $newrdloc/etc/fstab ] ; then
     echo " *** DFS startup: system already running, calling real init"
     exec /sbin/init.real "$@"
@@ -22,7 +30,7 @@ mount -n -t tmpfs none $newrdloc
 echo $newrdloc
 
 echo -n "Populating runtime ramdisk: "
-cp -a $newrdfiles/* $newrdloc/
+do_ramdisk_copy
 echo "done."
 
 echo -n "Initializing configuration files: /etc/fstab"

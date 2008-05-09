@@ -306,14 +306,11 @@ preprtrd env =
        mapM_ (cpfile2rd rdpath) (concat rdfiles)
     where cpfile2rd rdpath f =
               do let src = targetdir env ++ f
-                 let dest = rdpath ++ f
-                 let destdir = fst . splitFileName $ dest
-                 dde <- doesDirectoryExist destdir
-                 unless (dde)
-                            (safeSystem "mkdir" ["-p", destdir])
-                 handle (\_ -> return ())
-                            (rename src dest)
-                 createSymbolicLink ("/opt/dfsruntime/runtimemnt" ++ f) src
+                 appendFile ((targetdir env)++"/opt/dfsruntime/binds") $ (escape f) ++ "\n"
+          escape s = foldl (++) "" (map escChar s)
+          escChar ch = if elem ch "|&;()<> \t\n"
+                       then "\\"++[ch]
+                       else [ch]
 
 compress env =
     case egetbool env "compress" of
