@@ -14,6 +14,8 @@ import Data.ConfigFile
 import System.FilePath
 import Data.List
 import Actions.ConfigFiles
+import HSH.Command
+import Control.Exception;
 
 grub_eltorito env =
     do im "Installing bootloader: Grub raw eltorito (no HD emulation)"
@@ -39,7 +41,8 @@ grub_hd env =
           workboottar = (wdir env) ++ "/boot.tar.gz"
 
 grub_generic env =
-    do createDirectory (targetdir env ++ "/boot/grub") 0o755
+    do handle (\_->return()) $
+              createDirectory (targetdir env ++ "/boot/grub") 0o755
 	   -- since etch (Debian 4.0) grub files are located in /usr/lib instead of /lib
        grubfiles_pre_etch <- glob "/lib/grub/*/*"
        grubfiles_since_etch <- glob "/usr/lib/grub/*/*"
@@ -55,14 +58,17 @@ grub_generic env =
 grubMenu env  =
     do newkerns <- glob $ targetdir env ++ "/boot/vmlinu*"
        kerntext <- mapM kern (reverse . sort $ newkerns)
+       newmemtest <- glob $ targetdir env ++ "/boot/memtest*"
+       let memtext = map mt (reverse . sort $ newmemtest)
        return $ 
-          case get (cp env) (defaultArch env) "grubconfig" of
-            Left _ -> ""
-            Right line -> line ++ "\n"
-          ++ "color cyan/blue blue/light-gray\n"
-          ++ (concat kerntext)
-          ++ fake "."
-          ++ fake (getidstring env)
+              case get (cp env) (defaultArch env) "grubconfig" of
+                Left _ -> ""
+                Right line -> line ++ "\n"
+              ++ "color cyan/blue blue/light-gray\n"
+                     ++ (concat kerntext)
+                     ++ (concat memtext)
+                     ++ fake "."
+                     ++ fake (getidstring env)
     where fake s = "title " ++ s ++ "\ncolor cyan/blue blue/light-gray\n"
           kern x = do initrd <- getinitrdname env x
                       rootdev <- getrootdevname env x
@@ -72,6 +78,9 @@ grubMenu env  =
                                " root=" ++ rootdev ++ "\n"
                         ++ "initrd /boot/" ++ initrd ++ "\n"
                         ++ "boot\n"
+          mt x = "title  Boot " ++ (snd . splitFileName $ x) ++ "\n"
+                 ++ "kernel /boot/" ++ (snd . splitFileName $ x) ++ 
+                 "\nboot\n"
 
 helpText = "pager on\n\
 \title Basic Booting Info\n\
