@@ -215,13 +215,13 @@ installdebs env =
       Left _ -> return ()
       Right debs ->
           do im "Installing debs..."
-             runIO ("dpkg", ["--root=" ++ (targetdir env), "-i"] ++
-                        splitWs debs)
-                                       
+             deblist <- liftM (foldl (++) []) (mapM glob (splitWs debs))
+             runIO ("dpkg", ["--root=" ++ (targetdir env), "-i"] ++ deblist)
+
    case get (cp env) (defaultArch env) "unpackdebs" of
       Left _ -> return () 
       Right debs -> 
-          do let deblist = splitWs debs
+          do deblist <- liftM (foldl (++) []) (mapM glob (splitWs debs))
              if deblist /= []
                 then do im "Unpacking .debs..."
                         createDirectory realtmpdir 0o755
