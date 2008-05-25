@@ -6,6 +6,33 @@ initrdloc=/initrd
 newrdloc=/opt/dfsruntime/runtimemnt
 newrdfiles=/opt/dfsruntime/runtimerd
 
+cleanup_union()
+{
+    while read to; do
+        umount "$to"
+    done < /opt/dfsruntime/binds
+}
+
+do_ramdisk_aufs()
+{
+    while read to; do
+        mkdir -p "$newrdloc"/"$to"
+        chown --reference "$to" "$newrdloc"/"$to"
+        chmod --reference "$to" "$newrdloc"/"$to"
+        mount -n -t aufs -o br:"$newrdloc"/"$to":"$to" none "$to" || { cleanup_union; return 1; }
+    done < /opt/dfsruntime/binds
+}
+
+do_ramdisk_unionfs()
+{
+    while read to; do
+        mkdir -p "$newrdloc"/"$to"
+        chown --reference "$to" "$newrdloc"/"$to"
+        chmod --reference "$to" "$newrdloc"/"$to"
+        mount -n -t unionfs -o dirs="$newrdloc"/"$to":"$to" none "$to" || { cleanup_union; return 1; }
+    done < /opt/dfsruntime/binds
+}
+
 do_ramdisk_copy()
 {
     while read to; do
@@ -30,7 +57,7 @@ mount -n -t tmpfs none $newrdloc
 echo $newrdloc
 
 echo -n "Populating runtime ramdisk: "
-do_ramdisk_copy
+do_ramdisk_aufs || do_ramdisk_unionfs || do_ramdisk_copy
 echo "done."
 
 echo -n "Initializing configuration files: /etc/fstab"
