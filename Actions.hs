@@ -19,6 +19,7 @@ import Control.Exception
 import Data.List
 import Data.ConfigFile
 import System.IO.HVFS
+import Network.BSD
 import System.Directory hiding (createDirectory)
 import HSH hiding (glob)
 import Text.Regex.Posix
@@ -141,6 +142,10 @@ installpkgs env =
     
        -- Copy resolv.conf so apt-get update/install works
        runIO ("cp", ["/etc/resolv.conf", targetdir env ++ "/etc"])
+
+       -- Make resolution of localhost work
+       host <- getHostName
+       appendFile (targetdir env ++ "/etc/hosts") ("127.0.0.1 " ++ host)
 
        -- Update the cache
        runIO ("chroot", [targetdir env, "apt-get", "update"])
